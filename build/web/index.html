@@ -45,15 +45,17 @@
   <body>
     <script>
       window.addEventListener("load", function (ev) {
-        // Download main.dart.js
-        _flutter.loader.loadEntrypoint({
+        _flutter.loader.load({
+          entrypoint: {
+            initializeEngine: function (engineInitializer) {
+              return engineInitializer.initializeEngine();
+            },
+            runApp: function (appRunner) {
+              return appRunner.runApp();
+            },
+          },
           serviceWorker: {
             serviceWorkerVersion: serviceWorkerVersion,
-          },
-          onEntrypointLoaded: function (engineInitializer) {
-            engineInitializer.initializeEngine().then(function (appRunner) {
-              appRunner.runApp();
-            });
           },
         });
       });
