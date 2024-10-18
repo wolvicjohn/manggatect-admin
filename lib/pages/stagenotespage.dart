@@ -6,7 +6,7 @@ class StageNotesPage extends StatelessWidget {
 
   const StageNotesPage({Key? key, required this.stage, required this.notes})
       : super(key: key);
-
+      
   @override
   Widget build(BuildContext context) {
     return Scaffold(
