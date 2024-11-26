@@ -28,7 +28,7 @@ class Dashboard extends StatelessWidget {
             };
           }).toList();
 
-          // Count notes by stages
+          // Count stages
           final Map<String, List<Map<String, dynamic>>> stageData = {
             'stage-1': [],
             'stage-2': [],
@@ -71,6 +71,11 @@ class Dashboard extends StatelessWidget {
                   children: [
                     StageBox(stage: 'stage-3', notes: stageData['stage-3']!),
                     StageBox(stage: 'stage-4', notes: stageData['stage-4']!),
+                  ],
+                ),
+                const Row(
+                  children: [
+                    SizedBox(height: 16),
                   ],
                 ),
               ],
@@ -120,40 +125,61 @@ class StageBox extends StatelessWidget {
         },
         child: Card(
           margin: const EdgeInsets.all(8.0),
-          color: Colors.green, // Card background color
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                // Image on the left
-                Image.asset(
-                  getImageForStage(stage),
-                  height: 150,
-                  width: 150,
+          color: const Color.fromARGB(0, 44, 155, 63),
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: Opacity(
+                  opacity: 0.8,
+                  child: Image.asset(
+                    getImageForStage(stage),
+                    fit: BoxFit.cover,
+                  ),
                 ),
-                const SizedBox(width: 16),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
+              ),
+              // Content over the background image
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(
-                      '${notes.length}',
-                      style: const TextStyle(
-                        fontSize: 50,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      stage,
-                      style: const TextStyle(fontSize: 20, color: Colors.white),
+                    // Image on the left
+                    // Container(
+                    //   height: 150,
+                    //   width: 150,
+                    //   decoration: BoxDecoration(
+                    //     image: DecorationImage(
+                    //       image: AssetImage(getImageForStage(stage)),
+                    //       fit: BoxFit.cover,
+                    //     ),
+                    //     borderRadius: BorderRadius.circular(8.0),
+                    //   ),
+                    // ),
+                    const SizedBox(width: 16),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          '${notes.length}',
+                          style: const TextStyle(
+                            fontSize: 50,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          stage,
+                          style: const TextStyle(
+                              fontSize: 20, color: Colors.white),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

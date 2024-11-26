@@ -11,7 +11,7 @@ class AdminPanelDesign {
           fontSize: 24,
         ),
       ),
-      backgroundColor: Colors.green,
+      backgroundColor: Colors.yellowAccent,
       actions: const [],
     );
   }

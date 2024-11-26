@@ -41,32 +41,50 @@ class TaggedTreePage extends StatelessWidget {
 
               return Card(
                 margin: EdgeInsets.all(8.0),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(title,
-                          style: const TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold)),
-                      SizedBox(height: 8),
-                      Text('Longitude: $longitude'),
-                      Text('Latitude: $latitude'),
-                      SizedBox(height: 8),
-                      imageUrl != null && imageUrl.isNotEmpty
-                          ? Image.network(
-                              imageUrl,
-                              errorBuilder: (context, error, stackTrace) {
-                                return const Text(
-                                    'Image not available'); 
-                              },
-                            )
-                          :const Placeholder(
-                              fallbackHeight: 150,
-                              fallbackWidth: double.infinity,
+                child: ListTile(
+                  title: Text(title),
+                  onTap: () {
+                    // Show the details in a dialog box
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text(title),
+                          content: SingleChildScrollView(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Longitude: $longitude'),
+                                Text('Latitude: $latitude'),
+                                SizedBox(height: 8),
+                                imageUrl != null && imageUrl.isNotEmpty
+                                    ? Image.network(
+                                        imageUrl,
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                          return const Text(
+                                              'Image not available');
+                                        },
+                                      )
+                                    : const Placeholder(
+                                        fallbackHeight: 150,
+                                        fallbackWidth: double.infinity,
+                                      ),
+                              ],
                             ),
-                    ],
-                  ),
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text('Close'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
                 ),
               );
             },

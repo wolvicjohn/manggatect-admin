@@ -13,8 +13,8 @@ class FirestoreService {
   Future<String> addNote({
     required String longitude,
     required String latitude,
-    required File? image, // Allow image to be nullable
-    int? stage, // Optional stage for adding notes
+    required File? image, 
+    int? stage, 
   }) async {
     try {
       print(
@@ -94,7 +94,7 @@ class FirestoreService {
         'latitude': latitude,
         if (imageUrl != null)
           'imageUrl': imageUrl, // Update image URL if provided
-        if (stage != null) 'stage': stage, // Update stage if provided
+        if (stage != null) 'stage': stage, 
         'timestamp': Timestamp.now(),
       });
       print('Note updated successfully!');
@@ -116,18 +116,18 @@ class FirestoreService {
   }
 
   // Delete all notes
-  Future<void> deleteAllNotes() async {
-    try {
-      QuerySnapshot snapshot = await notes.get();
-      for (DocumentSnapshot doc in snapshot.docs) {
-        await doc.reference.delete();
-      }
-      print('All notes deleted successfully!');
-    } catch (e) {
-      print('Error deleting all notes: $e');
-      rethrow;
-    }
-  }
+  // Future<void> deleteAllNotes() async {
+  //   try {
+  //     QuerySnapshot snapshot = await notes.get();
+  //     for (DocumentSnapshot doc in snapshot.docs) {
+  //       await doc.reference.delete();
+  //     }
+  //     print('All notes deleted successfully!');
+  //   } catch (e) {
+  //     print('Error deleting all notes: $e');
+  //     rethrow;
+  //   }
+  // }
 
   // Get a specific note by ID
   Future<Map<String, dynamic>> getNoteById(String docID) async {
