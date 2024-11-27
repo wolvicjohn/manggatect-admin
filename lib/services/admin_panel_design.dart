@@ -6,7 +6,7 @@ class AdminPanelDesign {
   static AppBar buildAppBar() {
     return AppBar(
       title: const Text(
-        "Admin Panel",
+        "Manggatect",
         style: TextStyle(
           fontSize: 24,
         ),
@@ -33,6 +33,11 @@ class AdminPanelDesign {
           title: 'Tree Map',
           route: '/tree-map',
           icon: Icons.map,
+        ),
+        AdminMenuItem(
+          title: 'Archive',
+          route: 'archivepage',
+          icon: Icons.archive,
         ),
       ],
       selectedRoute: '/',

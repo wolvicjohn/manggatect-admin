@@ -10,40 +10,40 @@ class FirestoreService {
       FirebaseStorage.instance; // Firebase Storage instance
 
   // Create
-  Future<String> addNote({
-    required String longitude,
-    required String latitude,
-    required File? image, 
-    int? stage, 
-  }) async {
-    try {
-      print(
-          'Attempting to save note with Longitude: $longitude, Latitude: $latitude');
+  // Future<String> addNote({
+  //   required String longitude,
+  //   required String latitude,
+  //   required File? image,
+  //   int? stage,
+  //   String? title, // Add title as an optional parameter
+  // }) async {
+  //   try {
+  //     print(
+  //         'Attempting to save note with Longitude: $longitude, Latitude: $latitude');
 
-      // Initialize imageUrl to an empty string if no image is provided
-      String imageUrl = image != null ? await uploadImage(image) : '';
+  //     // Initialize imageUrl to an empty string if no image is provided
+  //     String imageUrl = image != null ? await uploadImage(image) : '';
 
-      // Get the current count of notes to increment the title
-      int noteCount = await getNotesCount();
-      String title = 'Tagged-Tree ${noteCount + 1}'; // Generate the new title
+  //     // If no title is provided, use a default title (or leave it empty)
+  //     title ??= 'Untitled'; // Default title is 'Untitled' if none is provided
 
-      // Add note to Firestore
-      DocumentReference docRef = await notes.add({
-        'title': title,
-        'longitude': longitude,
-        'latitude': latitude,
-        'imageUrl': imageUrl, // Store image URL (or empty string)
-        'timestamp': Timestamp.now(),
-        'stage': stage ?? 0, // Set stage to provided value or default to 0
-      });
+  //     // Add note to Firestore
+  //     DocumentReference docRef = await notes.add({
+  //       'longitude': longitude,
+  //       'latitude': latitude,
+  //       'imageUrl': imageUrl, // Store image URL (or empty string)
+  //       'timestamp': Timestamp.now(),
+  //       'stage': stage ?? 0, // Set stage to provided value or default to 0
+  //       'isArchived': false, // Set the initial value of isArchived to false
+  //     });
 
-      print('Note added with ID: ${docRef.id}');
-      return docRef.id; // Return the document ID
-    } catch (e) {
-      print('Error adding data: $e');
-      rethrow; // Re-throw the error to be handled by the caller
-    }
-  }
+  //     print('Note added with ID: ${docRef.id}');
+  //     return docRef.id; // Return the document ID
+  //   } catch (e) {
+  //     print('Error adding data: $e');
+  //     rethrow; // Re-throw the error to be handled by the caller
+  //   }
+  // }
 
   // Function to get the count of existing notes
   Future<int> getNotesCount() async {
@@ -51,6 +51,7 @@ class FirestoreService {
     return snapshot.docs.length; // Return the count of documents
   }
 
+  // Upload image
   Future<String> uploadImage(File image) async {
     try {
       Reference ref = storage
@@ -73,33 +74,44 @@ class FirestoreService {
     }
   }
 
-  // Read
-  Stream<QuerySnapshot> getNoteStream() {
-    return notes.orderBy('timestamp', descending: true).snapshots();
+  // Read - Stream notes that are not archived
+  Stream<QuerySnapshot> getActiveNoteStream() {
+    return notes
+        .where('isArchived', isEqualTo: false)
+        .orderBy('timestamp', descending: true)
+        .snapshots();
   }
 
-  // Update
-  Future<void> updateNote({
-    required String docID,
-    required String title,
-    required String longitude,
-    required String latitude,
-    String? imageUrl,
-    int? stage,
-  }) async {
+  // Read - Stream archived notes
+  Stream<QuerySnapshot> getArchivedNoteStream() {
+    return notes
+        .where('isArchived', isEqualTo: true)
+        .orderBy('timestamp', descending: true)
+        .snapshots();
+  }
+
+  // Archive a specific note
+  Future<void> archiveNote(String docID) async {
     try {
       await notes.doc(docID).update({
-        'title': title,
-        'longitude': longitude,
-        'latitude': latitude,
-        if (imageUrl != null)
-          'imageUrl': imageUrl, // Update image URL if provided
-        if (stage != null) 'stage': stage, 
-        'timestamp': Timestamp.now(),
+        'isArchived': true, // Set the isArchived field to true
       });
-      print('Note updated successfully!');
+      print('Note archived successfully!');
     } catch (e) {
-      print('Error updating note: $e');
+      print('Error archiving note: $e');
+      rethrow;
+    }
+  }
+
+  // Unarchive a specific note (restore the note)
+  Future<void> unarchiveNote(String docID) async {
+    try {
+      await notes.doc(docID).update({
+        'isArchived': false, // Set the isArchived field to false
+      });
+      print('Note unarchived successfully!');
+    } catch (e) {
+      print('Error unarchiving note: $e');
       rethrow;
     }
   }
@@ -115,19 +127,16 @@ class FirestoreService {
     }
   }
 
-  // Delete all notes
-  // Future<void> deleteAllNotes() async {
-  //   try {
-  //     QuerySnapshot snapshot = await notes.get();
-  //     for (DocumentSnapshot doc in snapshot.docs) {
-  //       await doc.reference.delete();
-  //     }
-  //     print('All notes deleted successfully!');
-  //   } catch (e) {
-  //     print('Error deleting all notes: $e');
-  //     rethrow;
-  //   }
-  // }
+  // Permanently delete an archived note
+  Future<void> deleteArchivedNote(String docID) async {
+    try {
+      await notes.doc(docID).delete();
+      print('Archived note permanently deleted!');
+    } catch (e) {
+      print('Error deleting archived note: $e');
+      rethrow;
+    }
+  }
 
   // Get a specific note by ID
   Future<Map<String, dynamic>> getNoteById(String docID) async {
@@ -138,5 +147,10 @@ class FirestoreService {
       print('Error fetching note by ID: $e');
       rethrow;
     }
+  }
+
+  // Read - Stream all notes (including archived)
+  Stream<QuerySnapshot> getNoteStream() {
+    return notes.orderBy('timestamp', descending: true).snapshots();
   }
 }

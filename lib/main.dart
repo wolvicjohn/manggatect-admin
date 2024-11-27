@@ -1,4 +1,6 @@
+
 import 'package:adminmangga/firebase_options.dart';
+import 'package:adminmangga/pages/archivepage.dart';
 import 'package:adminmangga/pages/dashboard.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -21,9 +23,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
+        'archivepage': (context) => ArchivePage(),
         '/homepage': (context) => const Homepage(),
-        '/tree-map': (context) => AllTreeLocationPage(),
-        '/': (context) => Dashboard(),
+        '/tree-map': (context) => const AllTreeLocationPage(),
+        '/': (context) => const Dashboard(),
       },
     );
   }

@@ -49,12 +49,43 @@ class Dashboard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Title Text
-                const Text(
-                  'Tagged Tree Classification',
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                  ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(8,8,8,0),
+                      padding: const EdgeInsets.all(30),
+                      decoration: BoxDecoration(
+                        color: Colors
+                            .yellowAccent, // Set a color for the header background
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(8.0),
+                          topRight: Radius.circular(8.0),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(
+                                0.1), // Subtle shadow with lower opacity
+                            offset: const Offset(0,
+                                6), // Slightly increased vertical offset for more subtlety
+                            blurRadius:
+                                12.0, // A larger blur for a softer shadow
+                            spreadRadius:
+                                0.0, // No spread, to keep the shadow tight around the container
+                          ),
+                        ],
+                      ),
+                      // margin: EdgeInsets.all(16),
+                      child: const Text(
+                        'Tagged Tree Classification',
+                        style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 16),
                 // Boxes Layout

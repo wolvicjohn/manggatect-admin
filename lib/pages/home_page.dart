@@ -1,3 +1,4 @@
+import 'package:adminmangga/archive.dart';
 import 'package:adminmangga/pages/TreeLocationPage.dart';
 import 'package:adminmangga/pages/qrcodegeneratorpage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -22,6 +23,24 @@ class _HomepageState extends State<Homepage> {
 
   Map<String, dynamic>? selectedNote;
 
+  // Archive data function
+  Future<void> archiveData(String docID) async {
+    try {
+      // Update the document in Firestore by setting the 'archived' field to true
+      await FirebaseFirestore.instance.collection('notes').doc(docID).update({
+        'archived': true,
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Data archived successfully')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error archiving data: $e')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return AdminPanel(
@@ -29,7 +48,7 @@ class _HomepageState extends State<Homepage> {
         children: [
           // Table section inside a container
           Expanded(
-            flex: 3,
+            flex: 2,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Container(
@@ -43,7 +62,7 @@ class _HomepageState extends State<Homepage> {
                     const Padding(
                       padding: EdgeInsets.all(16.0),
                       child: Text(
-                        "Notes Data",
+                        "Data",
                         style: TextStyle(
                           fontSize: 24.0,
                           fontWeight: FontWeight.bold,
@@ -64,39 +83,34 @@ class _HomepageState extends State<Homepage> {
                                 Table(
                                   border: TableBorder.all(color: Colors.grey),
                                   columnWidths: const {
-                                    0: FlexColumnWidth(2),
-                                    1: FlexColumnWidth(1.5),
-                                    2: FlexColumnWidth(1.5),
-                                    3: FlexColumnWidth(1),
-                                    4: FlexColumnWidth(2),
+                                    0: FlexColumnWidth(2), // Adjusted for docID
+                                    1: FlexColumnWidth(1), // Adjusted for stage
+                                    2: FlexColumnWidth(
+                                        1), // Adjusted for timestamp
+                                    3: FlexColumnWidth(
+                                        2), // Adjusted for actions
                                   },
                                   children: [
                                     const TableRow(
                                       decoration: BoxDecoration(
-                                        color: Colors.grey,
+                                        color: Colors.yellowAccent,
                                       ),
                                       children: [
                                         Padding(
                                           padding: EdgeInsets.all(8.0),
-                                          child: Text("Title",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold)),
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.all(8.0),
-                                          child: Text("Longitude",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold)),
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.all(8.0),
-                                          child: Text("Latitude",
+                                          child: Text("DocID",
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold)),
                                         ),
                                         Padding(
                                           padding: EdgeInsets.all(8.0),
                                           child: Text("Stage",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold)),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.all(8.0),
+                                          child: Text("Timestamp",
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold)),
                                         ),
@@ -111,23 +125,14 @@ class _HomepageState extends State<Homepage> {
                                     ...notesList.map((document) {
                                       Map<String, dynamic> data = document
                                           .data() as Map<String, dynamic>;
+                                      String docID = document.id;
+                                      Timestamp timestamp = data['timestamp'];
 
                                       return TableRow(
                                         children: [
                                           Padding(
                                             padding: const EdgeInsets.all(8.0),
-                                            child: Text(
-                                                data['title'] ?? 'Untitled'),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text(
-                                                data['longitude'] ?? '0.0'),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child:
-                                                Text(data['latitude'] ?? '0.0'),
+                                            child: Text(docID),
                                           ),
                                           Padding(
                                             padding: const EdgeInsets.all(8.0),
@@ -137,23 +142,92 @@ class _HomepageState extends State<Homepage> {
                                           ),
                                           Padding(
                                             padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              timestamp != null
+                                                  ? timestamp
+                                                      .toDate()
+                                                      .toString()
+                                                  : 'N/A',
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
                                             child: Row(
                                               children: [
-                                                // View icon with text
-                                                Row(
-                                                  children: [
-                                                    IconButton(
-                                                      onPressed: () {
-                                                        setState(() {
-                                                          selectedNote = data;
-                                                        });
-                                                      },
-                                                      icon: const Icon(
-                                                        Icons.preview,
-                                                        color: Colors.orange,
-                                                      ),
+                                                const SizedBox(width: 20),
+                                                ElevatedButton.icon(
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      selectedNote = data;
+                                                    });
+                                                  },
+                                                  icon: const Icon(
+                                                    Icons.preview,
+                                                    color: Colors
+                                                        .white, // Icon color
+                                                  ),
+                                                  label: const Text(
+                                                    'View',
+                                                    style: TextStyle(
+                                                      color: Colors
+                                                          .white, // Text color
+                                                      fontWeight: FontWeight
+                                                          .bold, // Text style
                                                     ),
-                                                  ],
+                                                  ),
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    backgroundColor: Colors
+                                                        .orange, // Background color of the button
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        vertical: 10.0,
+                                                        horizontal:
+                                                            16.0), // Padding around the text and icon
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8.0), // Rounded corners
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 50),
+
+                                                // Archive button
+                                                ElevatedButton.icon(
+                                                  onPressed: () {
+                                                    // Navigate to ArchivePage
+                                                    showArchiveDialog(
+                                                        context, docID);
+                                                  },
+                                                  icon: const Icon(
+                                                    Icons.archive,
+                                                    color: Colors.white,
+                                                  ),
+                                                  label: const Text(
+                                                    'Archive',
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                        Colors.blue,
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        vertical: 10.0,
+                                                        horizontal: 16.0),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8.0),
+                                                    ),
+                                                  ),
                                                 ),
                                               ],
                                             ),
@@ -176,14 +250,15 @@ class _HomepageState extends State<Homepage> {
               ),
             ),
           ),
-          // Preview panel
+
+          // View panel
           Expanded(
-            flex: 2,
+            flex: 1,
             child: Container(
               margin: const EdgeInsets.all(16.0),
               padding: const EdgeInsets.all(16.0),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: const Color.fromARGB(255, 255, 255, 214),
                 borderRadius: BorderRadius.circular(12.0),
                 boxShadow: [
                   BoxShadow(
@@ -196,7 +271,7 @@ class _HomepageState extends State<Homepage> {
               child: selectedNote == null
                   ? const Center(
                       child: Text(
-                        "Select a note to preview details.",
+                        "Select data to View details.",
                         style: TextStyle(
                           fontSize: 16.0,
                           fontWeight: FontWeight.bold,
@@ -205,10 +280,10 @@ class _HomepageState extends State<Homepage> {
                       ),
                     )
                   : Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         const Text(
-                          "Preview Details",
+                          "View Details",
                           style: TextStyle(
                             fontSize: 22.0,
                             fontWeight: FontWeight.bold,
@@ -218,12 +293,11 @@ class _HomepageState extends State<Homepage> {
                         const SizedBox(height: 16.0),
                         const Divider(color: Colors.blueAccent, thickness: 2.0),
                         const SizedBox(height: 8.0),
-                        // Check if an image URL is present in selectedNote
                         selectedNote!['imageUrl'] != null
                             ? Image.network(
                                 selectedNote!['imageUrl'] ?? '',
-                                width: double.infinity,
-                                height: 200.0,
+                                width: 300,
+                                height: 300,
                                 fit: BoxFit.cover,
                               )
                             : const Center(
@@ -233,133 +307,80 @@ class _HomepageState extends State<Homepage> {
                                 ),
                               ),
                         const SizedBox(height: 8.0),
-                        Text(
-                          "Title: ${selectedNote!['title'] ?? 'N/A'}",
-                          style: const TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black87,
-                          ),
-                        ),
-                        const SizedBox(height: 8.0),
-                        Text(
-                          "Longitude: ${selectedNote!['longitude'] ?? 'N/A'}",
-                          style: const TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black87,
-                          ),
-                        ),
-                        const SizedBox(height: 8.0),
-                        Text(
-                          "Latitude: ${selectedNote!['latitude'] ?? 'N/A'}",
-                          style: const TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black87,
-                          ),
-                        ),
-                        const SizedBox(height: 8.0),
-                        Text(
-                          "Stage: ${selectedNote!['stage'] ?? 'N/A'}",
-                          style: const TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black87,
-                          ),
+                        Column(
+                          children: [
+                            Text(
+                              "Longitude: ${selectedNote!['longitude'] ?? 'N/A'}",
+                              style: const TextStyle(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black87,
+                              ),
+                            ),
+                            const SizedBox(height: 8.0),
+                            Text(
+                              "Latitude: ${selectedNote!['latitude'] ?? 'N/A'}",
+                              style: const TextStyle(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black87,
+                              ),
+                            ),
+                            const SizedBox(height: 8.0),
+                            Text(
+                              "Stage: ${selectedNote!['stage'] ?? 'N/A'}",
+                              style: const TextStyle(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black87,
+                              ),
+                            ),
+                          ],
                         ),
                         const SizedBox(height: 16.0),
-                        const Divider(color: Colors.blueAccent, thickness: 2.0),
-
-                        // Buttons Section
-                        const SizedBox(height: 16.0),
+                        // QR Code button
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             ElevatedButton(
                               onPressed: () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    // ignore: prefer_const_constructors
                                     builder: (context) => QRCodeGeneratorPage(
-                                        docID: 'YourDocumentID'),
+                                      docID: selectedNote!['docID'],
+                                    ),
                                   ),
                                 );
                               },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.blueAccent,
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 12.0, horizontal: 20.0),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                ),
+                                backgroundColor: Colors.blue,
+                                foregroundColor:
+                                    Colors.white, // Set the text color to white
                               ),
-                              child: const Text("Scan QR Code"),
+                              child: const Text('Generate QR Code'),
                             ),
+                            const SizedBox(height: 16.0),
+                            // Location button
                             ElevatedButton(
                               onPressed: () {
-                                // Check if selectedNote has valid latitude and longitude values
-                                if (selectedNote != null) {
-                                  final latitude = selectedNote!['latitude'];
-                                  final longitude = selectedNote!['longitude'];
-
-                                  // Ensure latitude and longitude are valid doubles
-                                  if (latitude != null && longitude != null) {
-                                    final latitudeDouble =
-                                        double.tryParse(latitude.toString());
-                                    final longitudeDouble =
-                                        double.tryParse(longitude.toString());
-
-                                    if (latitudeDouble != null &&
-                                        longitudeDouble != null) {
-                                      // Navigate to TreeLocationPage with the latitude and longitude as doubles
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              TreeLocationPage(
-                                            latitude: latitudeDouble,
-                                            longitude: longitudeDouble,
-                                          ),
-                                        ),
-                                      );
-                                    } else {
-                                      // Show an error message if latitude or longitude is invalid
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                            content:
-                                                Text('Invalid location data')),
-                                      );
-                                    }
-                                  } else {
-                                    // Show an error message if latitude or longitude is missing
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content: Text(
-                                              'No valid location data available')),
-                                    );
-                                  }
-                                } else {
-                                  // Show an error message if no note is selected
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content:
-                                            Text('Please select a note first')),
-                                  );
-                                }
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => TreeLocationPage(
+                                      latitude: selectedNote!['latitude'] ?? 'N/A',
+                                      longitude:
+                                          selectedNote!['longitude'] ?? 'N/A',
+                                    ),
+                                  ),
+                                );
                               },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    const Color.fromARGB(255, 68, 255, 137),
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 12.0, horizontal: 20.0),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                ),
+                                backgroundColor: Colors.green,
+                                foregroundColor:
+                                    Colors.white, // Set the text color to white
                               ),
-                              child: const Text("Location"),
+                              child: const Text('Get Location'),
                             ),
                           ],
                         ),
