@@ -2,6 +2,7 @@
 import 'package:adminmangga/firebase_options.dart';
 import 'package:adminmangga/pages/archivepage.dart';
 import 'package:adminmangga/pages/dashboard.dart';
+import 'package:adminmangga/pages/login/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'pages/alltreelocationpage.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
         '/archivepage': (context) => const ArchivePage(),
         '/homepage': (context) => const Homepage(),
         '/tree-map': (context) => const AllTreeLocationPage(),
+        '/loginpage': (context) => const LoginPage(),
         '/': (context) => const Dashboard(),
       },
     );

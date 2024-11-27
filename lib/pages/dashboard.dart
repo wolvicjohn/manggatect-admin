@@ -2,12 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../services/admin_panel.dart';
 import 'stagenotespage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Dashboard extends StatelessWidget {
   const Dashboard({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final User? user = FirebaseAuth.instance.currentUser;
+
+    if (user == null) {
+      Future.microtask(
+          () => Navigator.pushReplacementNamed(context, '/loginpage'));
+    }
+
     return AdminPanel(
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection('notes').snapshots(),
@@ -51,28 +59,22 @@ class Dashboard extends StatelessWidget {
                 // Title Text
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
-                  
                   children: [
                     Container(
-                      margin: const EdgeInsets.fromLTRB(8,8,8,0),
+                      margin: const EdgeInsets.fromLTRB(8, 8, 8, 0),
                       padding: const EdgeInsets.all(30),
                       decoration: BoxDecoration(
-                        color: Colors
-                            .yellowAccent, 
+                        color: Colors.yellowAccent,
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(8.0),
                           topRight: Radius.circular(8.0),
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(
-                                0.1), 
-                            offset: const Offset(0,
-                                6),
-                            blurRadius:
-                                12.0, 
-                            spreadRadius:
-                                0.0, 
+                            color: Colors.black.withOpacity(0.1),
+                            offset: const Offset(0, 6),
+                            blurRadius: 12.0,
+                            spreadRadius: 0.0,
                           ),
                         ],
                       ),

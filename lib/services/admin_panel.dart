@@ -11,7 +11,7 @@ class AdminPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdminScaffold(
-      appBar: AdminPanelDesign.buildAppBar(),
+      appBar: AdminPanelDesign.buildAppBar(context),
       sideBar: AdminPanelDesign.buildSideBar(context),
       body: body,
     );
