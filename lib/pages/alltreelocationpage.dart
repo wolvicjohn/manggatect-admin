@@ -28,21 +28,17 @@ class _AllTreeLocationPageState extends State<AllTreeLocationPage> {
             margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
             padding: const EdgeInsets.all(16.0),
             decoration: BoxDecoration(
-              color:
-                  Colors.yellowAccent, 
+              color: Colors.yellowAccent,
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(8.0),
                 topRight: Radius.circular(8.0),
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black
-                      .withOpacity(0.1), 
-                  offset: const Offset(0,
-                      6), 
-                  blurRadius: 12.0, 
-                  spreadRadius:
-                      0.0, 
+                  color: Colors.black.withOpacity(0.1),
+                  offset: const Offset(0, 6),
+                  blurRadius: 12.0,
+                  spreadRadius: 0.0,
                 ),
               ],
             ),
@@ -51,7 +47,7 @@ class _AllTreeLocationPageState extends State<AllTreeLocationPage> {
               style: TextStyle(
                 fontSize: 24.0,
                 fontWeight: FontWeight.bold,
-                color: Colors.black87, 
+                color: Colors.black87,
               ),
             ),
           ),
@@ -89,30 +85,32 @@ class _AllTreeLocationPageState extends State<AllTreeLocationPage> {
                               child: Text('Error: ${snapshot.error}'));
                         }
 
-                        // Filter locations by selected stage
                         final List<LatLng> locations =
                             snapshot.data!.docs.where((doc) {
                           final data = doc.data() as Map<String, dynamic>;
-                          return data['stage'] ==
-                              selectedStage; // Filter by selected stage
+                          return data['stage'] == selectedStage &&
+                              data['latitude'] != null &&
+                              data['longitude'] != null;
                         }).map((doc) {
                           final data = doc.data() as Map<String, dynamic>;
                           return LatLng(
-                            double.parse(data['latitude'].toString()),
-                            double.parse(data['longitude'].toString()),
+                            double.tryParse(data['latitude'].toString()) ?? 0.0,
+                            double.tryParse(data['longitude'].toString()) ??
+                                0.0,
                           );
                         }).toList();
 
-                        // Show a message if there are no locations for the selected stage
                         if (locations.isEmpty) {
-                          WidgetsBinding.instance.addPostFrameCallback((_) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                    'No data available for $selectedStage.'),
-                                backgroundColor: Colors.red,
-                              ),
-                            );
+                          Future.microtask(() {
+                            if (mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                      'No data available for $selectedStage.'),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                            }
                           });
                         }
 
@@ -120,7 +118,7 @@ class _AllTreeLocationPageState extends State<AllTreeLocationPage> {
                           options: MapOptions(
                             initialCenter: locations.isNotEmpty
                                 ? locations[0]
-                                : const LatLng(0, 0),
+                                : LatLng(14.5995, 120.9842), // Default: Manila
                             initialZoom: 20.0,
                           ),
                           children: [
@@ -148,8 +146,13 @@ class _AllTreeLocationPageState extends State<AllTreeLocationPage> {
                               attributions: [
                                 TextSourceAttribution(
                                   'OpenStreetMap contributors',
-                                  onTap: () => launchUrl(Uri.parse(
-                                      'https://www.openstreetmap.org/copyright')),
+                                  onTap: () async {
+                                    final url = Uri.parse(
+                                        'https://www.openstreetmap.org/copyright');
+                                    if (await canLaunchUrl(url)) {
+                                      await launchUrl(url);
+                                    }
+                                  },
                                 ),
                               ],
                             ),

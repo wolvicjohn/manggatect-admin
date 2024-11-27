@@ -1,6 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:adminmangga/services/firestore.dart'; // Assuming FirestoreService is here
+import 'package:adminmangga/services/firestore.dart';
 
 class ArchiveDialog extends StatelessWidget {
   final String docID;
@@ -11,7 +10,6 @@ class ArchiveDialog extends StatelessWidget {
   // Method to archive a note by updating the 'isArchived' field in Firestore
   Future<void> archiveNote(BuildContext context) async {
     try {
-      // Update the 'isArchived' field to true in Firestore for the document
       await firestoreService.archiveNote(docID);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Note archived successfully')),

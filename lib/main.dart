@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
-        'archivepage': (context) => ArchivePage(),
+        '/archivepage': (context) => const ArchivePage(),
         '/homepage': (context) => const Homepage(),
         '/tree-map': (context) => const AllTreeLocationPage(),
         '/': (context) => const Dashboard(),
