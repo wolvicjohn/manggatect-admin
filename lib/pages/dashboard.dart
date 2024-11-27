@@ -58,7 +58,7 @@ class Dashboard extends StatelessWidget {
                       padding: const EdgeInsets.all(30),
                       decoration: BoxDecoration(
                         color: Colors
-                            .yellowAccent, // Set a color for the header background
+                            .yellowAccent, 
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(8.0),
                           topRight: Radius.circular(8.0),
@@ -66,13 +66,13 @@ class Dashboard extends StatelessWidget {
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black.withOpacity(
-                                0.1), // Subtle shadow with lower opacity
+                                0.1), 
                             offset: const Offset(0,
-                                6), // Slightly increased vertical offset for more subtlety
+                                6),
                             blurRadius:
-                                12.0, // A larger blur for a softer shadow
+                                12.0, 
                             spreadRadius:
-                                0.0, // No spread, to keep the shadow tight around the container
+                                0.0, 
                           ),
                         ],
                       ),

@@ -21,89 +21,124 @@ class _AllTreeLocationPageState extends State<AllTreeLocationPage> {
     return AdminPanel(
       body: Column(
         children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Container(
+                margin: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+                padding: const EdgeInsets.all(30),
+                decoration: BoxDecoration(
+                  color: Colors.yellowAccent,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(8.0),
+                    topRight: Radius.circular(8.0),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      offset: const Offset(0, 6),
+                      blurRadius: 12.0,
+                      spreadRadius: 0.0,
+                    ),
+                  ],
+                ),
+                // margin: EdgeInsets.all(16),
+                child: const Text(
+                  'Map',
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
           // StreamBuilder for fetching tree locations
           Expanded(
             child: Stack(
               children: [
-                StreamBuilder<QuerySnapshot>(
-                  stream: FirebaseFirestore.instance
-                      .collection('notes')
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-
-                    if (snapshot.hasError) {
-                      return Center(child: Text('Error: ${snapshot.error}'));
-                    }
-
-                    // Filter locations by selected stage
-                    final List<LatLng> locations =
-                        snapshot.data!.docs.where((doc) {
-                      final data = doc.data() as Map<String, dynamic>;
-                      return data['stage'] ==
-                          selectedStage; // Filter by selected stage
-                    }).map((doc) {
-                      final data = doc.data() as Map<String, dynamic>;
-                      return LatLng(
-                        double.parse(data['latitude'].toString()),
-                        double.parse(data['longitude'].toString()),
-                      );
-                    }).toList();
-
-                    // Show a message if there are no locations for the selected stage
-                    if (locations.isEmpty) {
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content:
-                                Text('No data available for $selectedStage.'),
-                            backgroundColor: Colors.red,
-                          ),
+                Container(
+                  margin: const EdgeInsets.all(16),
+                  child: StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection('notes')
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                  
+                      if (snapshot.hasError) {
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      }
+                  
+                      // Filter locations by selected stage
+                      final List<LatLng> locations =
+                          snapshot.data!.docs.where((doc) {
+                        final data = doc.data() as Map<String, dynamic>;
+                        return data['stage'] ==
+                            selectedStage; // Filter by selected stage
+                      }).map((doc) {
+                        final data = doc.data() as Map<String, dynamic>;
+                        return LatLng(
+                          double.parse(data['latitude'].toString()),
+                          double.parse(data['longitude'].toString()),
                         );
-                      });
-                    }
-
-                    return FlutterMap(
-                      options: MapOptions(
-                        initialCenter:
-                            locations.isNotEmpty ? locations[0] : LatLng(0, 0),
-                        initialZoom: 20.0,
-                      ),
-                      children: [
-                        TileLayer(
-                          urlTemplate:
-                              'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                          subdomains: ['a', 'b', 'c'],
-                          userAgentPackageName: 'Manggatect',
-                        ),
-                        MarkerLayer(
-                          markers: locations.map((location) {
-                            return Marker(
-                              point: location,
-                              width: 50.0,
-                              height: 50.0,
-                              child: Image.asset(
-                                'assets/images/tree_icon.png',
-                                width: 40.0,
-                                height: 40.0,
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                        RichAttributionWidget(
-                          attributions: [
-                            TextSourceAttribution(
-                              'OpenStreetMap contributors',
-                              onTap: () => launchUrl(Uri.parse(
-                                  'https://www.openstreetmap.org/copyright')),
+                      }).toList();
+                  
+                      // Show a message if there are no locations for the selected stage
+                      if (locations.isEmpty) {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content:
+                                  Text('No data available for $selectedStage.'),
+                              backgroundColor: Colors.red,
                             ),
-                          ],
+                          );
+                        });
+                      }
+                  
+                      return FlutterMap(
+                        options: MapOptions(
+                          initialCenter:
+                              locations.isNotEmpty ? locations[0] : const LatLng(0, 0),
+                          initialZoom: 20.0,
                         ),
-                      ],
-                    );
-                  },
+                        children: [
+                          TileLayer(
+                            urlTemplate:
+                                'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                            subdomains: ['a', 'b', 'c'],
+                            userAgentPackageName: 'Manggatect',
+                          ),
+                          MarkerLayer(
+                            markers: locations.map((location) {
+                              return Marker(
+                                point: location,
+                                width: 50.0,
+                                height: 50.0,
+                                child: Image.asset(
+                                  'assets/images/tree_icon.png',
+                                  width: 40.0,
+                                  height: 40.0,
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                          RichAttributionWidget(
+                            attributions: [
+                              TextSourceAttribution(
+                                'OpenStreetMap contributors',
+                                onTap: () => launchUrl(Uri.parse(
+                                    'https://www.openstreetmap.org/copyright')),
+                              ),
+                            ],
+                          ),
+                        ],
+                      );
+                    },
+                  ),
                 ),
 
                 // Dropdown button for selecting stages, positioned at the top-right corner
@@ -111,6 +146,7 @@ class _AllTreeLocationPageState extends State<AllTreeLocationPage> {
                   top: 16.0,
                   right: 16.0,
                   child: Container(
+                    margin: const EdgeInsets.all(16),
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     decoration: BoxDecoration(
                       color: Colors.yellowAccent,
@@ -119,9 +155,9 @@ class _AllTreeLocationPageState extends State<AllTreeLocationPage> {
                     child: DropdownButton<String>(
                       value: selectedStage,
                       icon:
-                          const Icon(Icons.arrow_downward, color: Colors.white),
+                          const Icon(Icons.arrow_downward, color: Colors.black87),
                       elevation: 16,
-                      style: const TextStyle(color: Colors.white),
+                      style: const TextStyle(color: Colors.black87),
                       dropdownColor: Colors.yellowAccent,
                       onChanged: (String? newValue) {
                         setState(() {
