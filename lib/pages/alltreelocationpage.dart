@@ -13,7 +13,7 @@ class AllTreeLocationPage extends StatefulWidget {
 }
 
 class _AllTreeLocationPageState extends State<AllTreeLocationPage> {
-  String selectedStage = 'stage-1'; // Default stage
+  String selectedStage = 'stage-1';
   List<String> stages = ['stage-1', 'stage-2', 'stage-3', 'stage-4'];
 
   @override
@@ -29,7 +29,7 @@ class _AllTreeLocationPageState extends State<AllTreeLocationPage> {
             padding: const EdgeInsets.all(16.0),
             decoration: BoxDecoration(
               color:
-                  Colors.yellowAccent, // Set a color for the header background
+                  Colors.yellowAccent, 
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(8.0),
                 topRight: Radius.circular(8.0),
@@ -37,12 +37,12 @@ class _AllTreeLocationPageState extends State<AllTreeLocationPage> {
               boxShadow: [
                 BoxShadow(
                   color: Colors.black
-                      .withOpacity(0.1), // Subtle shadow with lower opacity
+                      .withOpacity(0.1), 
                   offset: const Offset(0,
-                      6), // Slightly increased vertical offset for more subtlety
-                  blurRadius: 12.0, // A larger blur for a softer shadow
+                      6), 
+                  blurRadius: 12.0, 
                   spreadRadius:
-                      0.0, // No spread, to keep the shadow tight around the container
+                      0.0, 
                 ),
               ],
             ),
@@ -51,7 +51,7 @@ class _AllTreeLocationPageState extends State<AllTreeLocationPage> {
               style: TextStyle(
                 fontSize: 24.0,
                 fontWeight: FontWeight.bold,
-                color: Colors.black87, // Set text color to white
+                color: Colors.black87, 
               ),
             ),
           ),
@@ -127,7 +127,7 @@ class _AllTreeLocationPageState extends State<AllTreeLocationPage> {
                             TileLayer(
                               urlTemplate:
                                   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                              subdomains: ['a', 'b', 'c'],
+                              subdomains: const ['a', 'b', 'c'],
                               userAgentPackageName: 'Manggatect',
                             ),
                             MarkerLayer(
