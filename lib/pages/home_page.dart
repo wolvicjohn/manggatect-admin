@@ -378,7 +378,7 @@ class _HomepageState extends State<Homepage> {
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.green,
                                 foregroundColor:
-                                    Colors.white, // Set the text color to white
+                                    Colors.white, 
                               ),
                               child: const Text('Get Location'),
                             ),
