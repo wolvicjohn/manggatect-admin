@@ -13,7 +13,7 @@ class AllTreeLocationPage extends StatefulWidget {
 }
 
 class _AllTreeLocationPageState extends State<AllTreeLocationPage> {
-  String selectedStage = 'stage-1'; // Default stage
+  String selectedStage = 'stage-1';
   List<String> stages = ['stage-1', 'stage-2', 'stage-3', 'stage-4'];
 
   @override
@@ -28,7 +28,7 @@ class _AllTreeLocationPageState extends State<AllTreeLocationPage> {
                 margin: const EdgeInsets.fromLTRB(8, 8, 8, 0),
                 padding: const EdgeInsets.all(30),
                 decoration: BoxDecoration(
-                  color: Colors.yellowAccent,
+                  color: const Color.fromARGB(255, 20, 116, 82),
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(8.0),
                     topRight: Radius.circular(8.0),
@@ -48,6 +48,7 @@ class _AllTreeLocationPageState extends State<AllTreeLocationPage> {
                   style: TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
                 ),
               ),
@@ -67,11 +68,11 @@ class _AllTreeLocationPageState extends State<AllTreeLocationPage> {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
                       }
-                  
+
                       if (snapshot.hasError) {
                         return Center(child: Text('Error: ${snapshot.error}'));
                       }
-                  
+
                       // Filter locations by selected stage
                       final List<LatLng> locations =
                           snapshot.data!.docs.where((doc) {
@@ -85,7 +86,7 @@ class _AllTreeLocationPageState extends State<AllTreeLocationPage> {
                           double.parse(data['longitude'].toString()),
                         );
                       }).toList();
-                  
+
                       // Show a message if there are no locations for the selected stage
                       if (locations.isEmpty) {
                         WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -98,11 +99,12 @@ class _AllTreeLocationPageState extends State<AllTreeLocationPage> {
                           );
                         });
                       }
-                  
+
                       return FlutterMap(
                         options: MapOptions(
-                          initialCenter:
-                              locations.isNotEmpty ? locations[0] : const LatLng(0, 0),
+                          initialCenter: locations.isNotEmpty
+                              ? locations[0]
+                              : const LatLng(0, 0),
                           initialZoom: 20.0,
                         ),
                         children: [
@@ -149,8 +151,9 @@ class _AllTreeLocationPageState extends State<AllTreeLocationPage> {
                     margin: const EdgeInsets.all(16),
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     decoration: BoxDecoration(
-                      color: Colors.yellowAccent,
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(12.0),
+                      border: Border.all(color: Colors.black87),
                     ),
                     child: DropdownButton<String>(
                       value: selectedStage,
@@ -158,7 +161,7 @@ class _AllTreeLocationPageState extends State<AllTreeLocationPage> {
                           const Icon(Icons.arrow_downward, color: Colors.black87),
                       elevation: 16,
                       style: const TextStyle(color: Colors.black87),
-                      dropdownColor: Colors.yellowAccent,
+                      dropdownColor: Colors.white,
                       onChanged: (String? newValue) {
                         setState(() {
                           selectedStage = newValue!;

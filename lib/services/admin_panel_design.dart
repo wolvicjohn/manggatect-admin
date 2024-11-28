@@ -12,24 +12,30 @@ class AdminPanelDesign {
           fontSize: 24,
         ),
       ),
-      backgroundColor: Colors.yellowAccent,
       actions: [
-         ElevatedButton(
+        ElevatedButton(
           onPressed: () async {
             // Sign out the user and navigate back to login
             await FirebaseAuth.instance.signOut();
             Navigator.pushReplacementNamed(context, '/loginpage');
           },
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.transparent, // Transparent for AppBar theme
-            elevation: 0, // Removes button shadow
+            backgroundColor: Colors.transparent, 
+            elevation: 0, 
           ),
           child: const Text(
             "Logout",
-            style: TextStyle(color: Colors.black), // Text color for visibility
+            style: TextStyle(color: Colors.black), 
           ),
         ),
       ],
+      bottom: PreferredSize(
+        preferredSize: const Size.fromHeight(1.0), 
+        child: Container(
+          color: Colors.grey, 
+          height: 1.0, 
+        ),
+      ),
     );
   }
 
@@ -47,13 +53,13 @@ class AdminPanelDesign {
           icon: Icons.note,
         ),
         AdminMenuItem(
-          title: 'Tree Map',
+          title: 'Map',
           route: '/tree-map',
           icon: Icons.map,
         ),
         AdminMenuItem(
           title: 'Archive',
-          route: 'archivepage',
+          route: '/archivepage',
           icon: Icons.archive,
         ),
       ],
@@ -63,7 +69,8 @@ class AdminPanelDesign {
           if (item.route == '/tree-map') {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const AllTreeLocationPage()),
+              MaterialPageRoute(
+                  builder: (context) => const AllTreeLocationPage()),
             );
           } else {
             Navigator.pushReplacementNamed(context, item.route!);

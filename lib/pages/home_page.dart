@@ -93,32 +93,40 @@ class _HomepageState extends State<Homepage> {
                                   children: [
                                     const TableRow(
                                       decoration: BoxDecoration(
-                                        color: Colors.yellowAccent,
+                                        color: Color.fromARGB(255, 20, 116, 82),
                                       ),
                                       children: [
                                         Padding(
                                           padding: EdgeInsets.all(8.0),
                                           child: Text("DocID",
                                               style: TextStyle(
-                                                  fontWeight: FontWeight.bold)),
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                              )),
                                         ),
                                         Padding(
                                           padding: EdgeInsets.all(8.0),
                                           child: Text("Stage",
                                               style: TextStyle(
-                                                  fontWeight: FontWeight.bold)),
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                              )),
                                         ),
                                         Padding(
                                           padding: EdgeInsets.all(8.0),
                                           child: Text("Timestamp",
                                               style: TextStyle(
-                                                  fontWeight: FontWeight.bold)),
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                              )),
                                         ),
                                         Padding(
                                           padding: EdgeInsets.all(8.0),
                                           child: Text("Actions",
                                               style: TextStyle(
-                                                  fontWeight: FontWeight.bold)),
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                              )),
                                         ),
                                       ],
                                     ),
@@ -143,12 +151,7 @@ class _HomepageState extends State<Homepage> {
                                           Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Text(
-                                              timestamp != null
-                                                  ? timestamp
-                                                      .toDate()
-                                                      .toString()
-                                                  : 'N/A',
-                                            ),
+                                                timestamp.toDate().toString()),
                                           ),
                                           Padding(
                                             padding: const EdgeInsets.all(8.0),
@@ -170,25 +173,25 @@ class _HomepageState extends State<Homepage> {
                                                     'View',
                                                     style: TextStyle(
                                                       color: Colors
-                                                          .white, // Text color
+                                                          .white,
                                                       fontWeight: FontWeight
-                                                          .bold, // Text style
+                                                          .bold, 
                                                     ),
                                                   ),
                                                   style:
                                                       ElevatedButton.styleFrom(
                                                     backgroundColor: Colors
-                                                        .orange, // Background color of the button
+                                                        .orange, 
                                                     padding: const EdgeInsets
                                                         .symmetric(
                                                         vertical: 10.0,
                                                         horizontal:
-                                                            16.0), // Padding around the text and icon
+                                                            16.0),
                                                     shape:
                                                         RoundedRectangleBorder(
                                                       borderRadius:
                                                           BorderRadius.circular(
-                                                              8.0), // Rounded corners
+                                                              8.0), 
                                                     ),
                                                   ),
                                                 ),
@@ -258,7 +261,7 @@ class _HomepageState extends State<Homepage> {
               margin: const EdgeInsets.all(16.0),
               padding: const EdgeInsets.all(16.0),
               decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 255, 255, 214),
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(12.0),
                 boxShadow: [
                   BoxShadow(
@@ -356,7 +359,7 @@ class _HomepageState extends State<Homepage> {
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.blue,
                                 foregroundColor:
-                                    Colors.white, // Set the text color to white
+                                    Colors.white,
                               ),
                               child: const Text('Generate QR Code'),
                             ),
@@ -368,7 +371,8 @@ class _HomepageState extends State<Homepage> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => TreeLocationPage(
-                                      latitude: selectedNote!['latitude'] ?? 'N/A',
+                                      latitude:
+                                          selectedNote!['latitude'] ?? 'N/A',
                                       longitude:
                                           selectedNote!['longitude'] ?? 'N/A',
                                     ),
@@ -377,8 +381,7 @@ class _HomepageState extends State<Homepage> {
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.green,
-                                foregroundColor:
-                                    Colors.white, 
+                                foregroundColor: Colors.white,
                               ),
                               child: const Text('Get Location'),
                             ),

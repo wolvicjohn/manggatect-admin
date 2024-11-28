@@ -42,12 +42,15 @@ class Dashboard extends StatelessWidget {
             'stage-2': [],
             'stage-3': [],
             'stage-4': [],
+            'no data yet': [],
           };
 
           for (var note in notesList) {
             final stage = note['stage'];
             if (stageData.containsKey(stage)) {
               stageData[stage]!.add(note);
+            } else {
+              stageData['no data yet']!.add(note);
             }
           }
 
@@ -64,7 +67,7 @@ class Dashboard extends StatelessWidget {
                       margin: const EdgeInsets.fromLTRB(8, 8, 8, 0),
                       padding: const EdgeInsets.all(30),
                       decoration: BoxDecoration(
-                        color: Colors.yellowAccent,
+                        color: const Color.fromARGB(255, 20, 116, 82),
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(8.0),
                           topRight: Radius.circular(8.0),
@@ -80,10 +83,11 @@ class Dashboard extends StatelessWidget {
                       ),
                       // margin: EdgeInsets.all(16),
                       child: const Text(
-                        'Tagged Tree Classification',
+                        'Dashboard',
                         style: TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.bold,
+                          color: Colors.white,
                         ),
                       ),
                     ),
@@ -104,6 +108,8 @@ class Dashboard extends StatelessWidget {
                   children: [
                     StageBox(stage: 'stage-3', notes: stageData['stage-3']!),
                     StageBox(stage: 'stage-4', notes: stageData['stage-4']!),
+                    StageBox(
+                        stage: 'Not classified', notes: stageData['no data yet']!),
                   ],
                 ),
                 const Row(

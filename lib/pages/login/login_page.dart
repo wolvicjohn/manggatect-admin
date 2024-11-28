@@ -41,13 +41,13 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 20, 116, 82),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Form(
             child: ConstrainedBox(
-              constraints:
-                  BoxConstraints(maxWidth: 400), // Limit width to 400px
+              constraints: const BoxConstraints(maxWidth: 400),
               child: Container(
                 padding: const EdgeInsets.symmetric(
                     vertical: 32.0, horizontal: 24.0),
@@ -59,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
                       color: Colors.grey.withOpacity(0.2),
                       spreadRadius: 5,
                       blurRadius: 10,
-                      offset: const Offset(0, 3), // changes position of shadow
+                      offset: const Offset(0, 3),
                     ),
                   ],
                 ),
@@ -91,7 +91,7 @@ class _LoginPageState extends State<LoginPage> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        prefixIcon: Icon(Icons.email, color: Colors.blue),
+                        prefixIcon: const Icon(Icons.email, color: Colors.blue),
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -109,7 +109,7 @@ class _LoginPageState extends State<LoginPage> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        prefixIcon: Icon(Icons.lock, color: Colors.blue),
+                        prefixIcon: const Icon(Icons.lock, color: Colors.blue),
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -126,7 +126,7 @@ class _LoginPageState extends State<LoginPage> {
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.blue,
                               padding: const EdgeInsets.symmetric(
-                                horizontal: 40,
+                                horizontal: 152,
                                 vertical: 12,
                               ),
                               shape: RoundedRectangleBorder(
