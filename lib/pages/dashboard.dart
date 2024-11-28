@@ -18,7 +18,10 @@ class Dashboard extends StatelessWidget {
 
     return AdminPanel(
       body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('notes').snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection('notes')
+            .where('isArchived', isEqualTo: false)
+            .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -109,7 +112,8 @@ class Dashboard extends StatelessWidget {
                     StageBox(stage: 'stage-3', notes: stageData['stage-3']!),
                     StageBox(stage: 'stage-4', notes: stageData['stage-4']!),
                     StageBox(
-                        stage: 'Not classified', notes: stageData['no data yet']!),
+                        stage: 'Not classified',
+                        notes: stageData['no data yet']!),
                   ],
                 ),
                 const Row(
@@ -146,7 +150,7 @@ class StageBox extends StatelessWidget {
       case 'stage-4':
         return 'assets/images/stage4.jpg';
       default:
-        return 'assets/images/default.jpg';
+        return 'assets/images/logo.png';
     }
   }
 

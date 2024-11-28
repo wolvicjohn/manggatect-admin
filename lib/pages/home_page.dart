@@ -15,31 +15,7 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   final FirestoreService firestoreService = FirestoreService();
-
-  final TextEditingController titleController = TextEditingController();
-  final TextEditingController longitudeController = TextEditingController();
-  final TextEditingController latitudeController = TextEditingController();
-  final TextEditingController stageController = TextEditingController();
-
   Map<String, dynamic>? selectedNote;
-
-  // Archive data function
-  Future<void> archiveData(String docID) async {
-    try {
-      // Update the document in Firestore by setting the 'archived' field to true
-      await FirebaseFirestore.instance.collection('notes').doc(docID).update({
-        'archived': true,
-      });
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Data archived successfully')),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error archiving data: $e')),
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +24,7 @@ class _HomepageState extends State<Homepage> {
         children: [
           // Table section inside a container
           Expanded(
-            flex: 2,
+            flex: 3,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Container(
@@ -72,7 +48,11 @@ class _HomepageState extends State<Homepage> {
                     const SizedBox(height: 8.0),
                     Expanded(
                       child: StreamBuilder<QuerySnapshot>(
-                        stream: firestoreService.getNoteStream(),
+                        // get all data where isArchived is false
+                        stream: FirebaseFirestore.instance
+                            .collection('notes')
+                            .where('isArchived', isEqualTo: false)
+                            .snapshots(),
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             List<DocumentSnapshot> notesList =
@@ -83,12 +63,10 @@ class _HomepageState extends State<Homepage> {
                                 Table(
                                   border: TableBorder.all(color: Colors.grey),
                                   columnWidths: const {
-                                    0: FlexColumnWidth(2), // Adjusted for docID
-                                    1: FlexColumnWidth(1), // Adjusted for stage
-                                    2: FlexColumnWidth(
-                                        1), // Adjusted for timestamp
-                                    3: FlexColumnWidth(
-                                        2), // Adjusted for actions
+                                    0: FlexColumnWidth(1), // docID
+                                    1: FlexColumnWidth(1), // stage
+                                    2: FlexColumnWidth(1), // timestamp
+                                    4: FlexColumnWidth(1), // actions
                                   },
                                   children: [
                                     const TableRow(
@@ -135,6 +113,7 @@ class _HomepageState extends State<Homepage> {
                                           .data() as Map<String, dynamic>;
                                       String docID = document.id;
                                       Timestamp timestamp = data['timestamp'];
+                                      data['docID'] = docID;
 
                                       return TableRow(
                                         children: [
@@ -157,7 +136,6 @@ class _HomepageState extends State<Homepage> {
                                             padding: const EdgeInsets.all(8.0),
                                             child: Row(
                                               children: [
-                                                const SizedBox(width: 20),
                                                 ElevatedButton.icon(
                                                   onPressed: () {
                                                     setState(() {
@@ -166,41 +144,25 @@ class _HomepageState extends State<Homepage> {
                                                   },
                                                   icon: const Icon(
                                                     Icons.preview,
-                                                    color: Colors
-                                                        .white, // Icon color
+                                                    color: Colors.white,
                                                   ),
                                                   label: const Text(
                                                     'View',
                                                     style: TextStyle(
-                                                      color: Colors
-                                                          .white,
-                                                      fontWeight: FontWeight
-                                                          .bold, 
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                     ),
                                                   ),
                                                   style:
                                                       ElevatedButton.styleFrom(
-                                                    backgroundColor: Colors
-                                                        .orange, 
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        vertical: 10.0,
-                                                        horizontal:
-                                                            16.0),
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              8.0), 
-                                                    ),
+                                                    backgroundColor:
+                                                        Colors.orange,
                                                   ),
                                                 ),
-                                                const SizedBox(width: 50),
-
-                                                // Archive button
+                                                const SizedBox(width: 16.0),
                                                 ElevatedButton.icon(
                                                   onPressed: () {
-                                                    // Navigate to ArchivePage
                                                     showArchiveDialog(
                                                         context, docID);
                                                   },
@@ -220,16 +182,6 @@ class _HomepageState extends State<Homepage> {
                                                       ElevatedButton.styleFrom(
                                                     backgroundColor:
                                                         Colors.blue,
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        vertical: 10.0,
-                                                        horizontal: 16.0),
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              8.0),
-                                                    ),
                                                   ),
                                                 ),
                                               ],
@@ -257,138 +209,169 @@ class _HomepageState extends State<Homepage> {
           // View panel
           Expanded(
             flex: 1,
-            child: Container(
-              margin: const EdgeInsets.all(16.0),
-              padding: const EdgeInsets.all(16.0),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 10.0,
-                    offset: const Offset(0, 5),
-                  ),
-                ],
-              ),
-              child: selectedNote == null
-                  ? const Center(
-                      child: Text(
-                        "Select data to View details.",
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    )
-                  : Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const Text(
-                          "View Details",
+            child: SingleChildScrollView(
+              child: Container(
+                margin: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16.0),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 10.0,
+                      offset: const Offset(0, 5),
+                    ),
+                  ],
+                ),
+                child: selectedNote == null
+                    ? const Center(
+                        child: Text(
+                          "Select data to View details.",
                           style: TextStyle(
-                            fontSize: 22.0,
+                            fontSize: 16.0,
                             fontWeight: FontWeight.bold,
-                            color: Colors.blueAccent,
+                            color: Colors.grey,
                           ),
                         ),
-                        const SizedBox(height: 16.0),
-                        const Divider(color: Colors.blueAccent, thickness: 2.0),
-                        const SizedBox(height: 8.0),
-                        selectedNote!['imageUrl'] != null
-                            ? Image.network(
-                                selectedNote!['imageUrl'] ?? '',
-                                width: 300,
-                                height: 300,
-                                fit: BoxFit.cover,
-                              )
-                            : const Center(
-                                child: Text(
-                                  "No image available",
-                                  style: TextStyle(color: Colors.grey),
+                      )
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Text(
+                            "View Details",
+                            style: TextStyle(
+                              fontSize: 22.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blueAccent,
+                            ),
+                          ),
+                          const SizedBox(height: 16.0),
+                          const Divider(
+                              color: Colors.blueAccent, thickness: 2.0),
+                          const SizedBox(height: 8.0),
+                          selectedNote!['imageUrl'] != null
+                              ? Image.network(
+                                  selectedNote!['imageUrl'] ?? '',
+                                  width: 300,
+                                  height: 300,
+                                  fit: BoxFit.cover,
+                                )
+                              : const Center(
+                                  child: Text(
+                                    "No image available",
+                                    style: TextStyle(color: Colors.grey),
+                                  ),
+                                ),
+                          const SizedBox(height: 8.0),
+                          selectedNote!['stageImageUrl'] != null
+                              ? Image.network(
+                                  selectedNote!['stageImageUrl'] ?? '',
+                                  width: 300,
+                                  height: 300,
+                                  fit: BoxFit.cover,
+                                )
+                              : const Center(
+                                  child: Text(
+                                    "No image available",
+                                    style: TextStyle(color: Colors.grey),
+                                  ),
+                                ),
+                          const SizedBox(height: 8.0),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "DocID: ${selectedNote!['docID'] ?? 'N/A'}",
+                                style: const TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black87,
                                 ),
                               ),
-                        const SizedBox(height: 8.0),
-                        Column(
-                          children: [
-                            Text(
-                              "Longitude: ${selectedNote!['longitude'] ?? 'N/A'}",
-                              style: const TextStyle(
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black87,
+                              const SizedBox(height: 8.0),
+                              Text(
+                                "Longitude: ${selectedNote!['longitude'] ?? 'N/A'}",
+                                style: const TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black87,
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 8.0),
-                            Text(
-                              "Latitude: ${selectedNote!['latitude'] ?? 'N/A'}",
-                              style: const TextStyle(
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black87,
+                              const SizedBox(height: 8.0),
+                              Text(
+                                "Latitude: ${selectedNote!['latitude'] ?? 'N/A'}",
+                                style: const TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black87,
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 8.0),
-                            Text(
-                              "Stage: ${selectedNote!['stage'] ?? 'N/A'}",
-                              style: const TextStyle(
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black87,
+                              const SizedBox(height: 8.0),
+                              Text(
+                                "Stage: ${selectedNote!['stage'] ?? 'N/A'}",
+                                style: const TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black87,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 16.0),
-                        // QR Code button
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => QRCodeGeneratorPage(
-                                      docID: selectedNote!['docID'],
+                            ],
+                          ),
+                          const SizedBox(height: 16.0),
+
+                          // QR Code button
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  String docID = selectedNote?['docID'];
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          QRCodeGeneratorPage(docID: docID),
                                     ),
-                                  ),
-                                );
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.blue,
-                                foregroundColor:
-                                    Colors.white,
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.blue,
+                                  foregroundColor: Colors.white,
+                                ),
+                                child: const Text('Generate QR Code'),
                               ),
-                              child: const Text('Generate QR Code'),
-                            ),
-                            const SizedBox(height: 16.0),
-                            // Location button
-                            ElevatedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => TreeLocationPage(
-                                      latitude:
-                                          selectedNote!['latitude'] ?? 'N/A',
-                                      longitude:
-                                          selectedNote!['longitude'] ?? 'N/A',
+                              const SizedBox(height: 16.0),
+                              // Location button
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => TreeLocationPage(
+                                        latitude: double.tryParse(
+                                                selectedNote!['latitude'] ??
+                                                    '0.0') ??
+                                            0.0,
+                                        longitude: double.tryParse(
+                                                selectedNote!['longitude'] ??
+                                                    '0.0') ??
+                                            0.0,
+                                      ),
                                     ),
-                                  ),
-                                );
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.green,
-                                foregroundColor: Colors.white,
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.green,
+                                  foregroundColor: Colors.white,
+                                ),
+                                child: const Text('Get Location'),
                               ),
-                              child: const Text('Get Location'),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                            ],
+                          ),
+                        ],
+                      ),
+              ),
             ),
           ),
         ],

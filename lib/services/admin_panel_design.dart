@@ -15,25 +15,54 @@ class AdminPanelDesign {
       actions: [
         ElevatedButton(
           onPressed: () async {
-            // Sign out the user and navigate back to login
-            await FirebaseAuth.instance.signOut();
-            Navigator.pushReplacementNamed(context, '/loginpage');
+            // Show a confirmation dialog
+            bool confirm = await showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text("Confirm Logout"),
+                  content: const Text("Are you sure you want to log out?"),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        // Close the dialog and return false
+                        Navigator.of(context).pop(false);
+                      },
+                      child: const Text("Cancel"),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        // Close the dialog and return true
+                        Navigator.of(context).pop(true);
+                      },
+                      child: const Text("Logout"),
+                    ),
+                  ],
+                );
+              },
+            );
+
+            // If the user confirms, sign out
+            if (confirm == true) {
+              await FirebaseAuth.instance.signOut();
+              Navigator.pushReplacementNamed(context, '/loginpage');
+            }
           },
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.transparent, 
-            elevation: 0, 
+            backgroundColor: Colors.transparent,
+            elevation: 0,
           ),
           child: const Text(
             "Logout",
-            style: TextStyle(color: Colors.black), 
+            style: TextStyle(color: Colors.black),
           ),
         ),
       ],
       bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(1.0), 
+        preferredSize: const Size.fromHeight(1.0),
         child: Container(
-          color: Colors.grey, 
-          height: 1.0, 
+          color: Colors.grey,
+          height: 1.0,
         ),
       ),
     );

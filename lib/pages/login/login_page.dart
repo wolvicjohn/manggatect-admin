@@ -9,6 +9,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -16,6 +17,8 @@ class _LoginPageState extends State<LoginPage> {
   String? _errorMessage;
 
   Future<void> _login() async {
+    if (!_formKey.currentState!.validate()) return;
+
     setState(() {
       _isLoading = true;
       _errorMessage = null;
@@ -27,14 +30,27 @@ class _LoginPageState extends State<LoginPage> {
         password: _passwordController.text.trim(),
       );
       Navigator.pushReplacementNamed(context, '/');
-    } catch (e) {
+    } on FirebaseAuthException catch (e) {
       setState(() {
-        _errorMessage = e.toString();
+        _errorMessage = _getErrorMessage(e.code);
       });
     } finally {
       setState(() {
         _isLoading = false;
       });
+    }
+  }
+
+  String _getErrorMessage(String errorCode) {
+    switch (errorCode) {
+      case 'user-not-found':
+        return 'No user found with this email.';
+      case 'wrong-password':
+        return 'Incorrect password. Please try again.';
+      case 'invalid-email':
+        return 'Invalid email address.';
+      default:
+        return 'An unexpected error occurred. Please try again later.';
     }
   }
 
@@ -46,6 +62,7 @@ class _LoginPageState extends State<LoginPage> {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Form(
+            key: _formKey,
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 400),
               child: Container(

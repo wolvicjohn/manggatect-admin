@@ -10,14 +10,24 @@ class ArchiveDialog extends StatelessWidget {
   // Method to archive a note by updating the 'isArchived' field in Firestore
   Future<void> archiveNote(BuildContext context) async {
     try {
-      await firestoreService.archiveNote(docID);
+      bool isCurrentlyArchived = false;
+
+      await firestoreService.getNoteById(docID).then((doc) {
+        isCurrentlyArchived = doc['isArchived'] ?? false;
+      });
+
+      await firestoreService.updateArchiveStatus(docID, !isCurrentlyArchived);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Note archived successfully')),
+        SnackBar(
+          content: Text(isCurrentlyArchived
+              ? 'Data Restoration success'
+              : 'Data archived successfully'),
+        ),
       );
     } catch (e) {
       // Handle any errors that occur during the archive operation
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error archiving note: $e')),
+        SnackBar(content: Text('Error archiving data: $e')),
       );
     }
   }
@@ -25,9 +35,9 @@ class ArchiveDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Archive Note'),
+      title: const Text('Archive Data'),
       content: const Text(
-        'Are you sure you want to archive this note?',
+        'Are you sure you want to archive this Data?',
         style: TextStyle(fontSize: 18.0),
       ),
       actions: [
@@ -48,7 +58,7 @@ class ArchiveDialog extends StatelessWidget {
         ),
         ElevatedButton(
           onPressed: () {
-            Navigator.pop(context); // Close the dialog without archiving
+            Navigator.pop(context);
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.red,
