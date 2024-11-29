@@ -66,7 +66,7 @@ class _HomepageState extends State<Homepage> {
                                     0: FlexColumnWidth(1), // docID
                                     1: FlexColumnWidth(1), // stage
                                     2: FlexColumnWidth(1), // timestamp
-                                    4: FlexColumnWidth(1), // actions
+                                    4: FlexColumnWidth(2), // actions
                                   },
                                   children: [
                                     const TableRow(
@@ -136,6 +136,7 @@ class _HomepageState extends State<Homepage> {
                                             padding: const EdgeInsets.all(8.0),
                                             child: Row(
                                               children: [
+                                                const SizedBox(width: 25),
                                                 ElevatedButton.icon(
                                                   onPressed: () {
                                                     setState(() {

@@ -186,18 +186,6 @@ class StageBox extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    // Image on the left
-                    // Container(
-                    //   height: 150,
-                    //   width: 150,
-                    //   decoration: BoxDecoration(
-                    //     image: DecorationImage(
-                    //       image: AssetImage(getImageForStage(stage)),
-                    //       fit: BoxFit.cover,
-                    //     ),
-                    //     borderRadius: BorderRadius.circular(8.0),
-                    //   ),
-                    // ),
                     const SizedBox(width: 16),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
