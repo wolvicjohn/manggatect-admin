@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../services/admin_panel.dart';
-import 'stagenotespage.dart';
+import 'stagemango_treepage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class Dashboard extends StatelessWidget {
@@ -19,7 +19,7 @@ class Dashboard extends StatelessWidget {
     return AdminPanel(
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
-            .collection('notes')
+            .collection('mango_tree')
             .where('isArchived', isEqualTo: false)
             .snapshots(),
         builder: (context, snapshot) {
@@ -31,7 +31,7 @@ class Dashboard extends StatelessWidget {
             return Center(child: Text('Error: ${snapshot.error}'));
           }
 
-          final List<Map<String, dynamic>> notesList =
+          final List<Map<String, dynamic>> mango_treeList =
               snapshot.data!.docs.map((doc) {
             return {
               'id': doc.id,
@@ -48,12 +48,12 @@ class Dashboard extends StatelessWidget {
             'no data yet': [],
           };
 
-          for (var note in notesList) {
-            final stage = note['stage'];
+          for (var mango_tree in mango_treeList) {
+            final stage = mango_tree['stage'];
             if (stageData.containsKey(stage)) {
-              stageData[stage]!.add(note);
+              stageData[stage]!.add(mango_tree);
             } else {
-              stageData['no data yet']!.add(note);
+              stageData['no data yet']!.add(mango_tree);
             }
           }
 
@@ -101,19 +101,19 @@ class Dashboard extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    StageBox(stage: 'stage-1', notes: stageData['stage-1']!),
-                    StageBox(stage: 'stage-2', notes: stageData['stage-2']!),
+                    StageBox(stage: 'stage-1', mango_tree: stageData['stage-1']!),
+                    StageBox(stage: 'stage-2', mango_tree: stageData['stage-2']!),
                   ],
                 ),
                 const SizedBox(height: 16),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    StageBox(stage: 'stage-3', notes: stageData['stage-3']!),
-                    StageBox(stage: 'stage-4', notes: stageData['stage-4']!),
+                    StageBox(stage: 'stage-3', mango_tree: stageData['stage-3']!),
+                    StageBox(stage: 'stage-4', mango_tree: stageData['stage-4']!),
                     StageBox(
                         stage: 'Not classified',
-                        notes: stageData['no data yet']!),
+                        mango_tree: stageData['no data yet']!),
                   ],
                 ),
                 const Row(
@@ -133,9 +133,9 @@ class Dashboard extends StatelessWidget {
 // Custom widget to display stage boxes
 class StageBox extends StatelessWidget {
   final String stage;
-  final List<Map<String, dynamic>> notes;
+  final List<Map<String, dynamic>> mango_tree;
 
-  const StageBox({Key? key, required this.stage, required this.notes})
+  const StageBox({Key? key, required this.stage, required this.mango_tree})
       : super(key: key);
 
   // Method to get the corresponding image for each stage
@@ -162,7 +162,7 @@ class StageBox extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => StageNotesPage(stage: stage, notes: notes),
+              builder: (context) => Stagemango_treePage(stage: stage, mango_tree: mango_tree),
             ),
           );
         },
@@ -192,7 +192,7 @@ class StageBox extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          '${notes.length}',
+                          '${mango_tree.length}',
                           style: const TextStyle(
                             fontSize: 50,
                             fontWeight: FontWeight.bold,

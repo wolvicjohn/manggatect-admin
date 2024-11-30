@@ -15,7 +15,7 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   final FirestoreService firestoreService = FirestoreService();
-  Map<String, dynamic>? selectedNote;
+  Map<String, dynamic>? selectedmango_tree;
 
   @override
   Widget build(BuildContext context) {
@@ -50,12 +50,12 @@ class _HomepageState extends State<Homepage> {
                       child: StreamBuilder<QuerySnapshot>(
                         // get all data where isArchived is false
                         stream: FirebaseFirestore.instance
-                            .collection('notes')
+                            .collection('mango_tree')
                             .where('isArchived', isEqualTo: false)
                             .snapshots(),
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
-                            List<DocumentSnapshot> notesList =
+                            List<DocumentSnapshot> mango_treeList =
                                 snapshot.data!.docs;
 
                             return ListView(
@@ -108,7 +108,7 @@ class _HomepageState extends State<Homepage> {
                                         ),
                                       ],
                                     ),
-                                    ...notesList.map((document) {
+                                    ...mango_treeList.map((document) {
                                       Map<String, dynamic> data = document
                                           .data() as Map<String, dynamic>;
                                       String docID = document.id;
@@ -140,7 +140,7 @@ class _HomepageState extends State<Homepage> {
                                                 ElevatedButton.icon(
                                                   onPressed: () {
                                                     setState(() {
-                                                      selectedNote = data;
+                                                      selectedmango_tree = data;
                                                     });
                                                   },
                                                   icon: const Icon(
@@ -225,7 +225,7 @@ class _HomepageState extends State<Homepage> {
                     ),
                   ],
                 ),
-                child: selectedNote == null
+                child: selectedmango_tree == null
                     ? const Center(
                         child: Text(
                           "Select data to View details.",
@@ -251,9 +251,9 @@ class _HomepageState extends State<Homepage> {
                           const Divider(
                               color: Colors.blueAccent, thickness: 2.0),
                           const SizedBox(height: 8.0),
-                          selectedNote!['imageUrl'] != null
+                          selectedmango_tree!['imageUrl'] != null
                               ? Image.network(
-                                  selectedNote!['imageUrl'] ?? '',
+                                  selectedmango_tree!['imageUrl'] ?? '',
                                   width: 300,
                                   height: 300,
                                   fit: BoxFit.cover,
@@ -265,9 +265,9 @@ class _HomepageState extends State<Homepage> {
                                   ),
                                 ),
                           const SizedBox(height: 8.0),
-                          selectedNote!['stageImageUrl'] != null
+                          selectedmango_tree!['stageImageUrl'] != null
                               ? Image.network(
-                                  selectedNote!['stageImageUrl'] ?? '',
+                                  selectedmango_tree!['stageImageUrl'] ?? '',
                                   width: 300,
                                   height: 300,
                                   fit: BoxFit.cover,
@@ -283,7 +283,7 @@ class _HomepageState extends State<Homepage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "DocID: ${selectedNote!['docID'] ?? 'N/A'}",
+                                "DocID: ${selectedmango_tree!['docID'] ?? 'N/A'}",
                                 style: const TextStyle(
                                   fontSize: 18.0,
                                   fontWeight: FontWeight.w500,
@@ -292,7 +292,7 @@ class _HomepageState extends State<Homepage> {
                               ),
                               const SizedBox(height: 8.0),
                               Text(
-                                "Longitude: ${selectedNote!['longitude'] ?? 'N/A'}",
+                                "Longitude: ${selectedmango_tree!['longitude'] ?? 'N/A'}",
                                 style: const TextStyle(
                                   fontSize: 18.0,
                                   fontWeight: FontWeight.w500,
@@ -301,7 +301,7 @@ class _HomepageState extends State<Homepage> {
                               ),
                               const SizedBox(height: 8.0),
                               Text(
-                                "Latitude: ${selectedNote!['latitude'] ?? 'N/A'}",
+                                "Latitude: ${selectedmango_tree!['latitude'] ?? 'N/A'}",
                                 style: const TextStyle(
                                   fontSize: 18.0,
                                   fontWeight: FontWeight.w500,
@@ -310,7 +310,7 @@ class _HomepageState extends State<Homepage> {
                               ),
                               const SizedBox(height: 8.0),
                               Text(
-                                "Stage: ${selectedNote!['stage'] ?? 'N/A'}",
+                                "Stage: ${selectedmango_tree!['stage'] ?? 'N/A'}",
                                 style: const TextStyle(
                                   fontSize: 18.0,
                                   fontWeight: FontWeight.w500,
@@ -327,7 +327,7 @@ class _HomepageState extends State<Homepage> {
                             children: [
                               ElevatedButton(
                                 onPressed: () {
-                                  String docID = selectedNote?['docID'];
+                                  String docID = selectedmango_tree?['docID'];
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -351,11 +351,11 @@ class _HomepageState extends State<Homepage> {
                                     MaterialPageRoute(
                                       builder: (context) => TreeLocationPage(
                                         latitude: double.tryParse(
-                                                selectedNote!['latitude'] ??
+                                                selectedmango_tree!['latitude'] ??
                                                     '0.0') ??
                                             0.0,
                                         longitude: double.tryParse(
-                                                selectedNote!['longitude'] ??
+                                                selectedmango_tree!['longitude'] ??
                                                     '0.0') ??
                                             0.0,
                                       ),

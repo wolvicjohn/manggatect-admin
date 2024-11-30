@@ -7,12 +7,12 @@ class ArchiveDialog extends StatelessWidget {
 
   ArchiveDialog({super.key, required this.docID});
 
-  // Method to archive a note by updating the 'isArchived' field in Firestore
-  Future<void> archiveNote(BuildContext context) async {
+  // Method to archive a mango_tree by updating the 'isArchived' field in Firestore
+  Future<void> archivemango_tree(BuildContext context) async {
     try {
       bool isCurrentlyArchived = false;
 
-      await firestoreService.getNoteById(docID).then((doc) {
+      await firestoreService.getmango_treeById(docID).then((doc) {
         isCurrentlyArchived = doc['isArchived'] ?? false;
       });
 
@@ -43,7 +43,7 @@ class ArchiveDialog extends StatelessWidget {
       actions: [
         ElevatedButton(
           onPressed: () {
-            archiveNote(context); // Pass context to archiveNote method
+            archivemango_tree(context); // Pass context to archivemango_tree method
             Navigator.pop(context); // Close the dialog after archiving
           },
           style: ElevatedButton.styleFrom(

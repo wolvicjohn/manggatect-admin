@@ -62,7 +62,7 @@ class _AllTreeLocationPageState extends State<AllTreeLocationPage> {
                   margin: const EdgeInsets.all(16),
                   child: StreamBuilder<QuerySnapshot>(
                     stream: FirebaseFirestore.instance
-                        .collection('notes')
+                        .collection('mango_tree')
                         .snapshots(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
@@ -105,7 +105,7 @@ class _AllTreeLocationPageState extends State<AllTreeLocationPage> {
                           initialCenter: locations.isNotEmpty
                               ? locations[0]
                               : const LatLng(0, 0),
-                          initialZoom: 20.0,
+                          initialZoom: 40.0,
                         ),
                         children: [
                           TileLayer(

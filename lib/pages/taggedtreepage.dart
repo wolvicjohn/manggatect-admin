@@ -12,7 +12,7 @@ class TaggedTreePage extends StatelessWidget {
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: firestore
-            .collection('notes')
+            .collection('mango_trees')
             .orderBy('timestamp', descending: true)
             .snapshots(),
         builder: (context, snapshot) {
@@ -28,16 +28,16 @@ class TaggedTreePage extends StatelessWidget {
             return Center(child: Text('No tagged trees found.'));
           }
 
-          final notes = snapshot.data!.docs;
+          final allMangoTree = snapshot.data!.docs;
 
           return ListView.builder(
-            itemCount: notes.length,
+            itemCount: allMangoTree.length,
             itemBuilder: (context, index) {
-              final note = notes[index].data() as Map<String, dynamic>;
-              final String title = note['title'] ?? 'Untitled';
-              final String longitude = note['longitude'] ?? 'N/A';
-              final String latitude = note['latitude'] ?? 'N/A';
-              final String? imageUrl = note['imageUrl'];
+              final mango_tree = allMangoTree[index].data() as Map<String, dynamic>;
+              final String title = mango_tree['title'] ?? 'Untitled';
+              final String longitude = mango_tree['longitude'] ?? 'N/A';
+              final String latitude = mango_tree['latitude'] ?? 'N/A';
+              final String? imageUrl = mango_tree['imageUrl'];
 
               return Card(
                 margin: EdgeInsets.all(8.0),

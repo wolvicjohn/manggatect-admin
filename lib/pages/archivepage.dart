@@ -11,7 +11,7 @@ class ArchivePage extends StatefulWidget {
 }
 
 class _ArchivePageState extends State<ArchivePage> {
-  Map<String, dynamic>? selectedNote;
+  Map<String, dynamic>? selectedmango_tree;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +46,7 @@ class _ArchivePageState extends State<ArchivePage> {
                       child: StreamBuilder<QuerySnapshot>(
                         // get data where isArchived is true
                         stream: FirebaseFirestore.instance
-                            .collection('notes')
+                            .collection('mango_tree')
                             .where('isArchived', isEqualTo: true)
                             .snapshots(),
                         builder: (context, snapshot) {
@@ -64,7 +64,7 @@ class _ArchivePageState extends State<ArchivePage> {
                             );
                           }
 
-                          List<DocumentSnapshot> notesList =
+                          List<DocumentSnapshot> mango_treeList =
                               snapshot.data!.docs;
 
                           return ListView(
@@ -117,7 +117,7 @@ class _ArchivePageState extends State<ArchivePage> {
                                       ),
                                     ],
                                   ),
-                                  ...notesList.map((document) {
+                                  ...mango_treeList.map((document) {
                                     Map<String, dynamic> data =
                                         document.data() as Map<String, dynamic>;
                                     String docID = document.id;

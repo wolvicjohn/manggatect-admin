@@ -27,18 +27,17 @@ class QRCodeGeneratorPage extends StatelessWidget {
     pdf.addPage(pw.Page(
       build: (pw.Context context) {
         return pw.Center(
-          // Center the entire content
           child: pw.Column(
             mainAxisAlignment: pw.MainAxisAlignment.center,
             children: [
               pw.Text(
-                'MANGGATECT', // Title text
+                'MANGGATECH', 
                 style: pw.TextStyle(
                   fontSize: 24,
                   fontWeight: pw.FontWeight.bold,
                 ),
               ),
-              pw.SizedBox(height: 20), // Space between title and QR code
+              pw.SizedBox(height: 20), 
               pw.Image(
                 pw.MemoryImage(pngBytes),
                 width: 200,
@@ -50,7 +49,7 @@ class QRCodeGeneratorPage extends StatelessWidget {
       },
     ));
 
-    return pdf.save(); // Returns the PDF as Uint8List
+    return pdf.save(); 
   }
 
   void _downloadPdf(BuildContext context) async {

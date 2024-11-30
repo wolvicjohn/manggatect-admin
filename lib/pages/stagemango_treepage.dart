@@ -1,11 +1,11 @@
 import 'package:adminmangga/services/admin_panel.dart';
 import 'package:flutter/material.dart';
 
-class StageNotesPage extends StatelessWidget {
+class Stagemango_treePage extends StatelessWidget {
   final String stage;
-  final List<Map<String, dynamic>> notes;
+  final List<Map<String, dynamic>> mango_tree;
 
-  const StageNotesPage({Key? key, required this.stage, required this.notes})
+  const Stagemango_treePage({Key? key, required this.stage, required this.mango_tree})
       : super(key: key);
 
   @override
@@ -24,7 +24,7 @@ class StageNotesPage extends StatelessWidget {
               const Padding(
                 padding: EdgeInsets.all(16.0),
                 child: Text(
-                  "Notes Table",
+                  "mango_tree Table",
                   style: TextStyle(
                     fontSize: 24.0,
                     fontWeight: FontWeight.bold,
@@ -33,7 +33,7 @@ class StageNotesPage extends StatelessWidget {
               ),
               const SizedBox(height: 8.0),
               Expanded(
-                child: notes.isNotEmpty
+                child: mango_tree.isNotEmpty
                     ? SingleChildScrollView(
                         child: Table(
                           border: TableBorder.all(color: Colors.grey),
@@ -80,37 +80,37 @@ class StageNotesPage extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            ...notes.map((note) {
+                            ...mango_tree.map((mango_tree) {
                               return TableRow(
                                 children: [
                                   GestureDetector(
                                     onTap: () {
-                                      _showNoteDetails(context, note);
+                                      _showmango_treeDetails(context, mango_tree);
                                     },
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
-                                      child: Text(note['id'] ?? 'Unknown'),
+                                      child: Text(mango_tree['id'] ?? 'Unknown'),
                                     ),
                                   ),
                                   GestureDetector(
                                     onTap: () {
-                                      _showNoteDetails(context, note);
+                                      _showmango_treeDetails(context, mango_tree);
                                     },
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(
-                                          note['longitude']?.toString() ??
+                                          mango_tree['longitude']?.toString() ??
                                               '0.0'),
                                     ),
                                   ),
                                   GestureDetector(
                                     onTap: () {
-                                      _showNoteDetails(context, note);
+                                      _showmango_treeDetails(context, mango_tree);
                                     },
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(
-                                          note['latitude']?.toString() ??
+                                          mango_tree['latitude']?.toString() ??
                                               '0.0'),
                                     ),
                                   ),
@@ -129,19 +129,19 @@ class StageNotesPage extends StatelessWidget {
     );
   }
 
-  void _showNoteDetails(BuildContext context, Map<String, dynamic> note) {
+  void _showmango_treeDetails(BuildContext context, Map<String, dynamic> mango_tree) {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(note['stage'] ?? 'Untitled'),
+          title: Text(mango_tree['stage'] ?? 'Untitled'),
           content: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text("Longitude: ${note['longitude'] ?? 'N/A'}"),
-              Text("Latitude: ${note['latitude'] ?? 'N/A'}"),
-              Text("ID: ${note['id'] ?? 'N/A'}"),
+              Text("Longitude: ${mango_tree['longitude'] ?? 'N/A'}"),
+              Text("Latitude: ${mango_tree['latitude'] ?? 'N/A'}"),
+              Text("ID: ${mango_tree['id'] ?? 'N/A'}"),
             ],
           ),
           actions: [

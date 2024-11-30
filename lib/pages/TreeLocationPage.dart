@@ -45,7 +45,7 @@ class _TreeLocationPageState extends State<TreeLocationPage> {
       body: FlutterMap(
         options: MapOptions(
           initialCenter: LatLng(widget.latitude, widget.longitude),
-          initialZoom: 20.0,
+          initialZoom: 14.0,
         ),
         children: [
           TileLayer(
