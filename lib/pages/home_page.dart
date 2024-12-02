@@ -65,9 +65,10 @@ class _HomepageState extends State<Homepage> {
                                       border:
                                           TableBorder.all(color: Colors.grey),
                                       columnWidths: const {
-                                        0: FlexColumnWidth(0.2),
-                                        1: FlexColumnWidth(1),
-                                        2: FlexColumnWidth(1),
+                                        0: FlexColumnWidth(0.75), // Image column
+                                        1: FlexColumnWidth(0.5), // Stage column
+                                        2: FlexColumnWidth(1), // Date column
+                                        3: FlexColumnWidth(1), // Actions column
                                       },
                                       children: [
                                         const TableRow(
@@ -76,6 +77,16 @@ class _HomepageState extends State<Homepage> {
                                                 255, 20, 116, 82),
                                           ),
                                           children: [
+                                            Padding(
+                                              padding: EdgeInsets.all(8.0),
+                                              child: Text(
+                                                "Image",
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ),
                                             Padding(
                                               padding: EdgeInsets.all(8.0),
                                               child: Text(
@@ -114,6 +125,9 @@ class _HomepageState extends State<Homepage> {
                                           String docID = document.id;
                                           Timestamp timestamp =
                                               data['timestamp'];
+                                          String imageStageUrl = data[
+                                                  'stageImageUrl'] ??
+                                              ''; 
                                           data['docID'] = docID;
 
                                           return TableRow(
@@ -121,77 +135,135 @@ class _HomepageState extends State<Homepage> {
                                               Padding(
                                                 padding:
                                                     const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                    data['stage']?.toString() ??
-                                                        'N/A'),
+                                                child: imageStageUrl.isNotEmpty
+                                                    ? Image.network(
+                                                        imageStageUrl,
+                                                        width: 70,
+                                                        height: 70,
+                                                        fit: BoxFit.cover)
+                                                    : const Text('No Image'),
                                               ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                  DateFormat(
-                                                          'EEEE, MMMM dd, yyyy h:mm a')
-                                                      .format(
-                                                          timestamp.toDate()),
-                                                ),
+                                              Column(
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(8.0),
+                                                    child: Text(
+                                                        data['stage']?.toString() ??
+                                                            'N/A'),
+                                                  ),
+                                                ],
                                               ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Row(
-                                                  children: [
-                                                    const SizedBox(width: 25),
-                                                    ElevatedButton.icon(
-                                                      onPressed: () {
-                                                        setState(() {
-                                                          selectedmango_tree =
-                                                              data;
-                                                        });
-                                                      },
-                                                      icon: const Icon(
-                                                        Icons.preview,
-                                                        color: Colors.white,
-                                                      ),
-                                                      label: const Text(
-                                                        'View',
-                                                        style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                      ),
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                        backgroundColor:
-                                                            Colors.orange,
-                                                      ),
+                                              Column(
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(8.0),
+                                                    child: Text(
+                                                      DateFormat(
+                                                              'EEEE, MMMM dd, yyyy h:mm a')
+                                                          .format(
+                                                              timestamp.toDate()),
                                                     ),
-                                                    const SizedBox(width: 16.0),
-                                                    ElevatedButton.icon(
-                                                      onPressed: () {
-                                                        showArchiveDialog(
-                                                            context, docID);
-                                                      },
-                                                      icon: const Icon(
-                                                        Icons.archive,
-                                                        color: Colors.white,
-                                                      ),
-                                                      label: const Text(
-                                                        'Archive',
-                                                        style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.bold,
+                                                  ),
+                                                ],
+                                              ),
+                                              Column(
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(8.0),
+                                                    child: Row(
+                                                      children: [
+                                                        // View Button
+                                                        ElevatedButton.icon(
+                                                          onPressed: () {
+                                                            setState(() {
+                                                              selectedmango_tree =
+                                                                  data;
+                                                            });
+                                                          },
+                                                          icon: const Icon(
+                                                            Icons.preview,
+                                                            color: Colors.white,
+                                                          ),
+                                                          label: const Text(
+                                                            'View',
+                                                            style: TextStyle(
+                                                              color: Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight.bold,
+                                                            ),
+                                                          ),
+                                                          style: ElevatedButton
+                                                              .styleFrom(
+                                                            backgroundColor:
+                                                                Colors.orange,
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .symmetric(
+                                                                    vertical: 10.0,
+                                                                    horizontal:
+                                                                        16.0),
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          8.0),
+                                                            ),
+                                                            elevation: 5,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                        backgroundColor:
-                                                            Colors.blue,
-                                                      ),
+                                                        const SizedBox(
+                                                            width:
+                                                                16.0), // Space between buttons
+                                                  
+                                                        // Archive Button
+                                                        ElevatedButton.icon(
+                                                          onPressed: () {
+                                                            showArchiveDialog(
+                                                                context, docID);
+                                                          },
+                                                          icon: const Icon(
+                                                            Icons.archive,
+                                                            color: Colors.white,
+                                                          ),
+                                                          label: const Text(
+                                                            'Archive',
+                                                            style: TextStyle(
+                                                              color: Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight.bold,
+                                                            ),
+                                                          ),
+                                                          style: ElevatedButton
+                                                              .styleFrom(
+                                                            backgroundColor:
+                                                                Colors.blue,
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .symmetric(
+                                                                    vertical: 10.0,
+                                                                    horizontal:
+                                                                        16.0),
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          8.0),
+                                                            ),
+                                                            elevation: 5,
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
-                                                  ],
-                                                ),
+                                                  ),
+                                                ],
                                               ),
                                             ],
                                           );

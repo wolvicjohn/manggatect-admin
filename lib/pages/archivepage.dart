@@ -72,7 +72,8 @@ class _ArchivePageState extends State<ArchivePage> {
                               Table(
                                 border: TableBorder.all(color: Colors.grey),
                                 columnWidths: const {
-                                  0: FlexColumnWidth(2), // Adjusted for docID
+                                  0: FlexColumnWidth(
+                                      0.5), // Adjusted for imageStageUrl
                                   1: FlexColumnWidth(1), // Adjusted for stage
                                   2: FlexColumnWidth(1), // Adjusted for date
                                   3: FlexColumnWidth(2), // Adjusted for actions
@@ -85,7 +86,7 @@ class _ArchivePageState extends State<ArchivePage> {
                                     children: [
                                       Padding(
                                         padding: EdgeInsets.all(8.0),
-                                        child: Text("DocID",
+                                        child: Text("Tree Image ",
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               color: Colors.white,
@@ -120,14 +121,24 @@ class _ArchivePageState extends State<ArchivePage> {
                                   ...mango_treeList.map((document) {
                                     Map<String, dynamic> data =
                                         document.data() as Map<String, dynamic>;
-                                    String docID = document.id;
+                                    String imageStageUrl =
+                                        data['imageUrl'] ?? 'N/A';
                                     Timestamp? timestamp = data['timestamp'];
 
                                     return TableRow(
                                       children: [
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
-                                          child: Text(docID),
+                                          child: imageStageUrl != 'N/A'
+                                              ? Image.network(
+                                                  imageStageUrl,
+                                                  width:
+                                                      50, // Adjust width as needed
+                                                  height:
+                                                      50, // Adjust height as needed
+                                                  fit: BoxFit.cover,
+                                                )
+                                              : const Text('No Image'),
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
@@ -146,7 +157,7 @@ class _ArchivePageState extends State<ArchivePage> {
                                           child: ElevatedButton(
                                             onPressed: () {
                                               showArchiveDialog(
-                                                        context, docID);
+                                                  context, document.id);
                                             },
                                             child: const Text("Restore"),
                                           ),

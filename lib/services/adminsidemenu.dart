@@ -4,18 +4,24 @@ import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 class AdminSideMenu {
   static AppBar buildAppBar(BuildContext context) {
     return AppBar(
-      leading: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Image.asset(
-          'assets/images/logo.png', // Replace with your logo's path
-          fit: BoxFit.contain,
-        ),
-      ),
-      title: const Text(
-        "Manggatech",
-        style: TextStyle(
-          fontSize: 24,
-        ),
+      title: Row(
+        children: [
+          Image.asset(
+            'assets/images/logo.png',
+            height: 60, // Adjust the size as needed
+            fit: BoxFit.contain,
+            errorBuilder: (context, error, stackTrace) {
+              return const Icon(Icons.image_not_supported);
+            },
+          ),
+          const SizedBox(width: 8), // Space between the logo and text
+          const Text(
+            "MANGGATECH",
+            style: TextStyle(
+              fontSize: 24,
+            ),
+          ),
+        ],
       ),
       actions: [
         ElevatedButton(

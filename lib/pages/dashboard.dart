@@ -113,7 +113,7 @@ class Dashboard extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     StageBox(
                         stage: 'Not classified',
@@ -134,7 +134,6 @@ class Dashboard extends StatelessWidget {
   }
 }
 
-// Custom widget to display stage boxes
 class StageBox extends StatelessWidget {
   final String stage;
   final List<Map<String, dynamic>> mango_tree;
@@ -153,6 +152,8 @@ class StageBox extends StatelessWidget {
         return 'assets/images/stage3.jpg';
       case 'stage-4':
         return 'assets/images/stage4.jpg';
+      case 'invalid':
+        return 'assets/images/.jpg';
       default:
         return 'assets/images/logo.png';
     }
@@ -160,6 +161,9 @@ class StageBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Check if the stage is 'Not classified'
+    final bool isNotClassified = stage == 'Not classified';
+
     return Expanded(
       child: GestureDetector(
         onTap: () {
@@ -173,53 +177,83 @@ class StageBox extends StatelessWidget {
         },
         child: Card(
           margin: const EdgeInsets.all(8.0),
-          color: const Color.fromARGB(0, 44, 155, 63),
+          color: isNotClassified
+              ? Colors.white
+              : const Color.fromARGB(0, 44, 155, 63),
           child: Container(
             decoration: BoxDecoration(
-              border: const Border(
-                top: BorderSide(
-                  color: const Color.fromARGB(255, 20, 116, 82), // Border color here
-                  width: 15, // Border width
-                ),
-              ),borderRadius: BorderRadius.circular(5),
+              border: isNotClassified
+                  ? const Border(
+                      top: BorderSide(
+                        color: Color.fromARGB(255, 175, 32, 32),
+                        width: 15,
+                      ),
+                    )
+                  : const Border(
+                      top: BorderSide(
+                        color: Color.fromARGB(255, 20, 116, 82),
+                        width: 15,
+                      ),
+                    ),
+              borderRadius: BorderRadius.circular(5),
             ),
             child: Stack(
+              alignment: Alignment.center,
               children: [
-                Positioned.fill(
-                  child: Opacity(
-                    opacity: 0.8,
+                // Only show image if not 'Not classified'
+                if (!isNotClassified)
+                  Positioned.fill(
                     child: Image.asset(
                       getImageForStage(stage),
                       fit: BoxFit.fill,
                     ),
                   ),
-                ),
-                // Content over the background image
+                // Overlay for the image
+                if (!isNotClassified)
+                  Positioned.fill(
+                    child: Container(
+                      color: Colors.black.withOpacity(0.4),
+                    ),
+                  ),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const SizedBox(width: 16),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            '${mango_tree.length}',
-                            style: const TextStyle(
-                              fontSize: 50,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            stage,
-                            style: const TextStyle(
-                                fontSize: 20, color: Colors.white),
-                          ),
-                        ],
+                      Text(
+                        '${mango_tree.length}',
+                        style: TextStyle(
+                          fontSize: 50,
+                          fontWeight: FontWeight.bold,
+                          color: isNotClassified ? Colors.black : Colors.white,
+                          shadows: isNotClassified
+                              ? []
+                              : [
+                                  Shadow(
+                                    color: Colors.black.withOpacity(0.6),
+                                    offset: const Offset(2, 2),
+                                    blurRadius: 4,
+                                  ),
+                                ],
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        stage,
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: isNotClassified ? Colors.black : Colors.white,
+                          shadows: isNotClassified
+                              ? []
+                              : [
+                                  Shadow(
+                                    color: Colors.black.withOpacity(0.6),
+                                    offset: const Offset(2, 2),
+                                    blurRadius: 4,
+                                  ),
+                                ],
+                        ),
                       ),
                     ],
                   ),
