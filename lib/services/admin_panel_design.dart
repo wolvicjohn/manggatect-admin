@@ -1,7 +1,21 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 import '../pages/alltreelocationpage.dart';
+
+class AdminPanelPage extends StatelessWidget {
+  const AdminPanelPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AdminPanelDesign.buildAppBar(context),
+      drawer: const SideMenu(),
+      body: const Center(
+        child: Text('Welcome to Manggatech Admin Panel!'),
+      ),
+    );
+  }
+}
 
 class AdminPanelDesign {
   static AppBar buildAppBar(BuildContext context) {
@@ -67,45 +81,102 @@ class AdminPanelDesign {
       ),
     );
   }
+}
 
-  static SideBar buildSideBar(BuildContext context) {
-    return SideBar(
-      items: const [
-        AdminMenuItem(
-          title: 'Dashboard',
-          route: '/',
-          icon: Icons.dashboard,
-        ),
-        AdminMenuItem(
-          title: 'Data',
-          route: '/homepage',
-          icon: Icons.note,
-        ),
-        AdminMenuItem(
-          title: 'Map',
-          route: '/tree-map',
-          icon: Icons.map,
-        ),
-        AdminMenuItem(
-          title: 'Archive',
-          route: '/archivepage',
-          icon: Icons.archive,
-        ),
-      ],
-      selectedRoute: '/loginpage',
-      onSelected: (item) {
-        if (item.route != null) {
-          if (item.route == '/tree-map') {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const AllTreeLocationPage()),
-            );
-          } else {
-            Navigator.pushReplacementNamed(context, item.route!);
-          }
-        }
+class SideMenu extends StatefulWidget {
+  const SideMenu({super.key});
+
+  @override
+  _SideMenuState createState() => _SideMenuState();
+}
+
+class _SideMenuState extends State<SideMenu> {
+  String _activeMenu = '/';
+  String _hoveredMenu = ''; // Track the currently hovered menu
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 250, // Fixed width for the drawer
+      color: Colors.blue[50],
+      child: ListView(
+        children: [
+          _buildMenuItem(
+            icon: Icons.dashboard,
+            title: 'Dashboard',
+            route: '/',
+          ),
+          _buildMenuItem(
+            icon: Icons.note,
+            title: 'Data',
+            route: '/homepage',
+          ),
+          _buildMenuItem(
+            icon: Icons.map,
+            title: 'Map',
+            route: '/map',
+            customRoute: MaterialPageRoute(
+              builder: (context) => const AllTreeLocationPage(),
+            ),
+          ),
+          _buildMenuItem(
+            icon: Icons.archive,
+            title: 'Archive',
+            route: '/archivepage',
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMenuItem({
+    required IconData icon,
+    required String title,
+    required String route,
+    MaterialPageRoute? customRoute,
+  }) {
+    final isActive = _activeMenu == route;
+    final isHovered = _hoveredMenu == route;
+
+    return MouseRegion(
+      onEnter: (_) {
+        setState(() {
+          _hoveredMenu = route;
+        });
       },
+      onExit: (_) {
+        setState(() {
+          _hoveredMenu = '';
+        });
+      },
+      child: ListTile(
+        leading: Icon(
+          icon,
+          color: isActive || isHovered ? Colors.blue : Colors.black,
+        ),
+        title: Text(
+          title,
+          style: TextStyle(
+            color: isActive || isHovered ? Colors.blue : Colors.black,
+          ),
+        ),
+        tileColor: isActive
+            ? Colors.blue[100]
+            : isHovered
+                ? Colors.blue[50]
+                : Colors.transparent,
+        onTap: () {
+          setState(() {
+            _activeMenu = route;
+          });
+
+          if (customRoute != null) {
+            Navigator.push(context, customRoute);
+          } else {
+            Navigator.pushReplacementNamed(context, route);
+          }
+        },
+      ),
     );
   }
 }

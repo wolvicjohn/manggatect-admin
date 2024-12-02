@@ -105,7 +105,7 @@ class _AllTreeLocationPageState extends State<AllTreeLocationPage> {
                           initialCenter: locations.isNotEmpty
                               ? locations[0]
                               : const LatLng(0, 0),
-                          initialZoom: 40.0,
+                          initialZoom: 14.0,
                         ),
                         children: [
                           TileLayer(

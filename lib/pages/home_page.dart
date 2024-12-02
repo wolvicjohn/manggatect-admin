@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:adminmangga/services/firestore.dart';
 import '../services/admin_panel.dart';
+import 'package:intl/intl.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -24,7 +25,7 @@ class _HomepageState extends State<Homepage> {
         children: [
           // Table section inside a container
           Expanded(
-            flex: 3,
+            flex: 2,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Container(
@@ -48,7 +49,6 @@ class _HomepageState extends State<Homepage> {
                     const SizedBox(height: 8.0),
                     Expanded(
                       child: StreamBuilder<QuerySnapshot>(
-                        // get all data where isArchived is false
                         stream: FirebaseFirestore.instance
                             .collection('mango_tree')
                             .where('isArchived', isEqualTo: false)
@@ -58,142 +58,152 @@ class _HomepageState extends State<Homepage> {
                             List<DocumentSnapshot> mango_treeList =
                                 snapshot.data!.docs;
 
-                            return ListView(
-                              children: [
-                                Table(
-                                  border: TableBorder.all(color: Colors.grey),
-                                  columnWidths: const {
-                                    0: FlexColumnWidth(1), // docID
-                                    1: FlexColumnWidth(1), // stage
-                                    2: FlexColumnWidth(1), // timestamp
-                                    4: FlexColumnWidth(2), // actions
-                                  },
+                            return LayoutBuilder(
+                              builder: (context, constraints) {
+                                double tableWidth = constraints.maxWidth;
+
+                                return ListView(
                                   children: [
-                                    const TableRow(
-                                      decoration: BoxDecoration(
-                                        color: Color.fromARGB(255, 20, 116, 82),
-                                      ),
+                                    Table(
+                                      border:
+                                          TableBorder.all(color: Colors.grey),
+                                      columnWidths: const {
+                                        0: FlexColumnWidth(0.2),
+                                        1: FlexColumnWidth(1),
+                                        2: FlexColumnWidth(1),
+                                      },
                                       children: [
-                                        Padding(
-                                          padding: EdgeInsets.all(8.0),
-                                          child: Text("DocID",
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white,
-                                              )),
+                                        const TableRow(
+                                          decoration: BoxDecoration(
+                                            color: Color.fromARGB(
+                                                255, 20, 116, 82),
+                                          ),
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsets.all(8.0),
+                                              child: Text(
+                                                "Stage",
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.all(8.0),
+                                              child: Text(
+                                                "Date Uploaded",
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.all(8.0),
+                                              child: Text(
+                                                "Actions",
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                        Padding(
-                                          padding: EdgeInsets.all(8.0),
-                                          child: Text("Stage",
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white,
-                                              )),
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.all(8.0),
-                                          child: Text("Timestamp",
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white,
-                                              )),
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.all(8.0),
-                                          child: Text("Actions",
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white,
-                                              )),
-                                        ),
+                                        ...mango_treeList.map((document) {
+                                          Map<String, dynamic> data = document
+                                              .data() as Map<String, dynamic>;
+                                          String docID = document.id;
+                                          Timestamp timestamp =
+                                              data['timestamp'];
+                                          data['docID'] = docID;
+
+                                          return TableRow(
+                                            children: [
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Text(
+                                                    data['stage']?.toString() ??
+                                                        'N/A'),
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Text(
+                                                  DateFormat(
+                                                          'EEEE, MMMM dd, yyyy h:mm a')
+                                                      .format(
+                                                          timestamp.toDate()),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Row(
+                                                  children: [
+                                                    const SizedBox(width: 25),
+                                                    ElevatedButton.icon(
+                                                      onPressed: () {
+                                                        setState(() {
+                                                          selectedmango_tree =
+                                                              data;
+                                                        });
+                                                      },
+                                                      icon: const Icon(
+                                                        Icons.preview,
+                                                        color: Colors.white,
+                                                      ),
+                                                      label: const Text(
+                                                        'View',
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                        backgroundColor:
+                                                            Colors.orange,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(width: 16.0),
+                                                    ElevatedButton.icon(
+                                                      onPressed: () {
+                                                        showArchiveDialog(
+                                                            context, docID);
+                                                      },
+                                                      icon: const Icon(
+                                                        Icons.archive,
+                                                        color: Colors.white,
+                                                      ),
+                                                      label: const Text(
+                                                        'Archive',
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                        backgroundColor:
+                                                            Colors.blue,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        }).toList(),
                                       ],
                                     ),
-                                    ...mango_treeList.map((document) {
-                                      Map<String, dynamic> data = document
-                                          .data() as Map<String, dynamic>;
-                                      String docID = document.id;
-                                      Timestamp timestamp = data['timestamp'];
-                                      data['docID'] = docID;
-
-                                      return TableRow(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text(docID),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text(
-                                                data['stage']?.toString() ??
-                                                    'N/A'),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text(
-                                                timestamp.toDate().toString()),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Row(
-                                              children: [
-                                                const SizedBox(width: 25),
-                                                ElevatedButton.icon(
-                                                  onPressed: () {
-                                                    setState(() {
-                                                      selectedmango_tree = data;
-                                                    });
-                                                  },
-                                                  icon: const Icon(
-                                                    Icons.preview,
-                                                    color: Colors.white,
-                                                  ),
-                                                  label: const Text(
-                                                    'View',
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                    backgroundColor:
-                                                        Colors.orange,
-                                                  ),
-                                                ),
-                                                const SizedBox(width: 16.0),
-                                                ElevatedButton.icon(
-                                                  onPressed: () {
-                                                    showArchiveDialog(
-                                                        context, docID);
-                                                  },
-                                                  icon: const Icon(
-                                                    Icons.archive,
-                                                    color: Colors.white,
-                                                  ),
-                                                  label: const Text(
-                                                    'Archive',
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                    backgroundColor:
-                                                        Colors.blue,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      );
-                                    }).toList(),
                                   ],
-                                ),
-                              ],
+                                );
+                              },
                             );
                           } else {
                             return const Center(child: Text("No Data..."));
@@ -351,11 +361,13 @@ class _HomepageState extends State<Homepage> {
                                     MaterialPageRoute(
                                       builder: (context) => TreeLocationPage(
                                         latitude: double.tryParse(
-                                                selectedmango_tree!['latitude'] ??
+                                                selectedmango_tree![
+                                                        'latitude'] ??
                                                     '0.0') ??
                                             0.0,
                                         longitude: double.tryParse(
-                                                selectedmango_tree!['longitude'] ??
+                                                selectedmango_tree![
+                                                        'longitude'] ??
                                                     '0.0') ??
                                             0.0,
                                       ),

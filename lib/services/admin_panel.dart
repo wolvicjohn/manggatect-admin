@@ -1,6 +1,4 @@
-// admin_panel.dart
 import 'package:flutter/material.dart';
-import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 import 'admin_panel_design.dart';
 
 class AdminPanel extends StatelessWidget {
@@ -10,10 +8,18 @@ class AdminPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AdminScaffold(
+    return Scaffold(
       appBar: AdminPanelDesign.buildAppBar(context),
-      sideBar: AdminPanelDesign.buildSideBar(context),
-      body: body,
+      body: Row(
+        children: [
+          // Persistent side menu
+          const SideMenu(),
+          // Main content area
+          Expanded(
+            child: body,
+          ),
+        ],
+      ),
     );
   }
 }

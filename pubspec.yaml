@@ -53,6 +53,10 @@ dependencies:
   firebase_storage_web: ^3.10.3
   cached_network_image: ^3.4.1
   firebase_auth: ^5.3.3
+  google_fonts: ^6.2.1
+  get: ^4.6.6
+  data_table_2: ^2.5.16
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:
