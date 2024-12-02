@@ -101,16 +101,20 @@ class Dashboard extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    StageBox(stage: 'stage-1', mango_tree: stageData['stage-1']!),
-                    StageBox(stage: 'stage-2', mango_tree: stageData['stage-2']!),
+                    StageBox(
+                        stage: 'stage-1', mango_tree: stageData['stage-1']!),
+                    StageBox(
+                        stage: 'stage-2', mango_tree: stageData['stage-2']!),
+                    StageBox(
+                        stage: 'stage-3', mango_tree: stageData['stage-3']!),
+                    StageBox(
+                        stage: 'stage-4', mango_tree: stageData['stage-4']!),
                   ],
                 ),
                 const SizedBox(height: 16),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    StageBox(stage: 'stage-3', mango_tree: stageData['stage-3']!),
-                    StageBox(stage: 'stage-4', mango_tree: stageData['stage-4']!),
                     StageBox(
                         stage: 'Not classified',
                         mango_tree: stageData['no data yet']!),
@@ -162,55 +166,66 @@ class StageBox extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => Stagemango_treePage(stage: stage, mango_tree: mango_tree),
+              builder: (context) =>
+                  Stagemango_treePage(stage: stage, mango_tree: mango_tree),
             ),
           );
         },
         child: Card(
           margin: const EdgeInsets.all(8.0),
           color: const Color.fromARGB(0, 44, 155, 63),
-          child: Stack(
-            children: [
-              Positioned.fill(
-                child: Opacity(
-                  opacity: 0.8,
-                  child: Image.asset(
-                    getImageForStage(stage),
-                    fit: BoxFit.cover,
+          child: Container(
+            decoration: BoxDecoration(
+              border: const Border(
+                top: BorderSide(
+                  color: const Color.fromARGB(255, 20, 116, 82), // Border color here
+                  width: 15, // Border width
+                ),
+              ),borderRadius: BorderRadius.circular(5),
+            ),
+            child: Stack(
+              children: [
+                Positioned.fill(
+                  child: Opacity(
+                    opacity: 0.8,
+                    child: Image.asset(
+                      getImageForStage(stage),
+                      fit: BoxFit.fill,
+                    ),
                   ),
                 ),
-              ),
-              // Content over the background image
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const SizedBox(width: 16),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          '${mango_tree.length}',
-                          style: const TextStyle(
-                            fontSize: 50,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                // Content over the background image
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const SizedBox(width: 16),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '${mango_tree.length}',
+                            style: const TextStyle(
+                              fontSize: 50,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          stage,
-                          style: const TextStyle(
-                              fontSize: 20, color: Colors.white),
-                        ),
-                      ],
-                    ),
-                  ],
+                          const SizedBox(height: 8),
+                          Text(
+                            stage,
+                            style: const TextStyle(
+                                fontSize: 20, color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

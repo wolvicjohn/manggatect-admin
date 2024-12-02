@@ -23,7 +23,6 @@ class _HomepageState extends State<Homepage> {
     return AdminPanel(
       body: Row(
         children: [
-          // Table section inside a container
           Expanded(
             flex: 2,
             child: Padding(
@@ -60,8 +59,6 @@ class _HomepageState extends State<Homepage> {
 
                             return LayoutBuilder(
                               builder: (context, constraints) {
-                                double tableWidth = constraints.maxWidth;
-
                                 return ListView(
                                   children: [
                                     Table(
