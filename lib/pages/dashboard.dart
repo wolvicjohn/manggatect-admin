@@ -1,7 +1,7 @@
+import 'package:adminmangga/pages/charts/linechart.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_admin_scaffold/admin_scaffold.dart';
-import '../services/admin_panel.dart';
 import 'stagemango_treepage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -58,75 +58,75 @@ class Dashboard extends StatelessWidget {
             }
           }
 
-          return Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Title Text
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.fromLTRB(8, 8, 8, 0),
-                      padding: const EdgeInsets.all(30),
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 20, 116, 82),
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(8.0),
-                          topRight: Radius.circular(8.0),
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            offset: const Offset(0, 6),
-                            blurRadius: 12.0,
-                            spreadRadius: 0.0,
+          return SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Title Text
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+                        padding: const EdgeInsets.all(30),
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 20, 116, 82),
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(8.0),
+                            topRight: Radius.circular(8.0),
                           ),
-                        ],
-                      ),
-                      // margin: EdgeInsets.all(16),
-                      child: const Text(
-                        'Dashboard',
-                        style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              offset: const Offset(0, 6),
+                              blurRadius: 12.0,
+                              spreadRadius: 0.0,
+                            ),
+                          ],
+                        ),
+                        // margin: EdgeInsets.all(16),
+                        child: const Text(
+                          'Dashboard',
+                          style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 16),
-                // Boxes Layout
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    StageBox(
-                        stage: 'stage-1', mango_tree: stageData['stage-1']!),
-                    StageBox(
-                        stage: 'stage-2', mango_tree: stageData['stage-2']!),
-                    StageBox(
-                        stage: 'stage-3', mango_tree: stageData['stage-3']!),
-                    StageBox(
-                        stage: 'stage-4', mango_tree: stageData['stage-4']!),
-                  ],
-                ),
-                const SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    StageBox(
-                        stage: 'Not classified',
-                        mango_tree: stageData['no data yet']!),
-                  ],
-                ),
-                const Row(
-                  children: [
-                    SizedBox(height: 16),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  // Boxes Layout
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      StageBox(
+                          stage: 'stage-1', mango_tree: stageData['stage-1']!),
+                      StageBox(
+                          stage: 'stage-2', mango_tree: stageData['stage-2']!),
+                      StageBox(
+                          stage: 'stage-3', mango_tree: stageData['stage-3']!),
+                      StageBox(
+                          stage: 'stage-4', mango_tree: stageData['stage-4']!),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      StageBox(
+                          stage: 'Not classified',
+                          mango_tree: stageData['no data yet']!),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  // Add the chart below the StageBoxes
+                  DashboardChart(stageData: stageData), 
+                ],
+              ),
             ),
           );
         },
@@ -159,6 +159,7 @@ class StageBox extends StatelessWidget {
         return 'assets/images/logo.png';
     }
   }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -266,4 +267,6 @@ class StageBox extends StatelessWidget {
       ),
     );
   }
+  
 }
+

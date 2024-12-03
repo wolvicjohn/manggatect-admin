@@ -93,6 +93,8 @@ flutter:
     - assets/images/stage4.jpg
     - assets/images/tree_icon.png
     - assets/images/logo.png
+    - assets/images/background.png
+    - assets/images/background.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

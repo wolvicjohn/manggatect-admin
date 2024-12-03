@@ -26,7 +26,7 @@ class Stagemango_treePage extends StatelessWidget {
               const Padding(
                 padding: EdgeInsets.all(16.0),
                 child: Text(
-                  "mango tree Table",
+                  "Mango Tree Table",
                   style: TextStyle(
                     fontSize: 24.0,
                     fontWeight: FontWeight.bold,
@@ -85,40 +85,21 @@ class Stagemango_treePage extends StatelessWidget {
                             ...mango_tree.map((mango_tree) {
                               return TableRow(
                                 children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      _showmango_treeDetails(
-                                          context, mango_tree);
-                                    },
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child:
-                                          Text(mango_tree['id'] ?? 'Unknown'),
-                                    ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(mango_tree['id'] ?? 'Unknown'),
                                   ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      _showmango_treeDetails(
-                                          context, mango_tree);
-                                    },
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                          mango_tree['longitude']?.toString() ??
-                                              '0.0'),
-                                    ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                        mango_tree['longitude']?.toString() ??
+                                            '0.0'),
                                   ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      _showmango_treeDetails(
-                                          context, mango_tree);
-                                    },
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                          mango_tree['latitude']?.toString() ??
-                                              '0.0'),
-                                    ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                        mango_tree['latitude']?.toString() ??
+                                            '0.0'),
                                   ),
                                 ],
                               );
@@ -132,35 +113,6 @@ class Stagemango_treePage extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-
-  void _showmango_treeDetails(
-      BuildContext context, Map<String, dynamic> mango_tree) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text(mango_tree['stage'] ?? 'Untitled'),
-          content: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text("Longitude: ${mango_tree['longitude'] ?? 'N/A'}"),
-              Text("Latitude: ${mango_tree['latitude'] ?? 'N/A'}"),
-              Text("ID: ${mango_tree['id'] ?? 'N/A'}"),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text("Close"),
-            ),
-          ],
-        );
-      },
     );
   }
 }

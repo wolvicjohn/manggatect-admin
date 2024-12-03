@@ -13,8 +13,14 @@ class AllTreeLocationPage extends StatefulWidget {
 }
 
 class _AllTreeLocationPageState extends State<AllTreeLocationPage> {
-  String selectedStage = 'stage-1';
-  List<String> stages = ['stage-1', 'stage-2', 'stage-3', 'stage-4'];
+  String selectedStage = 'All Stages'; // Default to show all stages
+  List<String> stages = [
+    'All Stages',
+    'stage-1',
+    'stage-2',
+    'stage-3',
+    'stage-4'
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +48,6 @@ class _AllTreeLocationPageState extends State<AllTreeLocationPage> {
                     ),
                   ],
                 ),
-                // margin: EdgeInsets.all(16),
                 child: const Text(
                   'All Mango Tree Locations',
                   style: TextStyle(
@@ -54,7 +59,6 @@ class _AllTreeLocationPageState extends State<AllTreeLocationPage> {
               ),
             ],
           ),
-          // StreamBuilder for fetching tree locations
           Expanded(
             child: Stack(
               children: [
@@ -73,12 +77,13 @@ class _AllTreeLocationPageState extends State<AllTreeLocationPage> {
                         return Center(child: Text('Error: ${snapshot.error}'));
                       }
 
-                      // Filter locations by selected stage
+                      // Get all tree locations based on selectedStage
                       final List<LatLng> locations =
                           snapshot.data!.docs.where((doc) {
                         final data = doc.data() as Map<String, dynamic>;
-                        return data['stage'] ==
-                            selectedStage; // Filter by selected stage
+                        return selectedStage == 'All Stages' ||
+                            data['stage'] ==
+                                selectedStage; // Show all or filter
                       }).map((doc) {
                         final data = doc.data() as Map<String, dynamic>;
                         return LatLng(
@@ -147,34 +152,50 @@ class _AllTreeLocationPageState extends State<AllTreeLocationPage> {
                 Positioned(
                   top: 16.0,
                   right: 16.0,
-                  child: Container(
-                    margin: const EdgeInsets.all(16),
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12.0),
-                      border: Border.all(
-                          color: const Color.fromARGB(255, 20, 116, 82)),
-                    ),
-                    child: DropdownButton<String>(
-                      value: selectedStage,
-                      icon: const Icon(Icons.arrow_downward,
-                          color: Colors.black87),
-                      elevation: 16,
-                      style: const TextStyle(color: Colors.black87),
-                      dropdownColor: Colors.white,
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          selectedStage = newValue!;
-                        });
-                      },
-                      items:
-                          stages.map<DropdownMenuItem<String>>((String stage) {
-                        return DropdownMenuItem<String>(
-                          value: stage,
-                          child: Text(stage),
-                        );
-                      }).toList(),
+                  child: Flexible(
+                    child: Container(
+                      margin: const EdgeInsets.fromLTRB(0, 10, 10, 0),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.8),
+                        borderRadius:
+                            BorderRadius.circular(15), // Rounded corners
+                      ),
+                      child: Column(
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.all(16),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12.0),
+                              border: Border.all(
+                                  color:
+                                      const Color.fromARGB(255, 20, 116, 82)),
+                            ),
+                            child: DropdownButton<String>(
+                              value: selectedStage,
+                              icon: const Icon(Icons.arrow_downward,
+                                  color: Colors.black87),
+                              elevation: 16,
+                              style: const TextStyle(color: Colors.black87),
+                              dropdownColor: Colors.white,
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  selectedStage = newValue!;
+                                });
+                              },
+                              items: stages.map<DropdownMenuItem<String>>(
+                                  (String stage) {
+                                return DropdownMenuItem<String>(
+                                  value: stage,
+                                  child: Text(stage),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

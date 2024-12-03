@@ -32,13 +32,13 @@ class QRCodeGeneratorPage extends StatelessWidget {
             mainAxisAlignment: pw.MainAxisAlignment.center,
             children: [
               pw.Text(
-                'MANGGATECH', 
+                'MANGGATECH',
                 style: pw.TextStyle(
                   fontSize: 24,
                   fontWeight: pw.FontWeight.bold,
                 ),
               ),
-              pw.SizedBox(height: 20), 
+              pw.SizedBox(height: 20),
               pw.Image(
                 pw.MemoryImage(pngBytes),
                 width: 200,
@@ -50,7 +50,7 @@ class QRCodeGeneratorPage extends StatelessWidget {
       },
     ));
 
-    return pdf.save(); 
+    return pdf.save();
   }
 
   void _downloadPdf(BuildContext context) async {
@@ -78,54 +78,52 @@ class QRCodeGeneratorPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("QR Code"),
       ),
-      body: SingleChildScrollView( 
-        child: Center(
-          child: Container(
-            padding: const EdgeInsets.all(20.0),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 3,
-                  blurRadius: 7,
-                  offset: const Offset(0, 3),
+      body: Center(
+        child: Container(
+          padding: const EdgeInsets.all(20.0),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 3,
+                blurRadius: 7,
+                offset: const Offset(0, 3),
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'MANGGATECH',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
                 ),
-              ],
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Text(
-                  'MANGGATECH',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                QrImageView(
-                  data: docID,
-                  version: 5,
-                  size: 320,
-                  gapless: false,
-                  errorStateBuilder: (context, error) {
-                    return const Center(
-                      child: Text(
-                        'Uh oh! Something went wrong...',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.red),
-                      ),
-                    );
-                  },
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () => _downloadPdf(context),
-                  child: const Text("Download QR Code as PDF"),
-                ),
-              ],
-            ),
+              ),
+              QrImageView(
+                data: docID,
+                version: 5,
+                size: 320,
+                gapless: false,
+                errorStateBuilder: (context, error) {
+                  return const Center(
+                    child: Text(
+                      'Uh oh! Something went wrong...',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.red),
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () => _downloadPdf(context),
+                child: const Text("Download QR Code as PDF"),
+              ),
+            ],
           ),
         ),
       ),

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:adminmangga/archive.dart';
 import 'package:adminmangga/pages/TreeLocationPage.dart';
 import 'package:adminmangga/pages/qrcodegeneratorpage.dart';
@@ -17,7 +19,6 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   final FirestoreService firestoreService = FirestoreService();
   Map<String, dynamic>? selectedmango_tree;
-  
 
   @override
   Widget build(BuildContext context) {
@@ -319,18 +320,18 @@ class _HomepageState extends State<Homepage> {
                 ),
                 child: selectedmango_tree == null
                     ? const Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Select data to View details.",
-                          style: TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Select data to View details.",
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey,
+                            ),
                           ),
-                        ),
-                      ],
-                    )
+                        ],
+                      )
                     : Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [

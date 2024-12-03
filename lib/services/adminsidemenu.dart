@@ -2,6 +2,7 @@ import 'package:adminmangga/pages/alltreelocationpage.dart';
 import 'package:adminmangga/pages/archivepage.dart';
 import 'package:adminmangga/pages/dashboard.dart';
 import 'package:adminmangga/pages/home_page.dart';
+import 'package:adminmangga/pages/info.dart';
 import 'package:adminmangga/pages/login/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -52,6 +53,8 @@ class _AdminSideMenuState extends State<AdminSideMenu> {
         return const AllTreeLocationPage();
       case '/archivepage':
         return const ArchivePage();
+        case '/infopage':
+        return const InfoPage();
       default:
         return const Dashboard();
     }
@@ -81,42 +84,46 @@ class AdminAppBar {
         ],
       ),
       actions: [
-        ElevatedButton(
-          onPressed: () async {
-            bool confirm = await showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: const Text("Confirm Logout"),
-                  content: const Text("Are you sure you want to log out?"),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop(false);
-                      },
-                      child: const Text("Cancel"),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop(true);
-                      },
-                      child: const Text("Logout"),
-                    ),
-                  ],
-                );
-              },
-            );
-
-            if (confirm == true) {
-              Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => const LoginPage()),
-                (route) => false,
+        Container(
+          margin: const EdgeInsets.only(right: 15),
+          child: ElevatedButton(
+            onPressed: () async {
+              bool confirm = await showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: const Text("Confirm Logging Out"),
+                    content: const Text("Are you sure you want to log out?"),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop(false);
+                        },
+                        child: const Text("Cancel",style: TextStyle(color: Colors.grey),),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop(true);
+                        },
+                        child: const Text("Logout",style: TextStyle(color: Colors.red)),
+                      ),
+                    ],
+                  );
+                },
               );
-            }
-          },
-          child: const Text(
-            "Logout",
-            style: TextStyle(color: Colors.black),
+          
+              if (confirm == true) {
+                FirebaseAuth.instance.signOut();
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                  (route) => false,
+                );
+              }
+            },
+            child: const Text(
+              "Logout",
+              style: TextStyle(color: Colors.black),
+            ),
           ),
         ),
       ],
@@ -156,6 +163,11 @@ class AdminAppBar {
           title: 'Archive',
           route: '/archivepage',
           icon: Icons.archive,
+        ),
+        AdminMenuItem(
+          title: 'Mango Flowers Info',
+          route: '/infopage',
+          icon: Icons.info_outline_rounded,
         ),
       ],
       selectedRoute: selectedRoute,
