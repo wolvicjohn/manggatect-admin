@@ -1,6 +1,8 @@
 import 'package:adminmangga/archive.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_admin_scaffold/admin_scaffold.dart';
+import 'package:intl/intl.dart';
 import '../services/admin_panel.dart';
 
 class ArchivePage extends StatefulWidget {
@@ -15,12 +17,12 @@ class _ArchivePageState extends State<ArchivePage> {
 
   @override
   Widget build(BuildContext context) {
-    return AdminPanel(
+    return AdminScaffold(
       body: Row(
         children: [
           // Table section inside a container
           Expanded(
-            flex: 2,
+            flex: 1,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Container(
@@ -73,10 +75,10 @@ class _ArchivePageState extends State<ArchivePage> {
                                 border: TableBorder.all(color: Colors.grey),
                                 columnWidths: const {
                                   0: FlexColumnWidth(
-                                      0.5), // Adjusted for imageStageUrl
-                                  1: FlexColumnWidth(1), // Adjusted for stage
+                                      0.7), // Adjusted for imageStageUrl
+                                  1: FlexColumnWidth(.5), // Adjusted for stage
                                   2: FlexColumnWidth(1), // Adjusted for date
-                                  3: FlexColumnWidth(2), // Adjusted for actions
+                                  3: FlexColumnWidth(1), // Adjusted for actions
                                 },
                                 children: [
                                   const TableRow(
@@ -86,7 +88,7 @@ class _ArchivePageState extends State<ArchivePage> {
                                     children: [
                                       Padding(
                                         padding: EdgeInsets.all(8.0),
-                                        child: Text("Tree Image ",
+                                        child: Text("Image ",
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               color: Colors.white,
@@ -122,7 +124,7 @@ class _ArchivePageState extends State<ArchivePage> {
                                     Map<String, dynamic> data =
                                         document.data() as Map<String, dynamic>;
                                     String imageStageUrl =
-                                        data['imageUrl'] ?? 'N/A';
+                                        data['stageImageUrl'] ?? 'N/A';
                                     Timestamp? timestamp = data['timestamp'];
 
                                     return TableRow(
@@ -133,9 +135,9 @@ class _ArchivePageState extends State<ArchivePage> {
                                               ? Image.network(
                                                   imageStageUrl,
                                                   width:
-                                                      50, // Adjust width as needed
+                                                      70, 
                                                   height:
-                                                      50, // Adjust height as needed
+                                                      80, 
                                                   fit: BoxFit.cover,
                                                 )
                                               : const Text('No Image'),
@@ -149,8 +151,10 @@ class _ArchivePageState extends State<ArchivePage> {
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Text(
-                                              timestamp?.toDate().toString() ??
-                                                  'N/A'),
+                                            DateFormat(
+                                                    'EEEE, MMMM dd, yyyy h:mm a')
+                                                .format(timestamp!.toDate()),
+                                          ),
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
@@ -159,7 +163,22 @@ class _ArchivePageState extends State<ArchivePage> {
                                               showArchiveDialog(
                                                   context, document.id);
                                             },
-                                            child: const Text("Restore"),
+                                            style: ElevatedButton.styleFrom(
+                                                foregroundColor: Colors.white,
+                                                backgroundColor: Colors.green,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          8.0),
+                                                ),
+                                                elevation: 5),
+                                            child: const Text(
+                                              "Restore",
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16.0,
+                                              ),
+                                            ),
                                           ),
                                         ),
                                       ],

@@ -1,16 +1,18 @@
 import 'package:adminmangga/services/admin_panel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 
 class Stagemango_treePage extends StatelessWidget {
   final String stage;
   final List<Map<String, dynamic>> mango_tree;
 
-  const Stagemango_treePage({Key? key, required this.stage, required this.mango_tree})
+  const Stagemango_treePage(
+      {Key? key, required this.stage, required this.mango_tree})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return AdminPanel(
+    return AdminScaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Container(
@@ -24,7 +26,7 @@ class Stagemango_treePage extends StatelessWidget {
               const Padding(
                 padding: EdgeInsets.all(16.0),
                 child: Text(
-                  "mango_tree Table",
+                  "mango tree Table",
                   style: TextStyle(
                     fontSize: 24.0,
                     fontWeight: FontWeight.bold,
@@ -85,16 +87,19 @@ class Stagemango_treePage extends StatelessWidget {
                                 children: [
                                   GestureDetector(
                                     onTap: () {
-                                      _showmango_treeDetails(context, mango_tree);
+                                      _showmango_treeDetails(
+                                          context, mango_tree);
                                     },
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
-                                      child: Text(mango_tree['id'] ?? 'Unknown'),
+                                      child:
+                                          Text(mango_tree['id'] ?? 'Unknown'),
                                     ),
                                   ),
                                   GestureDetector(
                                     onTap: () {
-                                      _showmango_treeDetails(context, mango_tree);
+                                      _showmango_treeDetails(
+                                          context, mango_tree);
                                     },
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
@@ -105,7 +110,8 @@ class Stagemango_treePage extends StatelessWidget {
                                   ),
                                   GestureDetector(
                                     onTap: () {
-                                      _showmango_treeDetails(context, mango_tree);
+                                      _showmango_treeDetails(
+                                          context, mango_tree);
                                     },
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
@@ -129,7 +135,8 @@ class Stagemango_treePage extends StatelessWidget {
     );
   }
 
-  void _showmango_treeDetails(BuildContext context, Map<String, dynamic> mango_tree) {
+  void _showmango_treeDetails(
+      BuildContext context, Map<String, dynamic> mango_tree) {
     showDialog(
       context: context,
       builder: (context) {

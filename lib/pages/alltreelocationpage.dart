@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../services/admin_panel.dart';
 
 class AllTreeLocationPage extends StatefulWidget {
   const AllTreeLocationPage({Key? key}) : super(key: key);
@@ -18,7 +18,7 @@ class _AllTreeLocationPageState extends State<AllTreeLocationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return AdminPanel(
+    return AdminScaffold(
       body: Column(
         children: [
           Column(
@@ -44,7 +44,7 @@ class _AllTreeLocationPageState extends State<AllTreeLocationPage> {
                 ),
                 // margin: EdgeInsets.all(16),
                 child: const Text(
-                  'Map',
+                  'All Mango Tree Locations',
                   style: TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
@@ -153,12 +153,13 @@ class _AllTreeLocationPageState extends State<AllTreeLocationPage> {
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(12.0),
-                      border: Border.all(color: Colors.black87),
+                      border: Border.all(
+                          color: const Color.fromARGB(255, 20, 116, 82)),
                     ),
                     child: DropdownButton<String>(
                       value: selectedStage,
-                      icon:
-                          const Icon(Icons.arrow_downward, color: Colors.black87),
+                      icon: const Icon(Icons.arrow_downward,
+                          color: Colors.black87),
                       elevation: 16,
                       style: const TextStyle(color: Colors.black87),
                       dropdownColor: Colors.white,

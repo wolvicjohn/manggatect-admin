@@ -4,7 +4,7 @@ import 'package:adminmangga/pages/qrcodegeneratorpage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:adminmangga/services/firestore.dart';
-import '../services/admin_panel.dart';
+import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 import 'package:intl/intl.dart';
 
 class Homepage extends StatefulWidget {
@@ -17,10 +17,11 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   final FirestoreService firestoreService = FirestoreService();
   Map<String, dynamic>? selectedmango_tree;
+  
 
   @override
   Widget build(BuildContext context) {
-    return AdminPanel(
+    return AdminScaffold(
       body: Row(
         children: [
           Expanded(
@@ -38,7 +39,7 @@ class _HomepageState extends State<Homepage> {
                     const Padding(
                       padding: EdgeInsets.all(16.0),
                       child: Text(
-                        "Data",
+                        "Uploaded Mango Tree Data",
                         style: TextStyle(
                           fontSize: 24.0,
                           fontWeight: FontWeight.bold,
@@ -65,7 +66,8 @@ class _HomepageState extends State<Homepage> {
                                       border:
                                           TableBorder.all(color: Colors.grey),
                                       columnWidths: const {
-                                        0: FlexColumnWidth(0.75), // Image column
+                                        0: FlexColumnWidth(
+                                            0.75), // Image column
                                         1: FlexColumnWidth(0.5), // Stage column
                                         2: FlexColumnWidth(1), // Date column
                                         3: FlexColumnWidth(1), // Actions column
@@ -125,9 +127,8 @@ class _HomepageState extends State<Homepage> {
                                           String docID = document.id;
                                           Timestamp timestamp =
                                               data['timestamp'];
-                                          String imageStageUrl = data[
-                                                  'stageImageUrl'] ??
-                                              ''; 
+                                          String imageStageUrl =
+                                              data['stageImageUrl'] ?? '';
                                           data['docID'] = docID;
 
                                           return TableRow(
@@ -144,38 +145,44 @@ class _HomepageState extends State<Homepage> {
                                                     : const Text('No Image'),
                                               ),
                                               Column(
-                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
                                                 children: [
                                                   Padding(
                                                     padding:
-                                                        const EdgeInsets.all(8.0),
-                                                    child: Text(
-                                                        data['stage']?.toString() ??
-                                                            'N/A'),
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Text(data['stage']
+                                                            ?.toString() ??
+                                                        'N/A'),
                                                   ),
                                                 ],
                                               ),
                                               Column(
-                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
                                                 children: [
                                                   Padding(
                                                     padding:
-                                                        const EdgeInsets.all(8.0),
+                                                        const EdgeInsets.all(
+                                                            8.0),
                                                     child: Text(
                                                       DateFormat(
                                                               'EEEE, MMMM dd, yyyy h:mm a')
-                                                          .format(
-                                                              timestamp.toDate()),
+                                                          .format(timestamp
+                                                              .toDate()),
                                                     ),
                                                   ),
                                                 ],
                                               ),
                                               Column(
-                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
                                                 children: [
                                                   Padding(
                                                     padding:
-                                                        const EdgeInsets.all(8.0),
+                                                        const EdgeInsets.all(
+                                                            8.0),
                                                     child: Row(
                                                       children: [
                                                         // View Button
@@ -193,9 +200,11 @@ class _HomepageState extends State<Homepage> {
                                                           label: const Text(
                                                             'View',
                                                             style: TextStyle(
-                                                              color: Colors.white,
+                                                              color:
+                                                                  Colors.white,
                                                               fontWeight:
-                                                                  FontWeight.bold,
+                                                                  FontWeight
+                                                                      .bold,
                                                             ),
                                                           ),
                                                           style: ElevatedButton
@@ -205,7 +214,8 @@ class _HomepageState extends State<Homepage> {
                                                             padding:
                                                                 const EdgeInsets
                                                                     .symmetric(
-                                                                    vertical: 10.0,
+                                                                    vertical:
+                                                                        10.0,
                                                                     horizontal:
                                                                         16.0),
                                                             shape:
@@ -221,7 +231,7 @@ class _HomepageState extends State<Homepage> {
                                                         const SizedBox(
                                                             width:
                                                                 16.0), // Space between buttons
-                                                  
+
                                                         // Archive Button
                                                         ElevatedButton.icon(
                                                           onPressed: () {
@@ -235,9 +245,11 @@ class _HomepageState extends State<Homepage> {
                                                           label: const Text(
                                                             'Archive',
                                                             style: TextStyle(
-                                                              color: Colors.white,
+                                                              color:
+                                                                  Colors.white,
                                                               fontWeight:
-                                                                  FontWeight.bold,
+                                                                  FontWeight
+                                                                      .bold,
                                                             ),
                                                           ),
                                                           style: ElevatedButton
@@ -247,7 +259,8 @@ class _HomepageState extends State<Homepage> {
                                                             padding:
                                                                 const EdgeInsets
                                                                     .symmetric(
-                                                                    vertical: 10.0,
+                                                                    vertical:
+                                                                        10.0,
                                                                     horizontal:
                                                                         16.0),
                                                             shape:
@@ -305,8 +318,10 @@ class _HomepageState extends State<Homepage> {
                   ],
                 ),
                 child: selectedmango_tree == null
-                    ? const Center(
-                        child: Text(
+                    ? const Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
                           "Select data to View details.",
                           style: TextStyle(
                             fontSize: 16.0,
@@ -314,7 +329,8 @@ class _HomepageState extends State<Homepage> {
                             color: Colors.grey,
                           ),
                         ),
-                      )
+                      ],
+                    )
                     : Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [

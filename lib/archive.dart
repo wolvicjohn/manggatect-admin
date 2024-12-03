@@ -43,7 +43,7 @@ class ArchiveDialog extends StatelessWidget {
       actions: [
         ElevatedButton(
           onPressed: () {
-            archivemango_tree(context); // Pass context to archivemango_tree method
+            archivemango_tree(context);
             Navigator.pop(context); // Close the dialog after archiving
           },
           style: ElevatedButton.styleFrom(

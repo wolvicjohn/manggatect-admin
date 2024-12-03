@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 import '../services/admin_panel.dart';
 import 'stagemango_treepage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,7 +17,7 @@ class Dashboard extends StatelessWidget {
           () => Navigator.pushReplacementNamed(context, '/loginpage'));
     }
 
-    return AdminPanel(
+    return AdminScaffold(
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection('mango_tree')

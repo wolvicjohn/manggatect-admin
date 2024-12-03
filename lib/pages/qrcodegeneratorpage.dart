@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'dart:typed_data';
@@ -62,7 +63,7 @@ class QRCodeGeneratorPage extends StatelessWidget {
         ..setAttribute('download', 'QRCode.pdf')
         ..click();
 
-      html.Url.revokeObjectUrl(url); // Clean up the URL
+      html.Url.revokeObjectUrl(url);
     } catch (e) {
       // Handle errors
       ScaffoldMessenger.of(context).showSnackBar(
@@ -73,58 +74,58 @@ class QRCodeGeneratorPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AdminScaffold(
       appBar: AppBar(
         title: const Text("QR Code"),
       ),
-      body: Center(
-        child: Container(
-          padding: const EdgeInsets.all(20.0),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 3,
-                blurRadius: 7,
-                offset: const Offset(0, 3),
-              ),
-            ],
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text(
-                'MANGGATECT',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
+      body: SingleChildScrollView( 
+        child: Center(
+          child: Container(
+            padding: const EdgeInsets.all(20.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 3,
+                  blurRadius: 7,
+                  offset: const Offset(0, 3),
                 ),
-              ),
-              QrImageView(
-                data: docID,
-                version: 5,
-                size: 320,
-                gapless: false,
-                errorStateBuilder: (context, error) {
-                  return Container(
-                    child: const Center(
+              ],
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  'MANGGATECH',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                QrImageView(
+                  data: docID,
+                  version: 5,
+                  size: 320,
+                  gapless: false,
+                  errorStateBuilder: (context, error) {
+                    return const Center(
                       child: Text(
                         'Uh oh! Something went wrong...',
                         textAlign: TextAlign.center,
                         style: TextStyle(color: Colors.red),
                       ),
-                    ),
-                  );
-                },
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () => _downloadPdf(context),
-                child: const Text("Download QR Code as PDF"),
-              ),
-            ],
+                    );
+                  },
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () => _downloadPdf(context),
+                  child: const Text("Download QR Code as PDF"),
+                ),
+              ],
+            ),
           ),
         ),
       ),

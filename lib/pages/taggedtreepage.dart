@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 
 class TaggedTreePage extends StatelessWidget {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
+   TaggedTreePage({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AdminScaffold(
       appBar: AppBar(
-        title: Text('Tagged Trees'),
+        title: const Text('Tagged Trees'),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: firestore
@@ -17,7 +20,7 @@ class TaggedTreePage extends StatelessWidget {
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
 
           if (snapshot.hasError) {
@@ -25,7 +28,7 @@ class TaggedTreePage extends StatelessWidget {
           }
 
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return Center(child: Text('No tagged trees found.'));
+            return const Center(child: Text('No tagged trees found.'));
           }
 
           final allMangoTree = snapshot.data!.docs;
@@ -40,7 +43,7 @@ class TaggedTreePage extends StatelessWidget {
               final String? imageUrl = mango_tree['imageUrl'];
 
               return Card(
-                margin: EdgeInsets.all(8.0),
+                margin: const EdgeInsets.all(8.0),
                 child: ListTile(
                   title: Text(title),
                   onTap: () {
@@ -56,7 +59,7 @@ class TaggedTreePage extends StatelessWidget {
                               children: [
                                 Text('Longitude: $longitude'),
                                 Text('Latitude: $latitude'),
-                                SizedBox(height: 8),
+                                const SizedBox(height: 8),
                                 imageUrl != null && imageUrl.isNotEmpty
                                     ? Image.network(
                                         imageUrl,
@@ -78,7 +81,7 @@ class TaggedTreePage extends StatelessWidget {
                               onPressed: () {
                                 Navigator.of(context).pop();
                               },
-                              child: Text('Close'),
+                              child: const Text('Close'),
                             ),
                           ],
                         );

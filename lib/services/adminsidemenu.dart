@@ -1,20 +1,77 @@
+import 'package:adminmangga/pages/alltreelocationpage.dart';
+import 'package:adminmangga/pages/archivepage.dart';
+import 'package:adminmangga/pages/dashboard.dart';
+import 'package:adminmangga/pages/home_page.dart';
+import 'package:adminmangga/pages/login/login_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 
-class AdminSideMenu {
+class AdminSideMenu extends StatefulWidget {
+  @override
+  _AdminSideMenuState createState() => _AdminSideMenuState();
+}
+
+class _AdminSideMenuState extends State<AdminSideMenu> {
+  String _selectedRoute = '/';
+
+  @override
+  Widget build(BuildContext context) {
+    
+    // Check if the user is authenticated
+    final User? user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushReplacementNamed(context, '/loginpage');
+      });
+      return const SizedBox(); 
+    }
+
+    // If user is authenticated, show the admin menu
+    return AdminScaffold(
+      appBar: AdminAppBar.buildAppBar(context),
+      sideBar: AdminAppBar.buildSideBar(
+          context, _selectedRoute, _updateSelectedRoute),
+      body: _getBodyContent(),
+    );
+  }
+
+  // Function to update the selected route
+  void _updateSelectedRoute(String route) {
+    setState(() {
+      _selectedRoute = route;
+    });
+  }
+
+  // Function to map routes to body widgets
+  Widget _getBodyContent() {
+    switch (_selectedRoute) {
+      case '/homepage':
+        return const Homepage();
+      case '/tree-map':
+        return const AllTreeLocationPage();
+      case '/archivepage':
+        return const ArchivePage();
+      default:
+        return const Dashboard();
+    }
+  }
+}
+
+class AdminAppBar {
   static AppBar buildAppBar(BuildContext context) {
     return AppBar(
       title: Row(
         children: [
           Image.asset(
             'assets/images/logo.png',
-            height: 60, // Adjust the size as needed
+            height: 60,
             fit: BoxFit.contain,
             errorBuilder: (context, error, stackTrace) {
               return const Icon(Icons.image_not_supported);
             },
           ),
-          const SizedBox(width: 8), // Space between the logo and text
+          const SizedBox(width: 8),
           const Text(
             "MANGGATECH",
             style: TextStyle(
@@ -51,8 +108,10 @@ class AdminSideMenu {
             );
 
             if (confirm == true) {
-              // Your logout logic
-              Navigator.pushReplacementNamed(context, '/loginpage');
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => const LoginPage()),
+                (route) => false,
+              );
             }
           },
           child: const Text(
@@ -103,11 +162,6 @@ class AdminSideMenu {
       onSelected: (item) {
         if (item.route != null) {
           updateSelectedRoute(item.route!);
-          Navigator.pushNamedAndRemoveUntil(
-            context,
-            item.route!,
-            (route) => false, // Remove previous routes
-          );
         }
       },
     );

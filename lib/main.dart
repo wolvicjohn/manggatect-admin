@@ -1,14 +1,13 @@
 import 'package:adminmangga/firebase_options.dart';
-import 'package:adminmangga/(for%20future%20update)/layout.dart';
 import 'package:adminmangga/pages/archivepage.dart';
 import 'package:adminmangga/pages/dashboard.dart';
 import 'package:adminmangga/pages/login/login_page.dart';
+import 'package:adminmangga/services/adminsidemenu.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'pages/alltreelocationpage.dart';
-import 'pages/home_page.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,8 +21,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return
-        // GetMaterialApp(
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      // routes
+      routes: {
+        '/': (context) => AdminSideMenu(), 
+        '/loginpage': (context) => const LoginPage(),
+        '/tree-map': (context) => const AllTreeLocationPage(), 
+        '/archivepage': (context) => const ArchivePage(), 
+        '/dashboard': (context) => const Dashboard(), 
+      },
+      initialRoute: '/',
+    );
+  }
+}
+
+
+   // GetMaterialApp(
         //   debugShowCheckedModeBanner: false,
         //   title: "Dash",
         //   theme: ThemeData(
@@ -37,17 +51,3 @@ class MyApp extends StatelessWidget {
         //   ),
         //   home: SiteLayout(),
         // );
-        MaterialApp(
-      debugShowCheckedModeBanner: false,
-      initialRoute: '/',
-      routes: {
-        '/archivepage': (context) => const ArchivePage(),
-        '/homepage': (context) => const Homepage(),
-        '/tree-map': (context) => const AllTreeLocationPage(),
-        '/loginpage': (context) => const LoginPage(),
-        '/': (context) => const Dashboard(),
-      },
-    );
-  }
-}
-
