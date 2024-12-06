@@ -88,7 +88,7 @@ class Dashboard extends StatelessWidget {
                         ),
                         // margin: EdgeInsets.all(16),
                         child: const Text(
-                          'Dashboard',
+                          'Dashboard 11',
                           style: TextStyle(
                             fontSize: 30,
                             fontWeight: FontWeight.bold,

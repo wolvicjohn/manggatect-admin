@@ -9,10 +9,10 @@ class AllTreeLocationPage extends StatefulWidget {
   const AllTreeLocationPage({Key? key}) : super(key: key);
 
   @override
-  _AllTreeLocationPageState createState() => _AllTreeLocationPageState();
+  AllTreeLocationPageState createState() => AllTreeLocationPageState();
 }
 
-class _AllTreeLocationPageState extends State<AllTreeLocationPage> {
+class AllTreeLocationPageState extends State<AllTreeLocationPage> {
   String selectedStage = 'All Stages'; // Default to show all stages
   List<String> stages = [
     'All Stages',
@@ -110,7 +110,7 @@ class _AllTreeLocationPageState extends State<AllTreeLocationPage> {
                           initialCenter: locations.isNotEmpty
                               ? locations[0]
                               : const LatLng(0, 0),
-                          initialZoom: 14.0,
+                          initialZoom: 15.0,
                         ),
                         children: [
                           TileLayer(
