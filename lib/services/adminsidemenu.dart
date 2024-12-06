@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 
 class AdminSideMenu extends StatefulWidget {
+  const AdminSideMenu({super.key});
+
   @override
   _AdminSideMenuState createState() => _AdminSideMenuState();
 }

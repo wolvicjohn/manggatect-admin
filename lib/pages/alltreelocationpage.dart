@@ -116,17 +116,48 @@ class _AllTreeLocationPageState extends State<AllTreeLocationPage> {
                           TileLayer(
                             urlTemplate:
                                 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                            subdomains: ['a', 'b', 'c'],
-                            userAgentPackageName: 'Manggatect',
+                            subdomains: const ['a', 'b', 'c'],
+                            userAgentPackageName: 'Manggatech',
                           ),
                           MarkerLayer(
                             markers: locations.map((location) {
+                              // Find the corresponding document to get its 'stage'
+                              final doc = snapshot.data!.docs.firstWhere((doc) {
+                                final data = doc.data() as Map<String, dynamic>;
+                                return double.parse(
+                                            data['latitude'].toString()) ==
+                                        location.latitude &&
+                                    double.parse(
+                                            data['longitude'].toString()) ==
+                                        location.longitude;
+                              });
+                              final data = doc.data() as Map<String, dynamic>;
+                              final stage = data['stage'];
+
+                              String iconPath;
+                              switch (stage) {
+                                case 'stage-1':
+                                  iconPath = 'assets/images/tree_icon.png';
+                                  break;
+                                case 'stage-2':
+                                  iconPath = 'assets/images/stage1_icon.png';
+                                  break;
+                                case 'stage-3':
+                                  iconPath = 'assets/images/stage2_icon.png';
+                                  break;
+                                case 'stage-4':
+                                  iconPath = 'assets/images/stage3_icon.png';
+                                  break;
+                                default:
+                                  iconPath = 'assets/images/tree_icon.png';
+                              }
+
                               return Marker(
                                 point: location,
                                 width: 50.0,
                                 height: 50.0,
                                 child: Image.asset(
-                                  'assets/images/tree_icon.png',
+                                  iconPath,
                                   width: 40.0,
                                   height: 40.0,
                                 ),
@@ -157,8 +188,7 @@ class _AllTreeLocationPageState extends State<AllTreeLocationPage> {
                       margin: const EdgeInsets.fromLTRB(0, 10, 10, 0),
                       decoration: BoxDecoration(
                         color: Colors.white.withOpacity(0.8),
-                        borderRadius:
-                            BorderRadius.circular(15), // Rounded corners
+                        borderRadius: BorderRadius.circular(15),
                       ),
                       child: Column(
                         children: [
@@ -194,6 +224,59 @@ class _AllTreeLocationPageState extends State<AllTreeLocationPage> {
                               }).toList(),
                             ),
                           ),
+                          const SizedBox(height: 10),
+                          const Text(
+                            'LEGENDS',
+                            style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            children: [
+                              Image.asset(
+                                'assets/images/tree_icon.png',
+                                height: 40,
+                                width: 40,
+                              ),
+                              const Text('Stage 1'),
+                            ],
+                          ),
+                          const SizedBox(height: 5),
+                          Row(
+                            children: [
+                              Image.asset(
+                                'assets/images/stage1_icon.png',
+                                height: 40,
+                                width: 40,
+                              ),
+                              const Text('Stage 2'),
+                            ],
+                          ),
+                          const SizedBox(height: 5),
+                          Row(
+                            children: [
+                              Image.asset(
+                                'assets/images/stage2_icon.png',
+                                height: 40,
+                                width: 40,
+                              ),
+                              const Text('Stage 3'),
+                            ],
+                          ),
+                          const SizedBox(height: 5),
+                          Row(
+                            children: [
+                              Image.asset(
+                                'assets/images/stage3_icon.png',
+                                height: 40,
+                                width: 40,
+                              ),
+                              const Text('Stage 4'),
+                            ],
+                          ),
+                          const SizedBox(height: 15),
                         ],
                       ),
                     ),
