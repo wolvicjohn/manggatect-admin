@@ -4,6 +4,8 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart';
+
 
 class AllTreeLocationPage extends StatefulWidget {
   const AllTreeLocationPage({Key? key}) : super(key: key);
@@ -116,7 +118,8 @@ class AllTreeLocationPageState extends State<AllTreeLocationPage> {
                           TileLayer(
                             urlTemplate:
                                 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                            subdomains: const ['a', 'b', 'c'],
+                            subdomains: ['a', 'b', 'c'],
+                            tileProvider: CancellableNetworkTileProvider(),
                             userAgentPackageName: 'Manggatech',
                           ),
                           MarkerLayer(
@@ -149,7 +152,7 @@ class AllTreeLocationPageState extends State<AllTreeLocationPage> {
                                   iconPath = 'assets/images/stage3_icon.png';
                                   break;
                                 default:
-                                  iconPath = 'assets/images/tree_icon.png';
+                                  iconPath = 'assets/images/logo.png';
                               }
 
                               return Marker(
@@ -183,7 +186,6 @@ class AllTreeLocationPageState extends State<AllTreeLocationPage> {
                 Positioned(
                   top: 16.0,
                   right: 16.0,
-                  child: Flexible(
                     child: Container(
                       margin: const EdgeInsets.fromLTRB(0, 10, 10, 0),
                       decoration: BoxDecoration(
@@ -281,7 +283,6 @@ class AllTreeLocationPageState extends State<AllTreeLocationPage> {
                       ),
                     ),
                   ),
-                ),
               ],
             ),
           ),
