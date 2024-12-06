@@ -82,23 +82,23 @@ class Stagemango_treePage extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            ...mango_tree.map((mango_tree) {
+                            ...mango_tree.map((mangoTree) {
                               return TableRow(
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Text(mango_tree['id'] ?? 'Unknown'),
+                                    child: Text(mangoTree['id'] ?? 'Unknown'),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text(
-                                        mango_tree['longitude']?.toString() ??
+                                        mangoTree['longitude']?.toString() ??
                                             '0.0'),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text(
-                                        mango_tree['latitude']?.toString() ??
+                                        mangoTree['latitude']?.toString() ??
                                             '0.0'),
                                   ),
                                 ],

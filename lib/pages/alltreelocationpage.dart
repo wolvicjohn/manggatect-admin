@@ -6,7 +6,6 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart';
 
-
 class AllTreeLocationPage extends StatefulWidget {
   const AllTreeLocationPage({Key? key}) : super(key: key);
 
@@ -118,7 +117,7 @@ class AllTreeLocationPageState extends State<AllTreeLocationPage> {
                           TileLayer(
                             urlTemplate:
                                 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                            subdomains: ['a', 'b', 'c'],
+                            subdomains: const ['a', 'b', 'c'],
                             tileProvider: CancellableNetworkTileProvider(),
                             userAgentPackageName: 'Manggatech',
                           ),
@@ -186,103 +185,101 @@ class AllTreeLocationPageState extends State<AllTreeLocationPage> {
                 Positioned(
                   top: 16.0,
                   right: 16.0,
-                    child: Container(
-                      margin: const EdgeInsets.fromLTRB(0, 10, 10, 0),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.8),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Column(
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.all(16),
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 16.0),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(12.0),
-                              border: Border.all(
-                                  color:
-                                      const Color.fromARGB(255, 20, 116, 82)),
+                  child: Container(
+                    margin: const EdgeInsets.fromLTRB(0, 10, 10, 0),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.8),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.all(16),
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12.0),
+                            border: Border.all(
+                                color: const Color.fromARGB(255, 20, 116, 82)),
+                          ),
+                          child: DropdownButton<String>(
+                            value: selectedStage,
+                            icon: const Icon(Icons.arrow_downward,
+                                color: Colors.black87),
+                            elevation: 16,
+                            style: const TextStyle(color: Colors.black87),
+                            dropdownColor: Colors.white,
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                selectedStage = newValue!;
+                              });
+                            },
+                            items: stages
+                                .map<DropdownMenuItem<String>>((String stage) {
+                              return DropdownMenuItem<String>(
+                                value: stage,
+                                child: Text(stage),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        const Text(
+                          'LEGENDS',
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Image.asset(
+                              'assets/images/tree_icon.png',
+                              height: 40,
+                              width: 40,
                             ),
-                            child: DropdownButton<String>(
-                              value: selectedStage,
-                              icon: const Icon(Icons.arrow_downward,
-                                  color: Colors.black87),
-                              elevation: 16,
-                              style: const TextStyle(color: Colors.black87),
-                              dropdownColor: Colors.white,
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  selectedStage = newValue!;
-                                });
-                              },
-                              items: stages.map<DropdownMenuItem<String>>(
-                                  (String stage) {
-                                return DropdownMenuItem<String>(
-                                  value: stage,
-                                  child: Text(stage),
-                                );
-                              }).toList(),
+                            const Text('Stage 1'),
+                          ],
+                        ),
+                        const SizedBox(height: 5),
+                        Row(
+                          children: [
+                            Image.asset(
+                              'assets/images/stage1_icon.png',
+                              height: 40,
+                              width: 40,
                             ),
-                          ),
-                          const SizedBox(height: 10),
-                          const Text(
-                            'LEGENDS',
-                            style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
+                            const Text('Stage 2'),
+                          ],
+                        ),
+                        const SizedBox(height: 5),
+                        Row(
+                          children: [
+                            Image.asset(
+                              'assets/images/stage2_icon.png',
+                              height: 40,
+                              width: 40,
                             ),
-                          ),
-                          const SizedBox(height: 10),
-                          Row(
-                            children: [
-                              Image.asset(
-                                'assets/images/tree_icon.png',
-                                height: 40,
-                                width: 40,
-                              ),
-                              const Text('Stage 1'),
-                            ],
-                          ),
-                          const SizedBox(height: 5),
-                          Row(
-                            children: [
-                              Image.asset(
-                                'assets/images/stage1_icon.png',
-                                height: 40,
-                                width: 40,
-                              ),
-                              const Text('Stage 2'),
-                            ],
-                          ),
-                          const SizedBox(height: 5),
-                          Row(
-                            children: [
-                              Image.asset(
-                                'assets/images/stage2_icon.png',
-                                height: 40,
-                                width: 40,
-                              ),
-                              const Text('Stage 3'),
-                            ],
-                          ),
-                          const SizedBox(height: 5),
-                          Row(
-                            children: [
-                              Image.asset(
-                                'assets/images/stage3_icon.png',
-                                height: 40,
-                                width: 40,
-                              ),
-                              const Text('Stage 4'),
-                            ],
-                          ),
-                          const SizedBox(height: 15),
-                        ],
-                      ),
+                            const Text('Stage 3'),
+                          ],
+                        ),
+                        const SizedBox(height: 5),
+                        Row(
+                          children: [
+                            Image.asset(
+                              'assets/images/stage3_icon.png',
+                              height: 40,
+                              width: 40,
+                            ),
+                            const Text('Stage 4'),
+                          ],
+                        ),
+                        const SizedBox(height: 15),
+                      ],
                     ),
                   ),
+                ),
               ],
             ),
           ),

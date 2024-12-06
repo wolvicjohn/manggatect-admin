@@ -32,7 +32,7 @@ class Dashboard extends StatelessWidget {
             return Center(child: Text('Error: ${snapshot.error}'));
           }
 
-          final List<Map<String, dynamic>> mango_treeList =
+          final List<Map<String, dynamic>> mangoTreelist =
               snapshot.data!.docs.map((doc) {
             return {
               'id': doc.id,
@@ -49,7 +49,7 @@ class Dashboard extends StatelessWidget {
             'no data yet': [],
           };
 
-          for (var mango_tree in mango_treeList) {
+          for (var mango_tree in mangoTreelist) {
             final stage = mango_tree['stage'];
             if (stageData.containsKey(stage)) {
               stageData[stage]!.add(mango_tree);
@@ -124,7 +124,7 @@ class Dashboard extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   // Add the chart below the StageBoxes
-                  DashboardChart(stageData: stageData), 
+                  DashboardChart(stageData: stageData),
                 ],
               ),
             ),
@@ -159,7 +159,6 @@ class StageBox extends StatelessWidget {
         return 'assets/images/logo.png';
     }
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -267,6 +266,4 @@ class StageBox extends StatelessWidget {
       ),
     );
   }
-  
 }
-
