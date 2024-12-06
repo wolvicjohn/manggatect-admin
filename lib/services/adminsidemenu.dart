@@ -1,7 +1,7 @@
 import 'package:adminmangga/pages/alltreelocationpage.dart';
 import 'package:adminmangga/pages/archivepage.dart';
 import 'package:adminmangga/pages/dashboard.dart';
-import 'package:adminmangga/pages/home_page.dart';
+import 'package:adminmangga/pages/data_table.dart';
 import 'package:adminmangga/pages/info.dart';
 import 'package:adminmangga/pages/login/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -20,14 +20,13 @@ class _AdminSideMenuState extends State<AdminSideMenu> {
 
   @override
   Widget build(BuildContext context) {
-    
     // Check if the user is authenticated
     final User? user = FirebaseAuth.instance.currentUser;
     if (user == null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.pushReplacementNamed(context, '/loginpage');
       });
-      return const SizedBox(); 
+      return const SizedBox();
     }
 
     // If user is authenticated, show the admin menu
@@ -55,7 +54,7 @@ class _AdminSideMenuState extends State<AdminSideMenu> {
         return const AllTreeLocationPage();
       case '/archivepage':
         return const ArchivePage();
-        case '/infopage':
+      case '/infopage':
         return const InfoPage();
       default:
         return const Dashboard();
@@ -101,19 +100,23 @@ class AdminAppBar {
                         onPressed: () {
                           Navigator.of(context).pop(false);
                         },
-                        child: const Text("Cancel",style: TextStyle(color: Colors.grey),),
+                        child: const Text(
+                          "Cancel",
+                          style: TextStyle(color: Colors.grey),
+                        ),
                       ),
                       TextButton(
                         onPressed: () {
                           Navigator.of(context).pop(true);
                         },
-                        child: const Text("Logout",style: TextStyle(color: Colors.red)),
+                        child: const Text("Logout",
+                            style: TextStyle(color: Colors.red)),
                       ),
                     ],
                   );
                 },
               );
-          
+
               if (confirm == true) {
                 FirebaseAuth.instance.signOut();
                 Navigator.of(context).pushAndRemoveUntil(

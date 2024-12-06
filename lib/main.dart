@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 // import 'package:get/get.dart';
 import 'pages/alltreelocationpage.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -26,12 +25,12 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       // routes
       routes: {
-        '/': (context) => AdminSideMenu(), 
+        '/': (context) => const AdminSideMenu(),
         '/loginpage': (context) => const LoginPage(),
-        '/tree-map': (context) => const AllTreeLocationPage(), 
-        '/archivepage': (context) => const ArchivePage(), 
-        '/dashboard': (context) => const Dashboard(), 
-        '/infopage' : (context) => const InfoPage(),
+        '/tree-map': (context) => const AllTreeLocationPage(),
+        '/archivepage': (context) => const ArchivePage(),
+        '/dashboard': (context) => const Dashboard(),
+        '/infopage': (context) => const InfoPage(),
       },
       initialRoute: '/',
     );

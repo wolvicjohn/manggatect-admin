@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -9,7 +7,6 @@ class FirestoreService {
       FirebaseFirestore.instance.collection('mango_tree');
   final FirebaseStorage storage = FirebaseStorage.instance;
 
-  
   // Update the archive status of a mango_tree
   Future<void> updateArchiveStatus(String docID, bool isArchived) async {
     try {

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 import 'package:intl/intl.dart';
-import '../services/admin_panel.dart';
 
 class ArchivePage extends StatefulWidget {
   const ArchivePage({Key? key}) : super(key: key);
@@ -66,7 +65,7 @@ class _ArchivePageState extends State<ArchivePage> {
                             );
                           }
 
-                          List<DocumentSnapshot> mango_treeList =
+                          List<DocumentSnapshot> mangoTreelist =
                               snapshot.data!.docs;
 
                           return ListView(
@@ -120,7 +119,7 @@ class _ArchivePageState extends State<ArchivePage> {
                                       ),
                                     ],
                                   ),
-                                  ...mango_treeList.map((document) {
+                                  ...mangoTreelist.map((document) {
                                     Map<String, dynamic> data =
                                         document.data() as Map<String, dynamic>;
                                     String imageStageUrl =
@@ -134,10 +133,8 @@ class _ArchivePageState extends State<ArchivePage> {
                                           child: imageStageUrl != 'N/A'
                                               ? Image.network(
                                                   imageStageUrl,
-                                                  width:
-                                                      70, 
-                                                  height:
-                                                      80, 
+                                                  width: 70,
+                                                  height: 80,
                                                   fit: BoxFit.cover,
                                                 )
                                               : const Text('No Image'),

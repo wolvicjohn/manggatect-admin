@@ -12,14 +12,13 @@ class SideMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double _width = MediaQuery.of(context).size.width;
+    double width = MediaQuery.of(context).size.width;
     return Container(
       color: light,
       child: ListView(
         children: [
-          if (ResponsiveWidget.isSmallScreen(context))
-            _buildLogoAndName(_width),
-          SizedBox(height: 40),
+          if (ResponsiveWidget.isSmallScreen(context)) _buildLogoAndName(width),
+          const SizedBox(height: 40),
           Divider(color: lightgrey.withOpacity(.1)),
           _buildMenuItems(context),
         ],
@@ -32,12 +31,12 @@ class SideMenu extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        SizedBox(height: 40),
+        const SizedBox(height: 40),
         Row(
           children: [
             SizedBox(width: width / 48),
             Padding(
-              padding: EdgeInsets.only(right: 12),
+              padding: const EdgeInsets.only(right: 12),
               child: Image.asset("assets/images/logo.png"),
             ),
             Flexible(

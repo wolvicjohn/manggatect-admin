@@ -5,7 +5,7 @@ import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 class TaggedTreePage extends StatelessWidget {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-   TaggedTreePage({super.key});
+  TaggedTreePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +36,12 @@ class TaggedTreePage extends StatelessWidget {
           return ListView.builder(
             itemCount: allMangoTree.length,
             itemBuilder: (context, index) {
-              final mango_tree = allMangoTree[index].data() as Map<String, dynamic>;
-              final String title = mango_tree['title'] ?? 'Untitled';
-              final String longitude = mango_tree['longitude'] ?? 'N/A';
-              final String latitude = mango_tree['latitude'] ?? 'N/A';
-              final String? imageUrl = mango_tree['imageUrl'];
+              final mangoTree =
+                  allMangoTree[index].data() as Map<String, dynamic>;
+              final String title = mangoTree['title'] ?? 'Untitled';
+              final String longitude = mangoTree['longitude'] ?? 'N/A';
+              final String latitude = mangoTree['latitude'] ?? 'N/A';
+              final String? imageUrl = mangoTree['imageUrl'];
 
               return Card(
                 margin: const EdgeInsets.all(8.0),
