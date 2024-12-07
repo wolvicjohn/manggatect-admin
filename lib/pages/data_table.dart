@@ -307,228 +307,220 @@ class _HomepageState extends State<Homepage> {
           ),
 
           // View panel
-          SingleChildScrollView(
-            child: Expanded(
-              flex: 2,
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Container(
-                  margin: const EdgeInsets.all(16.0),
-                  padding: const EdgeInsets.all(16.0),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 10.0,
-                        offset: const Offset(0, 5),
-                      ),
-                    ],
-                  ),
-                  child: selectedmango_tree == null
-                      ? const Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Select data to View details.",
-                              style: TextStyle(
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ],
-                        )
-                      : Column(
-                          children: [
-                            const Text(
-                              "Tree Detail",
-                              style: TextStyle(
-                                fontSize: 22.0,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.blueAccent,
-                              ),
-                            ),
-                            const SizedBox(height: 16.0),
-                            const Divider(
-                                color: Colors.blueAccent, thickness: 2.0),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 5, vertical: 5),
-                                  decoration: BoxDecoration(
-                                      color: Colors.grey,
-                                      borderRadius: BorderRadius.circular(5)),
-                                  child: Column(
-                                    children: [
-                                      const Text('Tree Image'),
-                                      const SizedBox(height: 5),
-                                      selectedmango_tree!['imageUrl'] != null
-                                          ? Image.network(
-                                              selectedmango_tree!['imageUrl'] ??
-                                                  '',
-                                              width: 250,
-                                              height: 250,
-                                              fit: BoxFit.cover,
-                                            )
-                                          : const Center(
-                                              child: Text(
-                                                "No image available",
-                                                style: TextStyle(
-                                                    color: Colors.grey),
-                                              ),
-                                            ),
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(width: 8.0),
-                                Container(
-                                  padding: const EdgeInsets.all(5),
-                                  decoration: BoxDecoration(
-                                      color: Colors.green,
-                                      borderRadius: BorderRadius.circular(5)),
-                                  child: Column(
-                                    children: [
-                                      const Text('Flower Stage'),
-                                      const SizedBox(height: 5),
-                                      selectedmango_tree!['stageImageUrl'] !=
-                                              null
-                                          ? Image.network(
-                                              selectedmango_tree![
-                                                      'stageImageUrl'] ??
-                                                  '',
-                                              width: 250,
-                                              height: 250,
-                                              fit: BoxFit.cover,
-                                            )
-                                          : const Center(
-                                              child: Text(
-                                                "No image available",
-                                                style: TextStyle(
-                                                    color: Colors.grey),
-                                              ),
-                                            ),
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(width: 8.0),
-                                Container(
-                                  padding: EdgeInsets.all(15),
-                                  decoration: BoxDecoration(
-                                      color: Colors.green,
-                                      borderRadius: BorderRadius.circular(5)),
-                                  child: Column(
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "DocID: ${selectedmango_tree!['docID'] ?? 'N/A'}",
-                                            style: const TextStyle(
-                                              fontSize: 18.0,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.black87,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 8.0),
-                                          Text(
-                                            "Longitude: ${selectedmango_tree!['longitude'] ?? 'N/A'}",
-                                            style: const TextStyle(
-                                              fontSize: 18.0,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.black87,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 8.0),
-                                          Text(
-                                            "Latitude: ${selectedmango_tree!['latitude'] ?? 'N/A'}",
-                                            style: const TextStyle(
-                                              fontSize: 18.0,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.black87,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 8.0),
-                                          Text(
-                                            "Stage: ${selectedmango_tree!['stage'] ?? 'N/A'}",
-                                            style: const TextStyle(
-                                              fontSize: 18.0,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.black87,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 16.0),
-
-                                      // QR Code button
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          ElevatedButton(
-                                            onPressed: () {
-                                              String docID =
-                                                  selectedmango_tree?['docID'];
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      QRCodeGeneratorPage(
-                                                          docID: docID),
-                                                ),
-                                              );
-                                            },
-                                            style: ElevatedButton.styleFrom(
-                                              backgroundColor: Colors.blue,
-                                              foregroundColor: Colors.white,
-                                            ),
-                                            child:
-                                                const Text('Generate QR Code'),
-                                          ),
-                                          const SizedBox(height: 16.0),
-                                          // Location button
-                                          ElevatedButton(
-                                            onPressed: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      TreeLocationPage(
-                                                    latitude: double.tryParse(
-                                                            selectedmango_tree![
-                                                                    'latitude'] ??
-                                                                '0.0') ??
-                                                        0.0,
-                                                    longitude: double.tryParse(
-                                                            selectedmango_tree![
-                                                                    'longitude'] ??
-                                                                '0.0') ??
-                                                        0.0,
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                            style: ElevatedButton.styleFrom(
-                                              backgroundColor: Colors.green,
-                                              foregroundColor: Colors.white,
-                                            ),
-                                            child: const Text('Get Location'),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+          Expanded(
+            flex: 2,
+            child: SingleChildScrollView(
+              child: Container(
+                margin: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16.0),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 10.0,
+                      offset: const Offset(0, 5),
+                    ),
+                  ],
                 ),
+                child: selectedmango_tree == null
+                    ? const Column(
+                        children: [
+                          Text(
+                            "Select data to View details.",
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      )
+                    : Column(
+                        children: [
+                          const Text(
+                            "Tree Detail",
+                            style: TextStyle(
+                              fontSize: 22.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blueAccent,
+                            ),
+                          ),
+                          const SizedBox(height: 16.0),
+                          const Divider(color: Colors.blueAccent, thickness: 2.0),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 5, vertical: 5),
+                                decoration: BoxDecoration(
+                                    color: Colors.grey,
+                                    borderRadius: BorderRadius.circular(5)),
+                                child: Column(
+                                  children: [
+                                    const Text('Tree Image'),
+                                    const SizedBox(height: 5),
+                                    selectedmango_tree!['imageUrl'] != null
+                                        ? Image.network(
+                                            selectedmango_tree!['imageUrl'] ?? '',
+                                            width: 250,
+                                            height: 250,
+                                            fit: BoxFit.cover,
+                                          )
+                                        : const Center(
+                                            child: Text(
+                                              "No image available",
+                                              style:
+                                                  TextStyle(color: Colors.grey),
+                                            ),
+                                          ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(width: 8.0),
+                              Container(
+                                padding: const EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                    color: Colors.green,
+                                    borderRadius: BorderRadius.circular(5)),
+                                child: Column(
+                                  children: [
+                                    const Text('Flower Stage'),
+                                    const SizedBox(height: 5),
+                                    selectedmango_tree!['stageImageUrl'] != null
+                                        ? Image.network(
+                                            selectedmango_tree![
+                                                    'stageImageUrl'] ??
+                                                '',
+                                            width: 250,
+                                            height: 250,
+                                            fit: BoxFit.cover,
+                                          )
+                                        : const Center(
+                                            child: Text(
+                                              "No image available",
+                                              style:
+                                                  TextStyle(color: Colors.grey),
+                                            ),
+                                          ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(width: 8.0),
+                              Container(
+                                padding: EdgeInsets.all(15),
+                                decoration: BoxDecoration(
+                                    color: Colors.green,
+                                    borderRadius: BorderRadius.circular(5)),
+                                child: Column(
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "DocID: ${selectedmango_tree!['docID'] ?? 'N/A'}",
+                                          style: const TextStyle(
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.black87,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 8.0),
+                                        Text(
+                                          "Longitude: ${selectedmango_tree!['longitude'] ?? 'N/A'}",
+                                          style: const TextStyle(
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.black87,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 8.0),
+                                        Text(
+                                          "Latitude: ${selectedmango_tree!['latitude'] ?? 'N/A'}",
+                                          style: const TextStyle(
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.black87,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 8.0),
+                                        Text(
+                                          "Stage: ${selectedmango_tree!['stage'] ?? 'N/A'}",
+                                          style: const TextStyle(
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.black87,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 16.0),
+              
+                                    // QR Code button
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            String docID =
+                                                selectedmango_tree?['docID'];
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    QRCodeGeneratorPage(
+                                                        docID: docID),
+                                              ),
+                                            );
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.blue,
+                                            foregroundColor: Colors.white,
+                                          ),
+                                          child: const Text('Generate QR Code'),
+                                        ),
+                                        const SizedBox(height: 16.0),
+                                        // Location button
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    TreeLocationPage(
+                                                  latitude: double.tryParse(
+                                                          selectedmango_tree![
+                                                                  'latitude'] ??
+                                                              '0.0') ??
+                                                      0.0,
+                                                  longitude: double.tryParse(
+                                                          selectedmango_tree![
+                                                                  'longitude'] ??
+                                                              '0.0') ??
+                                                      0.0,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.green,
+                                            foregroundColor: Colors.white,
+                                          ),
+                                          child: const Text('Get Location'),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
               ),
             ),
           ),
