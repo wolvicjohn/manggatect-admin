@@ -66,18 +66,16 @@ class _HomepageState extends State<Homepage> {
                                           TableBorder.all(color: Colors.grey),
                                       columnWidths: {
                                         0: const FlexColumnWidth(
-                                            0.75), // Image column
+                                            0.5), // Image column
                                         1: const FlexColumnWidth(
-                                            0.5), // Stage column
-                                        1: FlexColumnWidth(
-                                            constraints.maxWidth > 600
-                                                ? 1
-                                                : 0.8),
-                                        2: FlexColumnWidth(
+                                            0.3), // Stage column
+                                        2: const FlexColumnWidth(
+                                            0.5),
+                                        3: FlexColumnWidth(
                                             constraints.maxWidth > 600
                                                 ? 1
                                                 : 0.8), // Date column
-                                        3: FlexColumnWidth(
+                                        4: FlexColumnWidth(
                                             constraints.maxWidth > 600
                                                 ? 1
                                                 : 0.8), // Actions column
@@ -332,8 +330,6 @@ class _HomepageState extends State<Homepage> {
               ),
             ),
           ),
-
-          // View panel
           Expanded(
             flex: 2,
             child: SingleChildScrollView(
@@ -380,6 +376,7 @@ class _HomepageState extends State<Homepage> {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              // Tree Image
                               Container(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 5, vertical: 5),
@@ -409,6 +406,7 @@ class _HomepageState extends State<Homepage> {
                                 ),
                               ),
                               const SizedBox(width: 8.0),
+                              // Flower Stage
                               Container(
                                 padding: const EdgeInsets.all(5),
                                 decoration: BoxDecoration(
@@ -438,115 +436,123 @@ class _HomepageState extends State<Homepage> {
                                 ),
                               ),
                               const SizedBox(width: 8.0),
+                              // Details
                               Container(
-                                padding: EdgeInsets.all(15),
+                                padding: const EdgeInsets.all(15),
                                 decoration: BoxDecoration(
                                     color: Colors.green,
                                     borderRadius: BorderRadius.circular(5)),
                                 child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "DocID: ${selectedmango_tree!['docID'] ?? 'N/A'}",
-                                          style: const TextStyle(
-                                            fontSize: 18.0,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.black87,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 8.0),
-                                        Text(
-                                          "Longitude: ${selectedmango_tree!['longitude'] ?? 'N/A'}",
-                                          style: const TextStyle(
-                                            fontSize: 18.0,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.black87,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 8.0),
-                                        Text(
-                                          "Latitude: ${selectedmango_tree!['latitude'] ?? 'N/A'}",
-                                          style: const TextStyle(
-                                            fontSize: 18.0,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.black87,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 8.0),
-                                        Text(
-                                          "Stage: ${selectedmango_tree!['stage'] ?? 'N/A'}",
-                                          style: const TextStyle(
-                                            fontSize: 18.0,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.black87,
-                                          ),
-                                        ),
-                                      ],
+                                    Text(
+                                      "DocID: ${selectedmango_tree!['docID'] ?? 'N/A'}",
+                                      style: const TextStyle(
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black87,
+                                      ),
                                     ),
-                                    const SizedBox(height: 16.0),
-
-                                    // QR Code button
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            String docID =
-                                                selectedmango_tree?['docID'];
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    QRCodeGeneratorPage(
-                                                        docID: docID),
-                                              ),
-                                            );
-                                          },
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.blue,
-                                            foregroundColor: Colors.white,
-                                          ),
-                                          child: const Text('Generate QR Code'),
-                                        ),
-                                        const SizedBox(height: 16.0),
-                                        // Location button
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    TreeLocationPage(
-                                                  latitude: double.tryParse(
-                                                          selectedmango_tree![
-                                                                  'latitude'] ??
-                                                              '0.0') ??
-                                                      0.0,
-                                                  longitude: double.tryParse(
-                                                          selectedmango_tree![
-                                                                  'longitude'] ??
-                                                              '0.0') ??
-                                                      0.0,
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.green,
-                                            foregroundColor: Colors.white,
-                                          ),
-                                          child: const Text('Get Location'),
-                                        ),
-                                      ],
+                                    const SizedBox(height: 8.0),
+                                    Text(
+                                      "Longitude: ${selectedmango_tree!['longitude'] ?? 'N/A'}",
+                                      style: const TextStyle(
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black87,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8.0),
+                                    Text(
+                                      "Latitude: ${selectedmango_tree!['latitude'] ?? 'N/A'}",
+                                      style: const TextStyle(
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black87,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8.0),
+                                    Text(
+                                      "Stage: ${selectedmango_tree!['stage'] ?? 'N/A'}",
+                                      style: const TextStyle(
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black87,
+                                      ),
                                     ),
                                   ],
                                 ),
                               ),
                             ],
+                          ),
+                          const SizedBox(height: 16.0),
+                          // History Section
+                          const Divider(
+                              color: Colors.blueAccent, thickness: 2.0),
+                          const Text(
+                            "History",
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blueAccent,
+                            ),
+                          ),
+                          const SizedBox(height: 8.0),
+                          StreamBuilder<QuerySnapshot>(
+                            stream: FirebaseFirestore.instance
+                                .collection('mango_tree')
+                                .doc(selectedmango_tree!['docID'])
+                                .collection('history')
+                                .orderBy('moved_at', descending: true)
+                                .snapshots(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Center(
+                                    child: CircularProgressIndicator());
+                              }
+
+                              if (!snapshot.hasData ||
+                                  snapshot.data!.docs.isEmpty) {
+                                return const Center(
+                                    child: Text("No history available."));
+                              }
+
+                              var historyDocs = snapshot.data!.docs;
+
+                              return ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: historyDocs.length,
+                                itemBuilder: (context, index) {
+                                  var history = historyDocs[index].data()
+                                      as Map<String, dynamic>;
+
+                                  return ListTile(
+                                    title: Text(
+                                        "Stage: ${history['stage'] ?? 'N/A'}"),
+                                    subtitle: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        if (history['moved_at'] != null)
+                                          Text(
+                                            "Updated on: ${DateFormat('EEEE, MMMM dd, yyyy h:mm a').format(history['moved_at'].toDate())}",
+                                          ),
+                                      ],
+                                    ),
+                                    trailing: history['stageImageUrl'] != null
+                                        ? Image.network(
+                                            history['stageImageUrl'],
+                                            width: 100,
+                                            height: 100,
+                                            fit: BoxFit.cover,
+                                          )
+                                        : null,
+                                  );
+                                },
+                              );
+                            },
                           ),
                         ],
                       ),
