@@ -4,7 +4,6 @@ import 'package:adminmangga/pages/qrcodegeneratorpage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:adminmangga/services/firestore.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 import 'package:intl/intl.dart';
 
@@ -70,6 +69,10 @@ class _HomepageState extends State<Homepage> {
                                             0.75), // Image column
                                         1: const FlexColumnWidth(
                                             0.5), // Stage column
+                                        1: FlexColumnWidth(
+                                            constraints.maxWidth > 600
+                                                ? 1
+                                                : 0.8),
                                         2: FlexColumnWidth(
                                             constraints.maxWidth > 600
                                                 ? 1
@@ -100,6 +103,16 @@ class _HomepageState extends State<Homepage> {
                                               padding: EdgeInsets.all(8.0),
                                               child: Text(
                                                 "Stage",
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.all(8.0),
+                                              child: Text(
+                                                "Uploader",
                                                 style: TextStyle(
                                                   fontWeight: FontWeight.bold,
                                                   color: Colors.white,
@@ -160,6 +173,20 @@ class _HomepageState extends State<Homepage> {
                                                         const EdgeInsets.all(
                                                             8.0),
                                                     child: Text(data['stage']
+                                                            ?.toString() ??
+                                                        'N/A'),
+                                                  ),
+                                                ],
+                                              ),
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Text(data['uploader']
                                                             ?.toString() ??
                                                         'N/A'),
                                                   ),
@@ -348,7 +375,8 @@ class _HomepageState extends State<Homepage> {
                             ),
                           ),
                           const SizedBox(height: 16.0),
-                          const Divider(color: Colors.blueAccent, thickness: 2.0),
+                          const Divider(
+                              color: Colors.blueAccent, thickness: 2.0),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -364,7 +392,8 @@ class _HomepageState extends State<Homepage> {
                                     const SizedBox(height: 5),
                                     selectedmango_tree!['imageUrl'] != null
                                         ? Image.network(
-                                            selectedmango_tree!['imageUrl'] ?? '',
+                                            selectedmango_tree!['imageUrl'] ??
+                                                '',
                                             width: 250,
                                             height: 250,
                                             fit: BoxFit.cover,
@@ -458,7 +487,7 @@ class _HomepageState extends State<Homepage> {
                                       ],
                                     ),
                                     const SizedBox(height: 16.0),
-              
+
                                     // QR Code button
                                     Column(
                                       mainAxisAlignment:

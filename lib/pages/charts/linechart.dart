@@ -32,7 +32,7 @@ class DashboardChart extends StatelessWidget {
     ];
 
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(8.0), 
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,7 +47,7 @@ class DashboardChart extends StatelessWidget {
                     BarChartRodData(
                       toY: entry.value.toDouble(),
                       borderRadius: BorderRadius.circular(4),
-                      width: 16,
+                      width: 12, // Reduced bar width
                       gradient: LinearGradient(colors: gradientColors),
                     ),
                   ],
@@ -59,7 +59,7 @@ class DashboardChart extends StatelessWidget {
               color: Colors.blueAccent,
             ),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: 16), // Reduced spacing
 
             // Daily Uploads Chart
             _buildChartCard(
@@ -74,7 +74,7 @@ class DashboardChart extends StatelessWidget {
                       gradient: const LinearGradient(
                         colors: [Colors.greenAccent, Colors.lightGreen],
                       ),
-                      width: 16,
+                      width: 12, // Reduced bar width
                     ),
                   ],
                   showingTooltipIndicators: [0],
@@ -98,25 +98,25 @@ class DashboardChart extends StatelessWidget {
     required Color color,
   }) {
     return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)), // Reduced border radius
+      elevation: 3, // Reduced elevation
       shadowColor: Colors.grey.withOpacity(0.4),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(12.0), // Reduced padding
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               title,
               style: const TextStyle(
-                fontSize: 20,
+                fontSize: 16, // Reduced font size
                 fontWeight: FontWeight.w700,
                 color: Colors.black87,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 12), // Reduced spacing
             AspectRatio(
-              aspectRatio: 1.5,
+              aspectRatio: 2.0, // Increased aspect ratio to make charts shorter
               child: BarChart(
                 BarChartData(
                   alignment: BarChartAlignment.spaceAround,
@@ -129,7 +129,7 @@ class DashboardChart extends StatelessWidget {
                           '${labels[group.x]}: ${rod.toY.toInt()}',
                           const TextStyle(
                             color: Colors.white,
-                            fontSize: 14,
+                            fontSize: 12, // Reduced font size
                           ),
                         );
                       },
@@ -138,25 +138,25 @@ class DashboardChart extends StatelessWidget {
                   titlesData: FlTitlesData(
                     leftTitles: AxisTitles(
                       sideTitles: SideTitles(
-                        reservedSize: 40,
+                        reservedSize: 30, // Reduced reserved size
                         showTitles: true,
                         getTitlesWidget: (value, meta) {
                           return Text(
                             value.toInt().toString(),
-                            style: const TextStyle(fontSize: 12),
+                            style: const TextStyle(fontSize: 10), // Reduced font size
                           );
                         },
                       ),
                     ),
                     bottomTitles: AxisTitles(
                       sideTitles: SideTitles(
-                        reservedSize: 40,
+                        reservedSize: 30, // Reduced reserved size
                         showTitles: true,
                         getTitlesWidget: (value, meta) {
                           if (value.toInt() >= 0 && value.toInt() < labels.length) {
                             return Text(
                               labels[value.toInt()],
-                              style: const TextStyle(fontSize: 12),
+                              style: const TextStyle(fontSize: 10), // Reduced font size
                             );
                           }
                           return const Text('');

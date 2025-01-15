@@ -3,18 +3,18 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 class FirestoreService {
   // Get collection
-  final CollectionReference mango_tree =
-      FirebaseFirestore.instance.collection('mango_tree');
+  final CollectionReference mangoTree =
+      FirebaseFirestore.instance.collection('mangoTree');
   final FirebaseStorage storage = FirebaseStorage.instance;
 
-  // Update the archive status of a mango_tree
+  // Update the archive status of a mangoTree
   Future<void> updateArchiveStatus(String docID, bool isArchived) async {
     try {
       // Check if the document exists before updating
-      DocumentSnapshot doc = await mango_tree.doc(docID).get();
+      DocumentSnapshot doc = await mangoTree.doc(docID).get();
       if (doc.exists) {
         // Document exists, proceed to update
-        await mango_tree.doc(docID).update({'isArchived': isArchived});
+        await mangoTree.doc(docID).update({'isArchived': isArchived});
         print('Archive status updated successfully');
       } else {
         // Document doesn't exist
@@ -26,35 +26,35 @@ class FirestoreService {
     }
   }
 
-  // Delete a specific mango_tree
-  Future<void> deletemango_tree(String docID) async {
+  // Delete a specific mangoTree
+  Future<void> deletemangoTree(String docID) async {
     try {
-      await mango_tree.doc(docID).delete();
-      print('mango_tree deleted');
+      await mangoTree.doc(docID).delete();
+      print('mangoTree deleted');
     } catch (e) {
-      print('Error deleting mango_tree: $e');
+      print('Error deleting mangoTree: $e');
       rethrow;
     }
   }
 
-  // Get a specific mango_tree by ID
-  Future<Map<String, dynamic>> getmango_treeById(String docID) async {
+  // Get a specific mangoTree by ID
+  Future<Map<String, dynamic>> getmangoTreeById(String docID) async {
     try {
-      DocumentSnapshot doc = await mango_tree.doc(docID).get();
+      DocumentSnapshot doc = await mangoTree.doc(docID).get();
       return doc.data() as Map<String, dynamic>;
     } catch (e) {
-      print('Error fetching mango_tree by ID: $e');
+      print('Error fetching mangoTree by ID: $e');
       rethrow;
     }
   }
 
-  // Get count of all mango_tree
-  Future<int> getmango_treeCount() async {
+  // Get count of all mangoTree
+  Future<int> getmangoTreeCount() async {
     try {
-      QuerySnapshot snapshot = await mango_tree.get();
+      QuerySnapshot snapshot = await mangoTree.get();
       return snapshot.docs.length;
     } catch (e) {
-      print('Error counting mango_tree: $e');
+      print('Error counting mangoTree: $e');
       rethrow;
     }
   }

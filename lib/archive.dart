@@ -12,7 +12,7 @@ class ArchiveDialog extends StatelessWidget {
     try {
       bool isCurrentlyArchived = false;
 
-      await firestoreService.getmango_treeById(docID).then((doc) {
+      await firestoreService.getmangoTreeById(docID).then((doc) {
         isCurrentlyArchived = doc['isArchived'] ?? false;
       });
 
