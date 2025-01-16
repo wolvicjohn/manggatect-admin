@@ -69,8 +69,7 @@ class _HomepageState extends State<Homepage> {
                                             0.5), // Image column
                                         1: const FlexColumnWidth(
                                             0.3), // Stage column
-                                        2: const FlexColumnWidth(
-                                            0.5),
+                                        2: const FlexColumnWidth(0.5),
                                         3: FlexColumnWidth(
                                             constraints.maxWidth > 600
                                                 ? 1
@@ -338,159 +337,305 @@ class _HomepageState extends State<Homepage> {
                 padding: const EdgeInsets.all(16.0),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(12.0),
+                  borderRadius: BorderRadius.circular(16.0),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withOpacity(0.1),
-                      blurRadius: 10.0,
-                      offset: const Offset(0, 5),
+                      blurRadius: 12.0,
+                      offset: const Offset(0, 6),
                     ),
                   ],
                 ),
                 child: selectedmango_tree == null
-                    ? const Column(
-                        children: [
-                          Text(
-                            "Select data to View details.",
-                            style: TextStyle(
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey,
-                            ),
+                    ? const Center(
+                        child: Text(
+                          "Select data to view details.",
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey,
                           ),
-                        ],
+                        ),
                       )
                     : Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          // Header Section
                           const Text(
-                            "Tree Detail",
+                            "Tree Details",
                             style: TextStyle(
-                              fontSize: 22.0,
+                              fontSize: 24.0,
                               fontWeight: FontWeight.bold,
                               color: Colors.blueAccent,
                             ),
                           ),
                           const SizedBox(height: 16.0),
                           const Divider(
-                              color: Colors.blueAccent, thickness: 2.0),
+                              color: Colors.blueAccent, thickness: 1.5),
+                          const SizedBox(height: 16.0),
+
+                          // Content Section
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // Tree Image
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 5, vertical: 5),
-                                decoration: BoxDecoration(
-                                    color: Colors.grey,
-                                    borderRadius: BorderRadius.circular(5)),
-                                child: Column(
-                                  children: [
-                                    const Text('Tree Image'),
-                                    const SizedBox(height: 5),
-                                    selectedmango_tree!['imageUrl'] != null
-                                        ? Image.network(
-                                            selectedmango_tree!['imageUrl'] ??
-                                                '',
-                                            width: 250,
-                                            height: 250,
-                                            fit: BoxFit.cover,
-                                          )
-                                        : const Center(
-                                            child: Text(
-                                              "No image available",
-                                              style:
-                                                  TextStyle(color: Colors.grey),
+                              // Tree Image Card
+                              Expanded(
+                                flex: 1,
+                                child: Container(
+                                  padding: const EdgeInsets.all(12.0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(12.0),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.05),
+                                        blurRadius: 8.0,
+                                        offset: const Offset(0, 4),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      const Text(
+                                        'Tree Image',
+                                        style: TextStyle(
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black87,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 8.0),
+                                      selectedmango_tree!['imageUrl'] != null
+                                          ? ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
+                                              child: Image.network(
+                                                selectedmango_tree![
+                                                        'imageUrl'] ??
+                                                    '',
+                                                width: double.infinity,
+                                                height: 200,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            )
+                                          : const Center(
+                                              child: Text(
+                                                "No image available",
+                                                style: TextStyle(
+                                                    color: Colors.grey),
+                                              ),
                                             ),
-                                          ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
-                              const SizedBox(width: 8.0),
-                              // Flower Stage
-                              Container(
-                                padding: const EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                    color: Colors.green,
-                                    borderRadius: BorderRadius.circular(5)),
-                                child: Column(
-                                  children: [
-                                    const Text('Flower Stage'),
-                                    const SizedBox(height: 5),
-                                    selectedmango_tree!['stageImageUrl'] != null
-                                        ? Image.network(
-                                            selectedmango_tree![
-                                                    'stageImageUrl'] ??
-                                                '',
-                                            width: 250,
-                                            height: 250,
-                                            fit: BoxFit.cover,
-                                          )
-                                        : const Center(
-                                            child: Text(
-                                              "No image available",
-                                              style:
-                                                  TextStyle(color: Colors.grey),
+                              const SizedBox(width: 12.0),
+
+                              // Flower Stage Card
+                              Expanded(
+                                flex: 1,
+                                child: Container(
+                                  padding: const EdgeInsets.all(12.0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(12.0),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.05),
+                                        blurRadius: 8.0,
+                                        offset: const Offset(0, 4),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      const Text(
+                                        'Flower Stage',
+                                        style: TextStyle(
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black87,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 8.0),
+                                      selectedmango_tree!['stageImageUrl'] !=
+                                              null
+                                          ? ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
+                                              child: Image.network(
+                                                selectedmango_tree![
+                                                        'stageImageUrl'] ??
+                                                    '',
+                                                width: double.infinity,
+                                                height: 200,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            )
+                                          : const Center(
+                                              child: Text(
+                                                "No image available",
+                                                style: TextStyle(
+                                                    color: Colors.grey),
+                                              ),
                                             ),
-                                          ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(width: 8.0),
-                              // Details
-                              Container(
-                                padding: const EdgeInsets.all(15),
-                                decoration: BoxDecoration(
-                                    color: Colors.green,
-                                    borderRadius: BorderRadius.circular(5)),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "DocID: ${selectedmango_tree!['docID'] ?? 'N/A'}",
-                                      style: const TextStyle(
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.black87,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 8.0),
-                                    Text(
-                                      "Longitude: ${selectedmango_tree!['longitude'] ?? 'N/A'}",
-                                      style: const TextStyle(
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.black87,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 8.0),
-                                    Text(
-                                      "Latitude: ${selectedmango_tree!['latitude'] ?? 'N/A'}",
-                                      style: const TextStyle(
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.black87,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 8.0),
-                                    Text(
-                                      "Stage: ${selectedmango_tree!['stage'] ?? 'N/A'}",
-                                      style: const TextStyle(
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.black87,
-                                      ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                             ],
                           ),
                           const SizedBox(height: 16.0),
-                          // History Section
+
+                          // Details Section
+                          Container(
+                            padding: const EdgeInsets.all(12.0),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12.0),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.05),
+                                  blurRadius: 8.0,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Uploaded by: ${selectedmango_tree!['uploader'] ?? 'N/A'}",
+                                  style: const TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                                Text(
+                                  "DocID: ${selectedmango_tree!['docID'] ?? 'N/A'}",
+                                  style: const TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                                const SizedBox(height: 8.0),
+                                Text(
+                                  "Longitude: ${selectedmango_tree!['longitude'] ?? 'N/A'}",
+                                  style: const TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                                Text(
+                                  "Latitude: ${selectedmango_tree!['latitude'] ?? 'N/A'}",
+                                  style: const TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                                Text(
+                                  "Stage: ${selectedmango_tree!['stage'] ?? 'N/A'}",
+                                  style: const TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 16.0),
+
+                          // Buttons
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              ElevatedButton.icon(
+                                onPressed: () {
+                                  String docID = selectedmango_tree?['docID'];
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          QRCodeGeneratorPage(docID: docID),
+                                    ),
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.blue,
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 12.0, horizontal: 16.0),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                ),
+                                icon: const Icon(
+                                  Icons.qr_code,
+                                  color: Colors.white,
+                                ),
+                                label: const Text(
+                                  "Generate QR Code",
+                                  style: TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                              ElevatedButton.icon(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => TreeLocationPage(
+                                        latitude: double.tryParse(
+                                                selectedmango_tree![
+                                                        'latitude'] ??
+                                                    '0.0') ??
+                                            0.0,
+                                        longitude: double.tryParse(
+                                                selectedmango_tree![
+                                                        'longitude'] ??
+                                                    '0.0') ??
+                                            0.0,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.green,
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 12.0, horizontal: 16.0),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                ),
+                                icon: const Icon(
+                                  Icons.location_pin,
+                                  color: Colors.white,
+                                ),
+                                label: const Text(
+                                  "Get Location",
+                                  style: TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 16.0),
+
+                          // Progress Report
                           const Divider(
-                              color: Colors.blueAccent, thickness: 2.0),
+                              color: Colors.blueAccent, thickness: 1.5),
                           const Text(
-                            "History",
+                            "Progress Report",
                             style: TextStyle(
                               fontSize: 20.0,
                               fontWeight: FontWeight.bold,
@@ -509,13 +654,15 @@ class _HomepageState extends State<Homepage> {
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting) {
                                 return const Center(
-                                    child: CircularProgressIndicator());
+                                  child: CircularProgressIndicator(),
+                                );
                               }
 
                               if (!snapshot.hasData ||
                                   snapshot.data!.docs.isEmpty) {
                                 return const Center(
-                                    child: Text("No history available."));
+                                  child: Text("No history available."),
+                                );
                               }
 
                               var historyDocs = snapshot.data!.docs;
@@ -528,27 +675,41 @@ class _HomepageState extends State<Homepage> {
                                   var history = historyDocs[index].data()
                                       as Map<String, dynamic>;
 
-                                  return ListTile(
-                                    title: Text(
-                                        "Stage: ${history['stage'] ?? 'N/A'}"),
-                                    subtitle: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        if (history['moved_at'] != null)
-                                          Text(
-                                            "Updated on: ${DateFormat('EEEE, MMMM dd, yyyy h:mm a').format(history['moved_at'].toDate())}",
-                                          ),
-                                      ],
+                                  return Card(
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 8.0, horizontal: 0.0),
+                                    elevation: 3.0,
+                                    child: ListTile(
+                                      title: Text(
+                                        "Stage: ${history['stage'] ?? 'N/A'}",
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black87,
+                                        ),
+                                      ),
+                                      subtitle: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          if (history['moved_at'] != null)
+                                            Text(
+                                              "Updated on: ${DateFormat('EEEE, MMMM dd, yyyy h:mm a').format(history['moved_at'].toDate())}",
+                                            ),
+                                        ],
+                                      ),
+                                      trailing: history['stageImageUrl'] != null
+                                          ? ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
+                                              child: Image.network(
+                                                history['stageImageUrl'],
+                                                width: 60,
+                                                height: 60,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            )
+                                          : null,
                                     ),
-                                    trailing: history['stageImageUrl'] != null
-                                        ? Image.network(
-                                            history['stageImageUrl'],
-                                            width: 100,
-                                            height: 100,
-                                            fit: BoxFit.cover,
-                                          )
-                                        : null,
                                   );
                                 },
                               );

@@ -35,7 +35,7 @@ class _ArchivePageState extends State<ArchivePage> {
                     const Padding(
                       padding: EdgeInsets.all(16.0),
                       child: Text(
-                        "Archived Data",
+                        "Archived Trees",
                         style: TextStyle(
                           fontSize: 24.0,
                           fontWeight: FontWeight.bold,
@@ -61,7 +61,7 @@ class _ArchivePageState extends State<ArchivePage> {
                           if (!snapshot.hasData ||
                               snapshot.data!.docs.isEmpty) {
                             return const Center(
-                              child: Text("No Archived Data..."),
+                              child: Text("No Archived Trees..."),
                             );
                           }
 
@@ -74,10 +74,10 @@ class _ArchivePageState extends State<ArchivePage> {
                                 border: TableBorder.all(color: Colors.grey),
                                 columnWidths: const {
                                   0: FlexColumnWidth(
-                                      0.7), // Adjusted for imageStageUrl
-                                  1: FlexColumnWidth(.5), // Adjusted for stage
-                                  2: FlexColumnWidth(1), // Adjusted for date
-                                  3: FlexColumnWidth(1), // Adjusted for actions
+                                      0.7), 
+                                  1: FlexColumnWidth(.5), 
+                                  2: FlexColumnWidth(1),
+                                  3: FlexColumnWidth(1), 
                                 },
                                 children: [
                                   const TableRow(

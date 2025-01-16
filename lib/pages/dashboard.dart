@@ -88,7 +88,7 @@ class Dashboard extends StatelessWidget {
                         ),
                         // margin: EdgeInsets.all(16),
                         child: const Text(
-                          'Dashboard 11',
+                          'Dashboard',
                           style: TextStyle(
                             fontSize: 30,
                             fontWeight: FontWeight.bold,
@@ -122,9 +122,9 @@ class Dashboard extends StatelessWidget {
                           mango_tree: stageData['no data yet']!),
                     ],
                   ),
-                  const SizedBox(height: 16),
-                  // Add the chart below the StageBoxes
-                  DashboardChart(stageData: stageData),
+                  // const SizedBox(height: 16),
+                  // // Add the chart below the StageBoxes
+                  // DashboardChart(stageData: stageData),
                 ],
               ),
             ),
