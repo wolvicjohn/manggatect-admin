@@ -1,7 +1,8 @@
 import 'package:adminmangga/pages/alltreelocationpage.dart';
 import 'package:adminmangga/pages/archivepage.dart';
 import 'package:adminmangga/pages/dashboard.dart';
-import 'package:adminmangga/pages/data_table.dart';
+import 'package:adminmangga/pages/datatable/homepage.dart';
+// import 'package:adminmangga/pages/data_table.dart';
 import 'package:adminmangga/pages/info.dart';
 import 'package:adminmangga/pages/login/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
