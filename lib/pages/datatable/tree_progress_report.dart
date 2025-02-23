@@ -189,7 +189,7 @@ class TreeProgressReport extends StatelessWidget {
                                         child: Image.network(
                                           history['stageImageUrl'],
                                           height: 200,
-                                          width: double.infinity,
+                                          width: 200,
                                           fit: BoxFit.cover,
                                         ),
                                       ),

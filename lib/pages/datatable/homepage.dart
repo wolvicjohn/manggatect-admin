@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 import 'package:adminmangga/pages/datatable/tree_data_table.dart';
 
-
-class Homepage extends StatelessWidget {  // Changed to StatelessWidget since we don't need state anymore
+class Homepage extends StatelessWidget {
+  // Changed to StatelessWidget since we don't need state anymore
   const Homepage({super.key});
 
   @override
@@ -22,20 +22,40 @@ class Homepage extends StatelessWidget {  // Changed to StatelessWidget since we
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Mango Tree Management',
-                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      color: Colors.grey.shade800,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+                        padding: const EdgeInsets.all(30),
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 20, 116, 82),
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(8.0),
+                            topRight: Radius.circular(8.0),
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              offset: const Offset(0, 6),
+                              blurRadius: 12.0,
+                              spreadRadius: 0.0,
+                            ),
+                          ],
+                        ),
+                        // margin: EdgeInsets.all(16),
+                        child: const Text(
+                          'Mango Tree Records',
+                          style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 8),
-                  Text(
-                    'Monitor and manage your mango tree records',
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Colors.grey.shade600,
-                    ),
-                  ),
                 ],
               ),
             ),

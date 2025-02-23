@@ -113,15 +113,15 @@ class Dashboard extends StatelessWidget {
                           stage: 'stage-4', mango_tree: stageData['stage-4']!),
                     ],
                   ),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      StageBox(
-                          stage: 'Not classified',
-                          mango_tree: stageData['no data yet']!),
-                    ],
-                  ),
+                  // const SizedBox(height: 16),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: [
+                  //     StageBox(
+                  //         stage: 'Not classified',
+                  //         mango_tree: stageData['no data yet']!),
+                  //   ],
+                  // ),
                   // const SizedBox(height: 16),
                   // // Add the chart below the StageBoxes
                   // DashboardChart(stageData: stageData),
@@ -153,8 +153,6 @@ class StageBox extends StatelessWidget {
         return 'assets/images/stage3.jpg';
       case 'stage-4':
         return 'assets/images/stage4.jpg';
-      case 'invalid':
-        return 'assets/images/.jpg';
       default:
         return 'assets/images/logo.png';
     }

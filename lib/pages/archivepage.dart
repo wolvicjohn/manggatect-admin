@@ -32,15 +32,38 @@ class _ArchivePageState extends State<ArchivePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Text(
-                        "Archived Trees",
-                        style: TextStyle(
-                          fontSize: 24.0,
-                          fontWeight: FontWeight.bold,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+                          padding: const EdgeInsets.all(30),
+                          decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 20, 116, 82),
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(8.0),
+                              topRight: Radius.circular(8.0),
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                offset: const Offset(0, 6),
+                                blurRadius: 12.0,
+                                spreadRadius: 0.0,
+                              ),
+                            ],
+                          ),
+                          // margin: EdgeInsets.all(16),
+                          child: const Text(
+                            'Archive',
+                            style: TextStyle(
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                     const SizedBox(height: 8.0),
                     Expanded(
@@ -73,11 +96,10 @@ class _ArchivePageState extends State<ArchivePage> {
                               Table(
                                 border: TableBorder.all(color: Colors.grey),
                                 columnWidths: const {
-                                  0: FlexColumnWidth(
-                                      0.7), 
-                                  1: FlexColumnWidth(.5), 
+                                  0: FlexColumnWidth(0.7),
+                                  1: FlexColumnWidth(.5),
                                   2: FlexColumnWidth(1),
-                                  3: FlexColumnWidth(1), 
+                                  3: FlexColumnWidth(1),
                                 },
                                 children: [
                                   const TableRow(

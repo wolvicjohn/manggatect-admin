@@ -39,11 +39,6 @@ class TreeDataTable extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Mango Tree Records',
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
-              const SizedBox(height: 16),
               Expanded(
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
