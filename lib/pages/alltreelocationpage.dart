@@ -68,6 +68,7 @@ class AllTreeLocationPageState extends State<AllTreeLocationPage> {
                   child: StreamBuilder<QuerySnapshot>(
                     stream: FirebaseFirestore.instance
                         .collection('mango_tree')
+                        .where('isArchived', isEqualTo: false)
                         .snapshots(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {

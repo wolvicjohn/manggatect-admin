@@ -4,7 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 class FirestoreService {
   // Get collection
   final CollectionReference mangoTree =
-      FirebaseFirestore.instance.collection('mangoTree');
+      FirebaseFirestore.instance.collection('mango_tree');
   final FirebaseStorage storage = FirebaseStorage.instance;
 
   // Update the archive status of a mangoTree
