@@ -72,6 +72,7 @@ class _ArchivePageState extends State<ArchivePage> {
                         stream: FirebaseFirestore.instance
                             .collection('mango_tree')
                             .where('isArchived', isEqualTo: true)
+                            .orderBy('timestamp', descending: true)
                             .snapshots(),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
@@ -145,7 +146,7 @@ class _ArchivePageState extends State<ArchivePage> {
                                     Map<String, dynamic> data =
                                         document.data() as Map<String, dynamic>;
                                     String imageStageUrl =
-                                        data['stageImageUrl'] ?? 'N/A';
+                                        data['imageUrl'] ?? 'N/A';
                                     Timestamp? timestamp = data['timestamp'];
 
                                     return TableRow(

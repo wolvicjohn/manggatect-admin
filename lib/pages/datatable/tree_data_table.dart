@@ -14,6 +14,7 @@ class TreeDataTable extends StatelessWidget {
       stream: FirebaseFirestore.instance
           .collection('mango_tree')
           .where('isArchived', isEqualTo: false)
+          .orderBy('timestamp', descending: true)
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
@@ -143,9 +144,16 @@ class TreeDataTable extends StatelessWidget {
             fontWeight: FontWeight.w600,
           ),
         ),
-        _dataCell(data['uploader']?.toString() ?? 'N/A'),
         _dataCell(
-          DateFormat('MMM dd, yyyy HH:mm').format(data['timestamp'].toDate()),
+          data['uploader']?.toString() ?? 'N/A',
+          customStyle: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: _getUploaderColor(data['uploader']?.toString() ?? ''),
+          ),
+        ),
+        _dataCell(
+          DateFormat('EEEE, MMMM dd, yyyy h:mm a')
+              .format(data['timestamp'].toDate()),
           customStyle: const TextStyle(
             fontFamily: 'monospace',
           ),
@@ -183,6 +191,15 @@ class TreeDataTable extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  //color for uploader
+  Color _getUploaderColor(String uploader) {
+    final int hash = uploader.hashCode;
+    final int r = 50 + (hash & 0x7F); 
+    final int g = 50 + ((hash >> 7) & 0x7F);
+    final int b = 50 + ((hash >> 14) & 0x7F);
+    return Color.fromARGB(255, r, g, b);
   }
 
   static Widget _headerCell(String text) {
