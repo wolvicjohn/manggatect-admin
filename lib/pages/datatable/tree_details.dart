@@ -200,7 +200,7 @@ class TreeDetailsDialog extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => QRCodeGeneratorPage(
-                                  docID: treeData['docID'],
+                                  docID: treeData['docID'], timestamp: treeData['timestamp'].toDate(),
                                 ),
                               ),
                             );

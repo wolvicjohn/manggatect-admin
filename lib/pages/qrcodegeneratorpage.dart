@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_admin_scaffold/admin_scaffold.dart';
+import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'dart:typed_data';
@@ -7,8 +8,9 @@ import 'dart:html' as html;
 
 class QRCodeGeneratorPage extends StatelessWidget {
   final String docID;
+  final DateTime timestamp;
 
-  const QRCodeGeneratorPage({Key? key, required this.docID}) : super(key: key);
+  const QRCodeGeneratorPage({Key? key, required this.docID, required this.timestamp}) : super(key: key);
 
   Future<Uint8List> _generatePdf() async {
     final pdf = pw.Document();
@@ -35,6 +37,12 @@ class QRCodeGeneratorPage extends StatelessWidget {
                 'MANGGATECH',
                 style: pw.TextStyle(
                   fontSize: 24,
+                  fontWeight: pw.FontWeight.bold,
+                ),
+              ),pw.Text(
+                '$docID',
+                style: pw.TextStyle(
+                  fontSize: 18,
                   fontWeight: pw.FontWeight.bold,
                 ),
               ),
@@ -103,6 +111,11 @@ class QRCodeGeneratorPage extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
+               Text(docID,style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),),
+                 Text(DateFormat('MMM dd, yyyy HH:mm').format(timestamp)),
               QrImageView(
                 data: docID,
                 version: 5,
