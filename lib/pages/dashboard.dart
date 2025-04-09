@@ -1,8 +1,5 @@
-import 'package:adminmangga/pages/charts/linechart.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_admin_scaffold/admin_scaffold.dart';
-import 'stagemango_treepage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class Dashboard extends StatelessWidget {
@@ -17,7 +14,7 @@ class Dashboard extends StatelessWidget {
           () => Navigator.pushReplacementNamed(context, '/loginpage'));
     }
 
-    return AdminScaffold(
+    return Scaffold(
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection('mango_tree')
@@ -104,13 +101,13 @@ class Dashboard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       StageBox(
-                          stage: 'stage-1', mango_tree: stageData['stage-1']!),
+                          stage: 'stage 1', mango_tree: stageData['stage-1']!),
                       StageBox(
-                          stage: 'stage-2', mango_tree: stageData['stage-2']!),
+                          stage: 'stage 2', mango_tree: stageData['stage-2']!),
                       StageBox(
-                          stage: 'stage-3', mango_tree: stageData['stage-3']!),
+                          stage: 'stage 3', mango_tree: stageData['stage-3']!),
                       StageBox(
-                          stage: 'stage-4', mango_tree: stageData['stage-4']!),
+                          stage: 'stage 4', mango_tree: stageData['stage-4']!),
                     ],
                   ),
                   // const SizedBox(height: 16),
@@ -145,13 +142,13 @@ class StageBox extends StatelessWidget {
   // Method to get the corresponding image for each stage
   String getImageForStage(String stage) {
     switch (stage) {
-      case 'stage-1':
+      case 'stage 1':
         return 'assets/images/stage1.jpg';
-      case 'stage-2':
+      case 'stage 2':
         return 'assets/images/stage2.jpg';
-      case 'stage-3':
+      case 'stage 3':
         return 'assets/images/stage3.jpg';
-      case 'stage-4':
+      case 'stage 4':
         return 'assets/images/stage4.jpg';
       default:
         return 'assets/images/logo.png';
@@ -164,101 +161,90 @@ class StageBox extends StatelessWidget {
     final bool isNotClassified = stage == 'Not classified';
 
     return Expanded(
-      child: GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) =>
-                  Stagemango_treePage(stage: stage, mango_tree: mango_tree),
-            ),
-          );
-        },
-        child: Card(
-          margin: const EdgeInsets.all(8.0),
-          color: isNotClassified
-              ? Colors.white
-              : const Color.fromARGB(0, 44, 155, 63),
-          child: Container(
-            decoration: BoxDecoration(
-              border: isNotClassified
-                  ? const Border(
-                      top: BorderSide(
-                        color: Color.fromARGB(255, 175, 32, 32),
-                        width: 15,
-                      ),
-                    )
-                  : const Border(
-                      top: BorderSide(
-                        color: Color.fromARGB(255, 20, 116, 82),
-                        width: 15,
-                      ),
+      child: Card(
+        margin: const EdgeInsets.all(8.0),
+        color: isNotClassified
+            ? Colors.white
+            : const Color.fromARGB(0, 44, 155, 63),
+        child: Container(
+          decoration: BoxDecoration(
+            border: isNotClassified
+                ? const Border(
+                    top: BorderSide(
+                      color: Color.fromARGB(255, 175, 32, 32),
+                      width: 15,
                     ),
-              borderRadius: BorderRadius.circular(5),
-            ),
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                // Only show image if not 'Not classified'
-                if (!isNotClassified)
-                  Positioned.fill(
-                    child: Image.asset(
-                      getImageForStage(stage),
-                      fit: BoxFit.fill,
+                  )
+                : const Border(
+                    top: BorderSide(
+                      color: Color.fromARGB(255, 20, 116, 82),
+                      width: 15,
                     ),
                   ),
-                // Overlay for the image
-                if (!isNotClassified)
-                  Positioned.fill(
-                    child: Container(
-                      color: Colors.black.withOpacity(0.4),
-                    ),
-                  ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        '${mango_tree.length}',
-                        style: TextStyle(
-                          fontSize: 50,
-                          fontWeight: FontWeight.bold,
-                          color: isNotClassified ? Colors.black : Colors.white,
-                          shadows: isNotClassified
-                              ? []
-                              : [
-                                  Shadow(
-                                    color: Colors.black.withOpacity(0.6),
-                                    offset: const Offset(2, 2),
-                                    blurRadius: 4,
-                                  ),
-                                ],
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        stage,
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: isNotClassified ? Colors.black : Colors.white,
-                          shadows: isNotClassified
-                              ? []
-                              : [
-                                  Shadow(
-                                    color: Colors.black.withOpacity(0.6),
-                                    offset: const Offset(2, 2),
-                                    blurRadius: 4,
-                                  ),
-                                ],
-                        ),
-                      ),
-                    ],
+            borderRadius: BorderRadius.circular(5),
+          ),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              // Only show image if not 'Not classified'
+              if (!isNotClassified)
+                Positioned.fill(
+                  child: Image.asset(
+                    getImageForStage(stage),
+                    fit: BoxFit.fill,
                   ),
                 ),
-              ],
-            ),
+              // Overlay for the image
+              if (!isNotClassified)
+                Positioned.fill(
+                  child: Container(
+                    color: Colors.black.withOpacity(0.4),
+                  ),
+                ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      '${mango_tree.length}',
+                      style: TextStyle(
+                        fontSize: 50,
+                        fontWeight: FontWeight.bold,
+                        color: isNotClassified ? Colors.black : Colors.white,
+                        shadows: isNotClassified
+                            ? []
+                            : [
+                                Shadow(
+                                  color: Colors.black.withOpacity(0.6),
+                                  offset: const Offset(2, 2),
+                                  blurRadius: 4,
+                                ),
+                              ],
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      stage,
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: isNotClassified ? Colors.black : Colors.white,
+                        shadows: isNotClassified
+                            ? []
+                            : [
+                                Shadow(
+                                  color: Colors.black.withOpacity(0.6),
+                                  offset: const Offset(2, 2),
+                                  blurRadius: 4,
+                                ),
+                              ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),

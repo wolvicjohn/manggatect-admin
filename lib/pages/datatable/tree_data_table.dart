@@ -1,87 +1,148 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:adminmangga/pages/datatable/archive_dialog.dart';
 import 'package:intl/intl.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 
-class TreeDataTable extends StatelessWidget {
+class TreeDataTable extends StatefulWidget {
   final Function(Map<String, dynamic>) onSelectTree;
 
   const TreeDataTable({super.key, required this.onSelectTree});
 
   @override
+  TreeDataTableState createState() => TreeDataTableState();
+}
+
+class TreeDataTableState extends State<TreeDataTable> {
+  final int _limit = 10;
+  DocumentSnapshot? _lastDocument;
+  bool _isLoading = false;
+  bool _hasMore = true;
+  final List<DocumentSnapshot> _mangoTreeList = [];
+
+  @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance
-          .collection('mango_tree')
-          .where('isArchived', isEqualTo: false)
-          .orderBy('timestamp', descending: true)
-          .snapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return const Center(
-            child: Padding(
-              padding: EdgeInsets.all(20.0),
-              child: Text(
-                "No data available",
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey,
-                  fontStyle: FontStyle.italic,
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            SizedBox(
+              width: double.infinity,
+              child: Table(
+                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                columnWidths: const {
+                  0: FixedColumnWidth(1.0), // Number
+                  1: FixedColumnWidth(100.0), // Image
+                  2: FixedColumnWidth(100.0), // Stage
+                  3: FixedColumnWidth(100.0), // Uploader
+                  4: FixedColumnWidth(200.0), // Date
+                  5: FixedColumnWidth(220.0), // Actions
+                },
+                border: TableBorder(
+                  horizontalInside: BorderSide(color: Colors.grey.shade200),
+                  verticalInside: BorderSide(color: Colors.grey.shade200),
+                  bottom: BorderSide(color: Colors.grey.shade200),
                 ),
+                children: [
+                  _buildTableHeader(),
+                  ..._mangoTreeList.asMap().entries.map((entry) {
+                    final index = entry.key + 1; // start from 1
+                    final document = entry.value;
+                    Map<String, dynamic> data =
+                        document.data() as Map<String, dynamic>;
+                    data['docID'] = document.id;
+                    return _buildTableRow(context, data, index);
+                  }).toList(),
+                ],
               ),
             ),
-          );
-        }
-
-        List<DocumentSnapshot> mangoTreelist = snapshot.data!.docs;
-
-        return Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: SizedBox(
-                    width: 850, // Fixed width to accommodate all columns
-                    child: SingleChildScrollView(
-                      child: Table(
-                        defaultVerticalAlignment:
-                            TableCellVerticalAlignment.middle,
-                        columnWidths: const {
-                          0: FixedColumnWidth(100.0), // Image
-                          1: FixedColumnWidth(150.0), // Stage
-                          2: FixedColumnWidth(180.0), // Uploader
-                          3: FixedColumnWidth(200.0), // Date
-                          4: FixedColumnWidth(220.0), // Actions
-                        },
-                        border: TableBorder(
-                          horizontalInside:
-                              BorderSide(color: Colors.grey.shade200),
-                          verticalInside:
-                              BorderSide(color: Colors.grey.shade200),
-                          bottom: BorderSide(color: Colors.grey.shade200),
-                        ),
-                        children: [
-                          _buildTableHeader(),
-                          ...mangoTreelist.map((document) {
-                            Map<String, dynamic> data =
-                                document.data() as Map<String, dynamic>;
-                            data['docID'] = document.id;
-                            return _buildTableRow(context, data);
-                          }).toList(),
-                        ],
-                      ),
-                    ),
+            const SizedBox(
+              height: 20,
+            ),
+            if (_isLoading)
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  width: 100,
+                  height: 100,
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: const LoadingIndicator(
+                    indicatorType: Indicator.lineScalePulseOutRapid,
+                    colors: [
+                      Color.fromARGB(255, 20, 116, 82),
+                      Colors.yellow,
+                      Colors.red,
+                      Colors.blue,
+                      Colors.orange,
+                    ],
+                    strokeWidth: 3,
                   ),
                 ),
               ),
-            ],
-          ),
-        );
-      },
+            if (_hasMore)
+              TextButton(
+                onPressed: _loadMoreData,
+                child: const Text('Load More',
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 20, 116, 82),
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    )),
+              ),
+          ],
+        ),
+      ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadMoreData();
+  }
+
+  Future<void> _loadMoreData() async {
+    if (_isLoading || !_hasMore) return;
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      Query query = FirebaseFirestore.instance
+          .collection('mango_tree')
+          .where('isArchived', isEqualTo: false)
+          .orderBy('timestamp', descending: true)
+          .limit(_limit);
+
+      if (_lastDocument != null) {
+        query = query.startAfterDocument(_lastDocument!);
+      }
+
+      final querySnapshot = await query.get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        _lastDocument = querySnapshot.docs.last;
+        _mangoTreeList.addAll(querySnapshot.docs);
+        setState(() {
+          _hasMore = querySnapshot.docs.length == _limit;
+        });
+      } else {
+        setState(() {
+          _hasMore = false;
+        });
+      }
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   TableRow _buildTableHeader() {
@@ -91,6 +152,7 @@ class TreeDataTable extends StatelessWidget {
         borderRadius: BorderRadius.circular(4.0),
       ),
       children: [
+        Center(child: _headerCell("No.")),
         _headerCell("Image"),
         _headerCell("Stage"),
         _headerCell("Uploader"),
@@ -100,7 +162,8 @@ class TreeDataTable extends StatelessWidget {
     );
   }
 
-  TableRow _buildTableRow(BuildContext context, Map<String, dynamic> data) {
+  TableRow _buildTableRow(
+      BuildContext context, Map<String, dynamic> data, int index) {
     return TableRow(
       decoration: BoxDecoration(
         color: Colors.transparent,
@@ -109,23 +172,44 @@ class TreeDataTable extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.all(8.0),
+          child: Center(child: Text(index.toString())),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
           child: data['imageUrl'] != null
               ? ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
-                  child: Image.network(
-                    data['imageUrl'],
-                    width: 60,
-                    height: 60,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        width: 60,
-                        height: 60,
-                        color: Colors.grey.shade200,
-                        child: const Icon(Icons.error_outline),
-                      );
-                    },
-                  ),
+                  child: CachedNetworkImage(
+                      imageUrl: data['imageUrl'],
+                      width: 60,
+                      height: 60,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) => Container(
+                            width: 100,
+                            height: 100,
+                            padding: const EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: const LoadingIndicator(
+                              indicatorType: Indicator.lineScalePulseOutRapid,
+                              colors: [
+                                Color.fromARGB(255, 20, 116, 82),
+                                Colors.yellow,
+                                Colors.red,
+                                Colors.blue,
+                                Colors.orange,
+                              ],
+                              strokeWidth: 3,
+                            ),
+                          ),
+                      errorWidget: (context, url, error) => Container(
+                            width: 60,
+                            height: 60,
+                            color: Colors.grey.shade200,
+                            child: const Icon(Icons.error_outline),
+                          )),
                 )
               : Container(
                   width: 60,
@@ -141,36 +225,38 @@ class TreeDataTable extends StatelessWidget {
           data['stage']?.toString() ?? 'N/A',
           customStyle: TextStyle(
             color: _getStageColor(data['stage']?.toString() ?? ''),
-            fontWeight: FontWeight.w600,
+            fontFamily: 'sans-serif',
           ),
         ),
         _dataCell(
           data['uploader']?.toString() ?? 'N/A',
           customStyle: TextStyle(
-            fontWeight: FontWeight.bold,
             color: _getUploaderColor(data['uploader']?.toString() ?? ''),
+            fontFamily: 'sans-serif',
           ),
         ),
         _dataCell(
           DateFormat('EEEE, MMMM dd, yyyy h:mm a')
               .format(data['timestamp'].toDate()),
           customStyle: const TextStyle(
-            fontFamily: 'monospace',
+            fontFamily: 'sans-serif',
           ),
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               ElevatedButton.icon(
-                onPressed: () => onSelectTree(data),
+                onPressed: () => widget.onSelectTree(data),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  foregroundColor: Colors.white,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                ),
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.blue,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    elevation: 5),
                 icon: const Icon(Icons.visibility, size: 16),
                 label: const Text("View"),
               ),
@@ -178,11 +264,12 @@ class TreeDataTable extends StatelessWidget {
               ElevatedButton.icon(
                 onPressed: () => showArchiveDialog(context, data['docID']),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.orange,
-                  foregroundColor: Colors.white,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                ),
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.orange,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    elevation: 5),
                 icon: const Icon(Icons.archive, size: 16),
                 label: const Text("Archive"),
               ),
@@ -193,10 +280,9 @@ class TreeDataTable extends StatelessWidget {
     );
   }
 
-  //color for uploader
   Color _getUploaderColor(String uploader) {
     final int hash = uploader.hashCode;
-    final int r = 50 + (hash & 0x7F); 
+    final int r = 50 + (hash & 0x7F);
     final int g = 50 + ((hash >> 7) & 0x7F);
     final int b = 50 + ((hash >> 14) & 0x7F);
     return Color.fromARGB(255, r, g, b);

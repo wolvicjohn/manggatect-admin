@@ -10,15 +10,40 @@ void showArchiveDialog(BuildContext context, String docID) {
         content: const Text("Are you sure you want to archive this data?"),
         actions: [
           TextButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.grey,
+              padding:
+                  const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+            ),
             onPressed: () => Navigator.pop(context),
-            child: const Text("Cancel"),
+            child: const Text(
+              "Cancel",
+              style: TextStyle(color: Colors.white),
+            ),
           ),
           ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.orange,
+              padding:
+                  const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+            ),
             onPressed: () async {
-              await FirebaseFirestore.instance.collection('mango_tree').doc(docID).update({'isArchived': true});
+              await FirebaseFirestore.instance
+                  .collection('mango_tree')
+                  .doc(docID)
+                  .update({'isArchived': true});
               Navigator.pop(context);
             },
-            child: const Text("Archive"),
+            child: const Text(
+              "Archive",
+              style: TextStyle(color: Colors.white),
+            ),
           ),
         ],
       );

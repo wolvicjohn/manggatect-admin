@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -82,7 +81,7 @@ class QRCodeGeneratorPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AdminScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text("QR Code"),
       ),

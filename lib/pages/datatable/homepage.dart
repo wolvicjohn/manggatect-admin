@@ -4,7 +4,7 @@ import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 import 'package:adminmangga/pages/datatable/tree_data_table.dart';
 
 class Homepage extends StatelessWidget {
-  // Changed to StatelessWidget since we don't need state anymore
+  
   const Homepage({super.key});
 
   @override
@@ -62,26 +62,26 @@ class Homepage extends StatelessWidget {
 
             // Main Content
             Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.1),
-                      spreadRadius: 0,
-                      blurRadius: 10,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: TreeDataTable(
-                  onSelectTree: (treeData) {
-                    TreeDetailsDialog.show(context, treeData);
-                  },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.1),
+                        spreadRadius: 0,
+                        blurRadius: 10,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: TreeDataTable(
+                    onSelectTree: (treeData) {
+                      TreeDetailsDialog.show(context, treeData);
+                    },
+                  ),
                 ),
               ),
-            ),
           ],
         ),
       ),

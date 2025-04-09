@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -32,7 +31,7 @@ class _TreeLocationPageState extends State<TreeLocationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return AdminScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('Tree Location'),
         leading: IconButton(

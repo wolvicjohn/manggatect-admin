@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       // routes
       routes: {
-        '/': (context) => const AdminSideMenu(),
+        '/': (context) => const AdminPanel(),
         '/loginpage': (context) => const LoginPage(),
         '/tree-map': (context) => const AllTreeLocationPage(),
         '/archivepage': (context) => const ArchivePage(),

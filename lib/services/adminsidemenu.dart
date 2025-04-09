@@ -1,187 +1,191 @@
-import 'package:adminmangga/pages/alltreelocationpage.dart';
-import 'package:adminmangga/pages/archivepage.dart';
-import 'package:adminmangga/pages/dashboard.dart';
-import 'package:adminmangga/pages/datatable/homepage.dart';
-// import 'package:adminmangga/pages/data_table.dart';
-import 'package:adminmangga/pages/info.dart';
-import 'package:adminmangga/pages/login/login_page.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_admin_scaffold/admin_scaffold.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:loading_indicator/loading_indicator.dart';
+import '../pages/alltreelocationpage.dart';
+import '../pages/archivepage.dart';
+import '../pages/dashboard.dart';
+import '../pages/datatable/homepage.dart';
+import '../pages/info.dart';
+import '../pages/login/login_page.dart';
 
-class AdminSideMenu extends StatefulWidget {
-  const AdminSideMenu({super.key});
+class AdminPanel extends StatefulWidget {
+  const AdminPanel({super.key});
 
   @override
-  _AdminSideMenuState createState() => _AdminSideMenuState();
+  State<AdminPanel> createState() => _AdminPanelState();
 }
 
-class _AdminSideMenuState extends State<AdminSideMenu> {
-  String _selectedRoute = '/';
+class _AdminPanelState extends State<AdminPanel> {
+  int selectedIndex = 0;
+
+  final List<Widget> pages = const [
+    Dashboard(),
+    Homepage(),
+    AllTreeLocationPage(),
+    ArchivePage(),
+    InfoPage(),
+  ];
+
+  final List<String> titles = [
+    'Dashboard',
+    'Data',
+    'Map',
+    'Archive',
+    'Mango Flowers Info',
+  ];
 
   @override
   Widget build(BuildContext context) {
-    // Check if the user is authenticated
-    final User? user = FirebaseAuth.instance.currentUser;
+    final user = FirebaseAuth.instance.currentUser;
+
     if (user == null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.pushReplacementNamed(context, '/loginpage');
-      });
+      // Redirect to login if user is not authenticated
+      Future.microtask(() => Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (_) => const LoginPage())));
       return const SizedBox();
     }
 
-    // If user is authenticated, show the admin menu
-    return AdminScaffold(
-      appBar: AdminAppBar.buildAppBar(context),
-      sideBar: AdminAppBar.buildSideBar(
-          context, _selectedRoute, _updateSelectedRoute),
-      body: _getBodyContent(),
-    );
-  }
-
-  // Function to update the selected route
-  void _updateSelectedRoute(String route) {
-    setState(() {
-      _selectedRoute = route;
-    });
-  }
-
-  // Function to map routes to body widgets
-  Widget _getBodyContent() {
-    switch (_selectedRoute) {
-      case '/homepage':
-        return const Homepage();
-      case '/tree-map':
-        return const AllTreeLocationPage();
-      case '/archivepage':
-        return const ArchivePage();
-      case '/infopage':
-        return const InfoPage();
-      default:
-        return const Dashboard();
-    }
-  }
-}
-
-class AdminAppBar {
-  static AppBar buildAppBar(BuildContext context) {
-    return AppBar(
-      title: Row(
-        children: [
-          Image.asset(
-            'assets/images/logo.png',
-            height: 60,
-            fit: BoxFit.contain,
-            errorBuilder: (context, error, stackTrace) {
-              return const Icon(Icons.image_not_supported);
-            },
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        foregroundColor: const Color.fromARGB(255, 20, 116, 82),
+        title: GestureDetector(
+          onTap: () {
+            setState(() {
+              selectedIndex = 0;
+            });
+          },
+          child: Row(
+            children: [
+              Image.asset('assets/images/logo.png', height: 50),
+              const SizedBox(width: 10),
+              const Text("MANGGATECH",
+                  style: TextStyle(
+                      fontSize: 24, color: Color.fromARGB(255, 51, 51, 51))),
+            ],
           ),
-          const SizedBox(width: 8),
-          const Text(
-            "MANGGATECH",
-            style: TextStyle(
-              fontSize: 24,
-            ),
-          ),
-        ],
-      ),
-      actions: [
-        Container(
-          margin: const EdgeInsets.only(right: 15),
-          child: ElevatedButton(
+        ),
+        actions: [
+          TextButton(
             onPressed: () async {
-              bool confirm = await showDialog(
+              final confirm = await showDialog<bool>(
                 context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: const Text("Confirm Logging Out"),
-                    content: const Text("Are you sure you want to log out?"),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop(false);
-                        },
+                builder: (_) => AlertDialog(
+                  title: const Text("Confirm Logout"),
+                  content: const Text("Are you sure you want to log out?"),
+                  actions: [
+                    TextButton(
+                        onPressed: () => Navigator.pop(context, false),
                         child: const Text(
                           "Cancel",
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop(true);
-                        },
-                        child: const Text("Logout",
-                            style: TextStyle(color: Colors.red)),
-                      ),
-                    ],
-                  );
-                },
+                          style: TextStyle(color: Colors.white),
+                        )),
+                    TextButton(
+                        onPressed: () => Navigator.pop(context, true),
+                        child: const Text(
+                          "Logout",
+                          style: TextStyle(color: Colors.white),
+                        )),
+                  ],
+                ),
               );
-
               if (confirm == true) {
-                FirebaseAuth.instance.signOut();
-                Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (context) => const LoginPage()),
-                  (route) => false,
-                );
+                await FirebaseAuth.instance.signOut();
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (_) => const LoginPage()),
+                    (route) => false);
               }
             },
-            child: const Text(
-              "Logout",
-              style: TextStyle(color: Colors.black),
+            child: const Text("Logout",
+                style: TextStyle(color: Color.fromARGB(255, 51, 51, 51))),
+          )
+        ],
+      ),
+      body: Row(
+        children: [
+          NavigationRailTheme(
+            data: const NavigationRailThemeData(
+              backgroundColor: Colors.white,
+              selectedIconTheme:
+                  IconThemeData(color: Color.fromARGB(255, 20, 116, 82)),
+              unselectedIconTheme:
+                  IconThemeData(color: Color.fromARGB(255, 51, 51, 51)),
+              selectedLabelTextStyle: TextStyle(
+                color: Color.fromARGB(255, 20, 116, 82),
+                fontWeight: FontWeight.bold,
+              ),
+              unselectedLabelTextStyle:
+                  TextStyle(color: Color.fromARGB(255, 51, 51, 51)),
+            ),
+            child: NavigationRail(
+              selectedIndex: selectedIndex,
+              onDestinationSelected: (index) async {
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (context) => Center(
+                    child: Container(
+                      width: 100,
+                      height: 100,
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: const LoadingIndicator(
+                        indicatorType: Indicator.lineScalePulseOutRapid,
+                        colors: [
+                          Color.fromARGB(255, 20, 116, 82),
+                          Colors.yellow,
+                          Colors.red,
+                          Colors.blue,
+                          Colors.orange,
+                        ],
+                        strokeWidth: 3,
+                      ),
+                    ),
+                  ),
+                );
+
+                await Future.delayed(const Duration(milliseconds: 800));
+
+                if (mounted) {
+                  Navigator.pop(context);
+                  setState(() {
+                    selectedIndex = index;
+                  });
+                }
+              },
+              labelType: NavigationRailLabelType.all,
+              destinations: const [
+                NavigationRailDestination(
+                  icon: Icon(Icons.dashboard),
+                  label: Text('Dashboard'),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.note),
+                  label: Text('Data'),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.map),
+                  label: Text('Map'),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.archive),
+                  label: Text('Archive'),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.info_outline),
+                  label: Text('Info'),
+                ),
+              ],
             ),
           ),
-        ),
-      ],
-      bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(1.0),
-        child: Container(
-          color: Colors.grey,
-          height: 1.0,
-        ),
+          const VerticalDivider(thickness: 1, width: 1),
+          Expanded(child: pages[selectedIndex]),
+        ],
       ),
-    );
-  }
-
-  static SideBar buildSideBar(
-    BuildContext context,
-    String selectedRoute,
-    Function(String) updateSelectedRoute,
-  ) {
-    return SideBar(
-      items: const [
-        AdminMenuItem(
-          title: 'Dashboard',
-          route: '/',
-          icon: Icons.dashboard,
-        ),
-        AdminMenuItem(
-          title: 'Data',
-          route: '/homepage',
-          icon: Icons.note,
-        ),
-        AdminMenuItem(
-          title: 'Map',
-          route: '/tree-map',
-          icon: Icons.map,
-        ),
-        AdminMenuItem(
-          title: 'Archive',
-          route: '/archivepage',
-          icon: Icons.archive,
-        ),
-        AdminMenuItem(
-          title: 'Mango Flowers Info',
-          route: '/infopage',
-          icon: Icons.info_outline_rounded,
-        ),
-      ],
-      selectedRoute: selectedRoute,
-      onSelected: (item) {
-        if (item.route != null) {
-          updateSelectedRoute(item.route!);
-        }
-      },
     );
   }
 }

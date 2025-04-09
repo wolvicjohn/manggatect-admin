@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 
 class TaggedTreePage extends StatelessWidget {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -9,7 +8,7 @@ class TaggedTreePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AdminScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('Tagged Trees'),
       ),
