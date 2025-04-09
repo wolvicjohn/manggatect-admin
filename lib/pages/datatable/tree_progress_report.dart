@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 
 class TreeProgressReport extends StatelessWidget {
   final String? docID;
@@ -48,8 +49,27 @@ class TreeProgressReport extends StatelessWidget {
           .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(),
+          return Center(
+            child: Container(
+              width: 100,
+              height: 100,
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: const LoadingIndicator(
+                indicatorType: Indicator.lineScalePulseOutRapid,
+                colors: [
+                  Color.fromARGB(255, 20, 116, 82),
+                  Colors.yellow,
+                  Colors.red,
+                  Colors.blue,
+                  Colors.orange,
+                ],
+                strokeWidth: 3,
+              ),
+            ),
           );
         }
 
@@ -92,7 +112,8 @@ class TreeProgressReport extends StatelessWidget {
                         children: [
                           // Timeline dot
                           Container(
-                            margin: const EdgeInsets.only(top: 8.0, right: 16.0),
+                            margin:
+                                const EdgeInsets.only(top: 8.0, right: 16.0),
                             width: 26,
                             height: 26,
                             decoration: BoxDecoration(
@@ -178,14 +199,16 @@ class TreeProgressReport extends StatelessWidget {
                                     if (history['moved_at'] != null)
                                       Text(
                                         DateFormat('EEEE, MMMM dd, yyyy h:mm a')
-                                            .format(history['moved_at'].toDate()),
-                                        style:
-                                            TextStyle(color: Colors.grey.shade600),
+                                            .format(
+                                                history['moved_at'].toDate()),
+                                        style: TextStyle(
+                                            color: Colors.grey.shade600),
                                       ),
                                     if (history['stageImageUrl'] != null) ...[
                                       const SizedBox(height: 12),
                                       ClipRRect(
-                                        borderRadius: BorderRadius.circular(8.0),
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
                                         child: Image.network(
                                           history['stageImageUrl'],
                                           height: 200,

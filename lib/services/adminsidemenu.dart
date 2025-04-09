@@ -78,13 +78,13 @@ class _AdminPanelState extends State<AdminPanel> {
                         onPressed: () => Navigator.pop(context, false),
                         child: const Text(
                           "Cancel",
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Color.fromARGB(255, 51, 51, 51)),
                         )),
                     TextButton(
                         onPressed: () => Navigator.pop(context, true),
                         child: const Text(
                           "Logout",
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.red),
                         )),
                   ],
                 ),
@@ -97,8 +97,14 @@ class _AdminPanelState extends State<AdminPanel> {
                     (route) => false);
               }
             },
-            child: const Text("Logout",
-                style: TextStyle(color: Color.fromARGB(255, 51, 51, 51))),
+            child: const Row(
+              children: [
+                Icon(Icons.logout, color: Color.fromARGB(255, 20, 116, 82)),
+                SizedBox(width: 8),
+                Text("Logout",
+                    style: TextStyle(color: Color.fromARGB(255, 51, 51, 51))),
+              ],
+            ),
           )
         ],
       ),

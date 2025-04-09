@@ -59,27 +59,7 @@ class FirestoreService {
       rethrow;
     }
   }
-
-  Future<void> deleteImage(String docID) async {
-  try {
-    // First get the image URL from Firestore
-    final doc = await FirebaseFirestore.instance
-        .collection('mango_tree') 
-        .doc(docID)
-        .get();
-
-    if (doc.exists) {
-      final imageUrl = doc.data()?['imageUrl'];
-      if (imageUrl != null && imageUrl.contains("%2F")) {
-        final filePath = Uri.decodeFull(imageUrl.split("o/")[1].split("?alt")[0]);
-        final ref = FirebaseStorage.instance.ref().child(filePath);
-        await ref.delete();
-      }
-    }
-  } catch (e) {
-    debugPrint("Error deleting image: $e");
-  }
-}
+  
 Future<void> deleteNote(String docID) async {
   await FirebaseFirestore.instance
       .collection('mango_tree') 

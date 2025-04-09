@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -15,6 +16,21 @@ class _LoginPageState extends State<LoginPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   bool _isLoading = false;
   String? _errorMessage;
+
+  // Focus nodes
+  final _emailFocusNode = FocusNode();
+  final _passwordFocusNode = FocusNode();
+
+  // Color for selected TextFormField
+  final _focusedColor = const Color.fromARGB(255, 20, 116, 82);
+
+  @override
+  void dispose() {
+    // Clean up controllers and focus nodes
+    _emailFocusNode.dispose();
+    _passwordFocusNode.dispose();
+    super.dispose();
+  }
 
   Future<void> _login() async {
     if (!_formKey.currentState!.validate()) return;
@@ -110,14 +126,37 @@ class _LoginPageState extends State<LoginPage> {
                       TextFormField(
                         controller: _emailController,
                         keyboardType: TextInputType.emailAddress,
+                        focusNode: _emailFocusNode,
                         decoration: InputDecoration(
                           labelText: 'Email',
+                          labelStyle: TextStyle(
+                            color: _emailFocusNode.hasFocus
+                                ? _focusedColor
+                                : const Color.fromARGB(255, 20, 116, 82)
+                                    .withOpacity(.8),
+                          ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
-                          prefixIcon: Icon(Icons.email,
-                              color: const Color.fromARGB(255, 20, 116, 82)
-                                  .withOpacity(.8)),
+                          prefixIcon: Icon(
+                            Icons.email,
+                            color: _emailFocusNode.hasFocus
+                                ? _focusedColor
+                                : const Color.fromARGB(255, 20, 116, 82)
+                                    .withOpacity(.8),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide:
+                                BorderSide(color: _focusedColor, width: 2),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide(
+                                color: const Color.fromARGB(255, 20, 116, 82)
+                                    .withOpacity(.8),
+                                width: 1),
+                          ),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -130,14 +169,37 @@ class _LoginPageState extends State<LoginPage> {
                       TextFormField(
                         controller: _passwordController,
                         obscureText: true,
+                        focusNode: _passwordFocusNode,
                         decoration: InputDecoration(
                           labelText: 'Password',
+                          labelStyle: TextStyle(
+                            color: _emailFocusNode.hasFocus
+                                ? _focusedColor
+                                : const Color.fromARGB(255, 20, 116, 82)
+                                    .withOpacity(.8),
+                          ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
-                          prefixIcon: Icon(Icons.lock,
-                              color: const Color.fromARGB(255, 20, 116, 82)
-                                  .withOpacity(.8)),
+                          prefixIcon: Icon(
+                            Icons.lock,
+                            color: _passwordFocusNode.hasFocus
+                                ? _focusedColor
+                                : const Color.fromARGB(255, 20, 116, 82)
+                                    .withOpacity(.8),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide:
+                                BorderSide(color: _focusedColor, width: 2),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide(
+                                color: const Color.fromARGB(255, 20, 116, 82)
+                                    .withOpacity(.8),
+                                width: 1),
+                          ),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -148,7 +210,26 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       const SizedBox(height: 20),
                       _isLoading
-                          ? const CircularProgressIndicator()
+                          ? Container(
+                              width: 100,
+                              height: 100,
+                              padding: const EdgeInsets.all(20),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: const LoadingIndicator(
+                                indicatorType: Indicator.lineScalePulseOutRapid,
+                                colors: [
+                                  Color.fromARGB(255, 20, 116, 82),
+                                  Colors.yellow,
+                                  Colors.red,
+                                  Colors.blue,
+                                  Colors.orange,
+                                ],
+                                strokeWidth: 3,
+                              ),
+                            )
                           : ElevatedButton(
                               onPressed: _login,
                               style: ElevatedButton.styleFrom(

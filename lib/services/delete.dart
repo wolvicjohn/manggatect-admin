@@ -11,7 +11,6 @@ class DeleteDialog extends StatelessWidget {
   Future<void> deleteMangoTree(BuildContext context) async {
     try {
       await firestoreService.deleteNote(docID); // Deletes Firestore doc
-      await firestoreService.deleteImage(docID); // Deletes image from Storage
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Data and image deleted successfully')),

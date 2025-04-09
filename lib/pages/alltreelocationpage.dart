@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart';
@@ -71,7 +72,28 @@ class AllTreeLocationPageState extends State<AllTreeLocationPage> {
                         .snapshots(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
+                        return Center(
+                          child: Container(
+                            width: 100,
+                            height: 100,
+                            padding: const EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: const LoadingIndicator(
+                              indicatorType: Indicator.lineScalePulseOutRapid,
+                              colors: [
+                                Color.fromARGB(255, 20, 116, 82),
+                                Colors.yellow,
+                                Colors.red,
+                                Colors.blue,
+                                Colors.orange,
+                              ],
+                              strokeWidth: 3,
+                            ),
+                          ),
+                        );
                       }
 
                       if (snapshot.hasError) {
