@@ -44,13 +44,26 @@ class AllTreeLocationPageState extends State<AllTreeLocationPage> {
                 ),
               ],
             ),
-            child: const Text(
-              'All Mango Tree Locations',
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
+            child: const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  'All Mango Tree Locations',
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                Text(
+                  'An interactive map that visualizes the locations of all mango trees.',
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
             ),
           ),
           Expanded(

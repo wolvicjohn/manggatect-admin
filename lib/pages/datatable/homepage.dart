@@ -4,7 +4,6 @@ import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 import 'package:adminmangga/pages/datatable/tree_data_table.dart';
 
 class Homepage extends StatelessWidget {
-  
   const Homepage({super.key});
 
   @override
@@ -44,13 +43,26 @@ class Homepage extends StatelessWidget {
                           ],
                         ),
                         // margin: EdgeInsets.all(16),
-                        child: const Text(
-                          'Mango Tree Records',
-                          style: TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
+                        child: const Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Mango Tree Records',
+                              style: TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                            Text(
+                              'Table of all mango trees and its progress. ',
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
@@ -62,26 +74,26 @@ class Homepage extends StatelessWidget {
 
             // Main Content
             Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.1),
-                        spreadRadius: 0,
-                        blurRadius: 10,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: TreeDataTable(
-                    onSelectTree: (treeData) {
-                      TreeDetailsDialog.show(context, treeData);
-                    },
-                  ),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.1),
+                      spreadRadius: 0,
+                      blurRadius: 10,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: TreeDataTable(
+                  onSelectTree: (treeData) {
+                    TreeDetailsDialog.show(context, treeData);
+                  },
                 ),
               ),
+            ),
           ],
         ),
       ),

@@ -106,7 +106,51 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Image.asset('assets/images/logo.png', height: 150),
+                      Row(
+                        children: [
+                          Image.asset('assets/images/logo.png', height: 100),
+                          const SizedBox(width: 8),
+                          Row(
+                            children: [
+                              Text(
+                                'MANGGA',
+                                style: TextStyle(
+                                  color:
+                                      const Color.fromARGB(255, 127, 106, 25),
+                                  fontSize: 25,
+                                  shadows: [
+                                    Shadow(
+                                      blurRadius: 5.0,
+                                      color: Colors.black.withOpacity(0.5),
+                                      offset: const Offset(2.0, 2.0),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Text(
+                                'TECH',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 27,
+                                  color: const Color.fromARGB(255, 20, 116, 82),
+                                  shadows: [
+                                    Shadow(
+                                      blurRadius: 5.0,
+                                      color: Colors.black.withOpacity(0.5),
+                                      offset: const Offset(2.0, 2.0),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                      const Divider(
+                        color: Color.fromARGB(255, 20, 116, 82),
+                        thickness: 2,
+                        height: 40,
+                      ),
                       Text(
                         'Welcome Back!',
                         style:
