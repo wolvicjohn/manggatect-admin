@@ -177,9 +177,8 @@ class _ArchivePageState extends State<ArchivePage> {
                                           child: imageStageUrl != 'N/A'
                                               ? Image.network(
                                                   imageStageUrl,
-                                                  width: 70,
-                                                  height: 80,
-                                                  fit: BoxFit.cover,
+                                                  width: 100,
+                                                  height: 100,
                                                 )
                                               : const Text('No Image'),
                                         ),
@@ -194,7 +193,8 @@ class _ArchivePageState extends State<ArchivePage> {
                                           child: Text(
                                             DateFormat(
                                                     'EEEE, MMMM dd, yyyy h:mm a')
-                                                .format(timestamp!.toDate()),
+                                                .format(
+                                                    data['timestamp'].toDate()),
                                           ),
                                         ),
                                         Row(
@@ -237,8 +237,16 @@ class _ArchivePageState extends State<ArchivePage> {
                                                   const EdgeInsets.all(8.0),
                                               child: ElevatedButton(
                                                 onPressed: () {
+                                                  String imageUrl =
+                                                      document['imageUrl'];
+                                                  String stageImageUrl =
+                                                      document['stageImageUrl'];
+                                                  // Call the delete function
                                                   showDeleteDialog(
-                                                      context, document.id);
+                                                      context,
+                                                      document.id,
+                                                      imageUrl,
+                                                      stageImageUrl);
                                                 },
                                                 style: ElevatedButton.styleFrom(
                                                     foregroundColor:

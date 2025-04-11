@@ -3,19 +3,29 @@ import 'package:adminmangga/services/firestore.dart';
 
 class DeleteDialog extends StatelessWidget {
   final String docID;
+  final String imageUrl;
+  final String stageImageUrl;
   final FirestoreService firestoreService = FirestoreService();
 
-  DeleteDialog({super.key, required this.docID});
+  DeleteDialog({
+    super.key,
+    required this.docID,
+    required this.imageUrl,
+    required this.stageImageUrl,
+  });
 
-  // Method to delete mango_tree data and corresponding image
+  // Method to delete mango_tree data and corresponding images
   Future<void> deleteMangoTree(BuildContext context) async {
     try {
-      await firestoreService.deleteNote(docID); // Deletes Firestore doc
+      // Calls the updated deleteNote method to delete the Firestore doc and images
+      await firestoreService.deleteNote(docID, imageUrl, stageImageUrl);
 
+      // Show success SnackBar
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Data and image deleted successfully')),
+        const SnackBar(content: Text('Data and images deleted successfully')),
       );
     } catch (e) {
+      // Show error SnackBar
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error deleting data: $e')),
       );
@@ -72,11 +82,16 @@ class DeleteDialog extends StatelessWidget {
 }
 
 // Function to show the delete dialog
-void showDeleteDialog(BuildContext context, String docID) {
+void showDeleteDialog(
+    BuildContext context, String docID, String imageUrl, String stageImageUrl) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      return DeleteDialog(docID: docID);
+      return DeleteDialog(
+        docID: docID,
+        imageUrl: imageUrl,
+        stageImageUrl: stageImageUrl,
+      );
     },
   );
 }

@@ -6,8 +6,7 @@ import 'package:adminmangga/pages/login/login_page.dart';
 import 'package:adminmangga/services/adminsidemenu.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-// import 'package:get/get.dart';
-import 'pages/alltreelocationpage.dart';
+import 'pages/alltreemap/alltreelocationpage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,19 +35,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
-   // GetMaterialApp(
-        //   debugShowCheckedModeBanner: false,
-        //   title: "Dash",
-        //   theme: ThemeData(
-        //     scaffoldBackgroundColor: Colors.white,
-        //     textTheme: GoogleFonts.mulishTextTheme(Theme.of(context).textTheme)
-        //         .apply(bodyColor: Colors.black),
-        //     pageTransitionsTheme: const PageTransitionsTheme(builders: {
-        //       TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
-        //     }),
-        //     primaryColor: Colors.blue,
-        //   ),
-        //   home: SiteLayout(),
-        // );

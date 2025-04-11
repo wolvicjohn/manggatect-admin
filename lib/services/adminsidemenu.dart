@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import '../pages/alltreelocationpage.dart';
+// import '../pages/alltreelocationpage.dart';
+import '../pages/alltreemap/alltreelocationpage.dart';
 import '../pages/archivepage.dart';
 import '../pages/dashboard.dart';
 import '../pages/datatable/homepage.dart';

@@ -59,13 +59,18 @@ class FirestoreService {
       rethrow;
     }
   }
-  
-Future<void> deleteNote(String docID) async {
-  await FirebaseFirestore.instance
-      .collection('mango_tree') 
-      .doc(docID)
-      .delete();
-}
 
-
+  Future<void> deleteNote(
+      String docID, String imageUrl, String stageImageUrl) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('mango_tree')
+          .doc(docID)
+          .delete();
+      final ref = FirebaseStorage.instance.refFromURL(imageUrl);
+      await ref.delete();
+    } catch (e) {
+      debugPrint('Error deleting tree: $e');
+    }
+  }
 }

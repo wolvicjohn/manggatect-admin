@@ -181,12 +181,11 @@ class TreeDataTableState extends State<TreeDataTable> {
                   borderRadius: BorderRadius.circular(8.0),
                   child: CachedNetworkImage(
                       imageUrl: data['imageUrl'],
-                      width: 60,
-                      height: 60,
-                      fit: BoxFit.cover,
+                      width: 100,
+                      height: 100,
                       placeholder: (context, url) => Container(
-                            width: 100,
-                            height: 100,
+                            width: 60,
+                            height: 60,
                             padding: const EdgeInsets.all(20),
                             decoration: BoxDecoration(
                               color: Colors.white,
