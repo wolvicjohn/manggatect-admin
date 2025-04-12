@@ -16,13 +16,13 @@ class FirestoreService {
       if (doc.exists) {
         // Document exists, proceed to update
         await mangoTree.doc(docID).update({'isArchived': isArchived});
-        print('Archive status updated successfully');
+        debugPrint('Archive status updated successfully');
       } else {
         // Document doesn't exist
-        print('No document found with the ID: $docID');
+        debugPrint('No document found with the ID: $docID');
       }
     } catch (e) {
-      print('Error updating archive status: $e');
+      debugPrint('Error updating archive status: $e');
       rethrow; // Rethrow error after logging it
     }
   }
@@ -31,9 +31,9 @@ class FirestoreService {
   Future<void> deletemangoTree(String docID) async {
     try {
       await mangoTree.doc(docID).delete();
-      print('mangoTree deleted');
+      debugPrint('mangoTree deleted');
     } catch (e) {
-      print('Error deleting mangoTree: $e');
+      debugPrint('Error deleting mangoTree: $e');
       rethrow;
     }
   }
@@ -44,7 +44,7 @@ class FirestoreService {
       DocumentSnapshot doc = await mangoTree.doc(docID).get();
       return doc.data() as Map<String, dynamic>;
     } catch (e) {
-      print('Error fetching mangoTree by ID: $e');
+      debugPrint('Error fetching mangoTree by ID: $e');
       rethrow;
     }
   }
@@ -55,20 +55,31 @@ class FirestoreService {
       QuerySnapshot snapshot = await mangoTree.get();
       return snapshot.docs.length;
     } catch (e) {
-      print('Error counting mangoTree: $e');
+      debugPrint('Error counting mangoTree: $e');
       rethrow;
     }
   }
 
   Future<void> deleteNote(
-      String docID, String imageUrl, String stageImageUrl) async {
+      String docID, String? imageUrl, String? stageImageUrl) async {
     try {
+      // Always delete the Firestore document
       await FirebaseFirestore.instance
           .collection('mango_tree')
           .doc(docID)
           .delete();
-      final ref = FirebaseStorage.instance.refFromURL(imageUrl);
-      await ref.delete();
+
+      // Delete the main image from Firebase Storage only if the imageUrl is not null
+      if (imageUrl != null) {
+        final ref = FirebaseStorage.instance.refFromURL(imageUrl);
+        await ref.delete();
+      }
+
+      // If stageImageUrl is not null, delete the corresponding stage image
+      if (stageImageUrl != null) {
+        final stageRef = FirebaseStorage.instance.refFromURL(stageImageUrl);
+        await stageRef.delete();
+      }
     } catch (e) {
       debugPrint('Error deleting tree: $e');
     }

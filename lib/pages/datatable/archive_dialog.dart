@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-void showArchiveDialog(BuildContext context, String docID) {
+void showArchiveDialog(
+    BuildContext context, String docID, VoidCallback onArchived) {
   showDialog(
     context: context,
     builder: (context) {
@@ -19,10 +20,7 @@ void showArchiveDialog(BuildContext context, String docID) {
               ),
             ),
             onPressed: () => Navigator.pop(context),
-            child: const Text(
-              "Cancel",
-              style: TextStyle(color: Colors.white),
-            ),
+            child: const Text("Cancel", style: TextStyle(color: Colors.white)),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
@@ -33,17 +31,24 @@ void showArchiveDialog(BuildContext context, String docID) {
                 borderRadius: BorderRadius.circular(8.0),
               ),
             ),
-            onPressed: () async {
-              await FirebaseFirestore.instance
-                  .collection('mango_tree')
-                  .doc(docID)
-                  .update({'isArchived': true});
-              Navigator.pop(context);
+            onPressed: () {
+              Future.delayed(const Duration(milliseconds: 300), () async {
+                await FirebaseFirestore.instance
+                    .collection('mango_tree')
+                    .doc(docID)
+                    .update({'isArchived': true});
+                onArchived();
+              });
+              if (context.mounted) {
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("Tree archived successfully"),
+                  ),
+                );
+              }
             },
-            child: const Text(
-              "Archive",
-              style: TextStyle(color: Colors.white),
-            ),
+            child: const Text("Archive", style: TextStyle(color: Colors.white)),
           ),
         ],
       );

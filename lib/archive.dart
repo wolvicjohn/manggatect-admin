@@ -35,16 +35,16 @@ class ArchiveDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Archive Data'),
+      title: const Text('Restore Tree'),
       content: const Text(
-        'Are you sure you want to archive this Data?',
+        'Are you sure you want to restore this Tree?',
         style: TextStyle(fontSize: 18.0),
       ),
       actions: [
         ElevatedButton(
           onPressed: () {
             archivemango_tree(context);
-            Navigator.pop(context); 
+            Navigator.pop(context);
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.orange,
@@ -54,7 +54,7 @@ class ArchiveDialog extends StatelessWidget {
               borderRadius: BorderRadius.circular(8.0),
             ),
           ),
-          child: const Text("Confirm Archive"),
+          child: const Text("Restore", style: TextStyle(color: Colors.white)),
         ),
         ElevatedButton(
           onPressed: () {
@@ -68,7 +68,7 @@ class ArchiveDialog extends StatelessWidget {
               borderRadius: BorderRadius.circular(8.0),
             ),
           ),
-          child: const Text("Cancel"),
+          child: const Text("Cancel", style: TextStyle(color: Colors.grey)),
         ),
       ],
     );

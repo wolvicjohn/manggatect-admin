@@ -252,9 +252,11 @@ class _ArchivePageState extends State<ArchivePage> {
                                                 onPressed: () {
                                                   String imageUrl =
                                                       document['imageUrl'];
-                                                  String stageImageUrl =
+                                                  String? stageImageUrl =
                                                       document['stageImageUrl'];
                                                   // Call the delete function
+                                                  debugPrint(
+                                                      'imageUrl: $imageUrl, stageImageUrl: $stageImageUrl');
                                                   showDeleteDialog(
                                                       context,
                                                       document.id,

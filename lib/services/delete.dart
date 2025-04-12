@@ -3,15 +3,15 @@ import 'package:adminmangga/services/firestore.dart';
 
 class DeleteDialog extends StatelessWidget {
   final String docID;
-  final String imageUrl;
-  final String stageImageUrl;
+  final String? imageUrl;
+  final String? stageImageUrl;
   final FirestoreService firestoreService = FirestoreService();
 
   DeleteDialog({
     super.key,
     required this.docID,
     required this.imageUrl,
-    required this.stageImageUrl,
+    this.stageImageUrl,
   });
 
   // Method to delete mango_tree data and corresponding images
@@ -82,8 +82,8 @@ class DeleteDialog extends StatelessWidget {
 }
 
 // Function to show the delete dialog
-void showDeleteDialog(
-    BuildContext context, String docID, String imageUrl, String stageImageUrl) {
+void showDeleteDialog(BuildContext context, String docID, String? imageUrl,
+    String? stageImageUrl) {
   showDialog(
     context: context,
     builder: (BuildContext context) {

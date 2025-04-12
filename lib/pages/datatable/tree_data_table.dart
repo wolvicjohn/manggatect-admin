@@ -108,8 +108,6 @@ class TreeDataTableState extends State<TreeDataTable> {
   }
 
   Future<void> _loadMoreData() async {
-    if (_isLoading || !_hasMore) return;
-
     setState(() {
       _isLoading = true;
     });
@@ -129,19 +127,27 @@ class TreeDataTableState extends State<TreeDataTable> {
 
       if (querySnapshot.docs.isNotEmpty) {
         _lastDocument = querySnapshot.docs.last;
+        _mangoTreeList.clear(); // Clear the list before reloading new data
         _mangoTreeList.addAll(querySnapshot.docs);
-        setState(() {
-          _hasMore = querySnapshot.docs.length == _limit;
-        });
+
+        if (mounted) {
+          setState(() {
+            _hasMore = querySnapshot.docs.length == _limit;
+          });
+        }
       } else {
-        setState(() {
-          _hasMore = false;
-        });
+        if (mounted) {
+          setState(() {
+            _hasMore = false;
+          });
+        }
       }
     } finally {
-      setState(() {
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -222,8 +228,7 @@ class TreeDataTableState extends State<TreeDataTable> {
         ),
         _dataCell(
           data['stage']?.toString() ?? 'N/A',
-          customStyle: TextStyle(
-            color: _getStageColor(data['stage']?.toString() ?? ''),
+          customStyle: const TextStyle(
             fontFamily: 'sans-serif',
           ),
         ),
@@ -261,14 +266,27 @@ class TreeDataTableState extends State<TreeDataTable> {
               ),
               const SizedBox(width: 8),
               ElevatedButton.icon(
-                onPressed: () => showArchiveDialog(context, data['docID']),
+                onPressed: () => showArchiveDialog(
+                  context,
+                  data['docID'],
+                  () {
+                    if (mounted) {
+                      setState(() {
+                        _mangoTreeList.removeWhere(
+                          (item) => item.id == data['docID'],
+                        );
+                      });
+                    }
+                  },
+                ),
                 style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Colors.orange,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    elevation: 5),
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.orange,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  elevation: 5,
+                ),
                 icon: const Icon(Icons.archive, size: 16),
                 label: const Text("Archive"),
               ),
@@ -313,18 +331,5 @@ class TreeDataTableState extends State<TreeDataTable> {
             ),
       ),
     );
-  }
-
-  static Color _getStageColor(String stage) {
-    switch (stage.toLowerCase()) {
-      case 'flowering':
-        return Colors.purple;
-      case 'fruiting':
-        return Colors.green;
-      case 'harvesting':
-        return Colors.orange;
-      default:
-        return Colors.black87;
-    }
   }
 }
