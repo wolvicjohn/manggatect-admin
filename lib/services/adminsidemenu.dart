@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 // import '../pages/alltreelocationpage.dart';
-import '../pages/alltreemap/alltreelocationpage.dart';
-import '../pages/archivepage.dart';
-import '../pages/dashboard.dart';
+import '../pages/alltreemap/widgets/alltreelocationpage.dart';
+import '../pages/archivepage/archivepage.dart';
+import '../pages/dashboard/dashboard.dart';
 import '../pages/datatable/homepage.dart';
-import '../pages/info.dart';
+import '../pages/infopage/info.dart';
 import '../pages/login/login_page.dart';
 
 class AdminPanel extends StatefulWidget {

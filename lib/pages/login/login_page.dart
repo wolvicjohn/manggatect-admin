@@ -1,9 +1,12 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:loading_indicator/loading_indicator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'widgets/logo_header.dart';
+import 'widgets/email_text_field.dart';
+import 'widgets/password_text_field.dart';
+import 'widgets/login_button.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -17,24 +20,12 @@ class _LoginPageState extends State<LoginPage> {
   bool _isLoading = false;
   String? _errorMessage;
 
-  // Focus nodes
   final _emailFocusNode = FocusNode();
   final _passwordFocusNode = FocusNode();
-
-  // Color for selected TextFormField
   final _focusedColor = const Color.fromARGB(255, 20, 116, 82);
-
-  @override
-  void dispose() {
-    // Clean up controllers and focus nodes
-    _emailFocusNode.dispose();
-    _passwordFocusNode.dispose();
-    super.dispose();
-  }
 
   Future<void> _login() async {
     if (!_formKey.currentState!.validate()) return;
-
     setState(() {
       _isLoading = true;
       _errorMessage = null;
@@ -71,6 +62,13 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
+  void dispose() {
+    _emailFocusNode.dispose();
+    _passwordFocusNode.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
@@ -88,8 +86,8 @@ class _LoginPageState extends State<LoginPage> {
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 400),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 32.0, horizontal: 24.0),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
                   decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.9),
                     borderRadius: BorderRadius.circular(12),
@@ -104,48 +102,8 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Row(
-                        children: [
-                          Image.asset('assets/images/logo.png', height: 100),
-                          const SizedBox(width: 8),
-                          Row(
-                            children: [
-                              Text(
-                                'MANGGA',
-                                style: TextStyle(
-                                  color:
-                                      const Color.fromARGB(255, 127, 106, 25),
-                                  fontSize: 25,
-                                  shadows: [
-                                    Shadow(
-                                      blurRadius: 5.0,
-                                      color: Colors.black.withOpacity(0.5),
-                                      offset: const Offset(2.0, 2.0),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Text(
-                                'TECH',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 27,
-                                  color: const Color.fromARGB(255, 20, 116, 82),
-                                  shadows: [
-                                    Shadow(
-                                      blurRadius: 5.0,
-                                      color: Colors.black.withOpacity(0.5),
-                                      offset: const Offset(2.0, 2.0),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
+                      const LogoHeader(),
                       const Divider(
                         color: Color.fromARGB(255, 20, 116, 82),
                         thickness: 2,
@@ -153,10 +111,10 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       Text(
                         'Welcome Back!',
-                        style:
-                            Theme.of(context).textTheme.headlineSmall?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineSmall
+                            ?.copyWith(fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 20),
                       if (_errorMessage != null)
@@ -167,132 +125,22 @@ class _LoginPageState extends State<LoginPage> {
                             style: const TextStyle(color: Colors.red),
                           ),
                         ),
-                      TextFormField(
+                      EmailTextField(
                         controller: _emailController,
-                        keyboardType: TextInputType.emailAddress,
                         focusNode: _emailFocusNode,
-                        decoration: InputDecoration(
-                          labelText: 'Email',
-                          labelStyle: TextStyle(
-                            color: _emailFocusNode.hasFocus
-                                ? _focusedColor
-                                : const Color.fromARGB(255, 20, 116, 82)
-                                    .withOpacity(.8),
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          prefixIcon: Icon(
-                            Icons.email,
-                            color: _emailFocusNode.hasFocus
-                                ? _focusedColor
-                                : const Color.fromARGB(255, 20, 116, 82)
-                                    .withOpacity(.8),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide:
-                                BorderSide(color: _focusedColor, width: 2),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: BorderSide(
-                                color: const Color.fromARGB(255, 20, 116, 82)
-                                    .withOpacity(.8),
-                                width: 1),
-                          ),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your email';
-                          }
-                          return null;
-                        },
+                        focusedColor: _focusedColor,
                       ),
                       const SizedBox(height: 16),
-                      TextFormField(
+                      PasswordTextField(
                         controller: _passwordController,
-                        obscureText: true,
                         focusNode: _passwordFocusNode,
-                        decoration: InputDecoration(
-                          labelText: 'Password',
-                          labelStyle: TextStyle(
-                            color: _emailFocusNode.hasFocus
-                                ? _focusedColor
-                                : const Color.fromARGB(255, 20, 116, 82)
-                                    .withOpacity(.8),
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          prefixIcon: Icon(
-                            Icons.lock,
-                            color: _passwordFocusNode.hasFocus
-                                ? _focusedColor
-                                : const Color.fromARGB(255, 20, 116, 82)
-                                    .withOpacity(.8),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide:
-                                BorderSide(color: _focusedColor, width: 2),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: BorderSide(
-                                color: const Color.fromARGB(255, 20, 116, 82)
-                                    .withOpacity(.8),
-                                width: 1),
-                          ),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your password';
-                          }
-                          return null;
-                        },
+                        focusedColor: _focusedColor,
                       ),
                       const SizedBox(height: 20),
-                      _isLoading
-                          ? Container(
-                              width: 100,
-                              height: 100,
-                              padding: const EdgeInsets.all(20),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: const LoadingIndicator(
-                                indicatorType: Indicator.lineScalePulseOutRapid,
-                                colors: [
-                                  Color.fromARGB(255, 20, 116, 82),
-                                  Colors.yellow,
-                                  Colors.red,
-                                  Colors.blue,
-                                  Colors.orange,
-                                ],
-                                strokeWidth: 3,
-                              ),
-                            )
-                          : ElevatedButton(
-                              onPressed: _login,
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    const Color.fromARGB(255, 20, 116, 82),
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 152,
-                                  vertical: 12,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                              child: const Text(
-                                'Login',
-                                style: TextStyle(
-                                    fontSize: 16, color: Colors.white),
-                              ),
-                            ),
+                      LoginButton(
+                        isLoading: _isLoading,
+                        onPressed: _login,
+                      ),
                     ],
                   ),
                 ),

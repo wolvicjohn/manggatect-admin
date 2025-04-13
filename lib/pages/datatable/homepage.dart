@@ -1,7 +1,9 @@
-import 'package:adminmangga/pages/datatable/tree_details.dart';
+import 'package:adminmangga/pages/datatable/details/tree_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_admin_scaffold/admin_scaffold.dart';
-import 'package:adminmangga/pages/datatable/tree_data_table.dart';
+import 'package:adminmangga/pages/datatable/table/tree_data_table.dart';
+
+import '../../services/header.dart';
 
 class Homepage extends StatelessWidget {
   const Homepage({super.key});
@@ -10,92 +12,43 @@ class Homepage extends StatelessWidget {
   Widget build(BuildContext context) {
     return AdminScaffold(
       backgroundColor: Colors.grey.shade100,
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Header Section
-            Padding(
-              padding: const EdgeInsets.only(bottom: 24.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.fromLTRB(8, 8, 8, 0),
-                        padding: const EdgeInsets.all(30),
-                        decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 20, 116, 82),
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(8.0),
-                            topRight: Radius.circular(8.0),
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              offset: const Offset(0, 6),
-                              blurRadius: 12.0,
-                              spreadRadius: 0.0,
-                            ),
-                          ],
-                        ),
-                        // margin: EdgeInsets.all(16),
-                        child: const Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Mango Tree Records',
-                              style: TextStyle(
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
-                            ),
-                            Text(
-                              'Table of all mango trees and its progress. ',
-                              style: TextStyle(
-                                fontSize: 15,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header Section
+          const CustomHeader(
+            title: 'All Mango Tree Records',
+            description:
+                'An interactive table that visualizes the records of all mango trees.',
+          ),
+
+          const SizedBox(
+            height: 16,
+          ),
+
+          // Main Content
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.1),
+                    spreadRadius: 0,
+                    blurRadius: 10,
+                    offset: const Offset(0, 2),
                   ),
-                  const SizedBox(height: 8),
                 ],
               ),
-            ),
-
-            // Main Content
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.1),
-                      spreadRadius: 0,
-                      blurRadius: 10,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: TreeDataTable(
-                  onSelectTree: (treeData) {
-                    TreeDetailsDialog.show(context, treeData);
-                  },
-                ),
+              child: TreeDataTable(
+                onSelectTree: (treeData) {
+                  TreeDetailsDialog.show(context, treeData);
+                },
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
