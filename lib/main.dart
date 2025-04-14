@@ -3,7 +3,7 @@ import 'package:adminmangga/pages/archivepage/archivepage.dart';
 import 'package:adminmangga/pages/dashboard/dashboard.dart';
 import 'package:adminmangga/pages/infopage/info.dart';
 import 'package:adminmangga/pages/login/login_page.dart';
-import 'package:adminmangga/services/adminsidemenu.dart';
+import 'package:adminmangga/services/admin_side_menu.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'pages/alltreemap/widgets/alltreelocationpage.dart';

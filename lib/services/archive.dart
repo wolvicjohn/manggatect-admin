@@ -17,11 +17,30 @@ class ArchiveDialog extends StatelessWidget {
       });
 
       await firestoreService.updateArchiveStatus(docID, !isCurrentlyArchived);
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(isCurrentlyArchived
-              ? 'Data Restoration success'
-              : 'Data archived successfully'),
+          content: Row(
+            children: [
+              const Icon(Icons.check_circle, color: Colors.white),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Text(
+                  isCurrentlyArchived
+                      ? 'Data and images deleted successfully'
+                      : 'Data archived successfully',
+                  style: const TextStyle(fontSize: 16),
+                ),
+              ),
+            ],
+          ),
+          backgroundColor: const Color(0xFF147452),
+          duration: const Duration(seconds: 4),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          margin: const EdgeInsets.all(16),
         ),
       );
     } catch (e) {
@@ -56,8 +75,8 @@ class ArchiveDialog extends StatelessWidget {
           child: const Text("Cancel", style: TextStyle(color: Colors.white)),
         ),
         ElevatedButton(
-          onPressed: () {
-            archivemango_tree(context);
+          onPressed: () async {
+            await archivemango_tree(context);
             Navigator.pop(context);
           },
           style: ElevatedButton.styleFrom(

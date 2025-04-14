@@ -22,7 +22,27 @@ class DeleteDialog extends StatelessWidget {
 
       // Show success SnackBar
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Data and images deleted successfully')),
+        SnackBar(
+          content: const Row(
+            children: [
+              Icon(Icons.check_circle, color: Colors.white),
+              SizedBox(width: 16),
+              Expanded(
+                child: Text(
+                  'Data and images deleted successfully',
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
+            ],
+          ),
+          backgroundColor: const Color(0xFF147452),
+          duration: const Duration(seconds: 4),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          margin: const EdgeInsets.all(16),
+        ),
       );
     } catch (e) {
       // Show error SnackBar
