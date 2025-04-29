@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import 'stage_maintenance_helper.dart';
 import 'stage_utils.dart';
 
 class HistoryTimelineItem extends StatelessWidget {
@@ -72,70 +73,79 @@ class HistoryTimelineItem extends StatelessWidget {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(12.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    child: Row(
                       children: [
-                        Row(
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 4),
-                              decoration: BoxDecoration(
-                                color: getStageColor(history['stage'] ?? '')
-                                    .withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Text(
-                                history['stage'] ?? 'N/A',
-                                style: TextStyle(
-                                  color: getStageColor(history['stage'] ?? ''),
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            if (isLatest)
-                              Container(
-                                margin: const EdgeInsets.only(left: 8),
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 4),
-                                decoration: BoxDecoration(
-                                  color: Colors.blue.shade50,
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: const Text(
-                                  'Previous Stage',
-                                  style: TextStyle(
-                                    color: Colors.blue,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
+                            Row(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8, vertical: 4),
+                                  decoration: BoxDecoration(
+                                    color: getStageColor(history['stage'] ?? '')
+                                        .withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Text(
+                                    history['stage'] ?? 'N/A',
+                                    style: TextStyle(
+                                      color:
+                                          getStageColor(history['stage'] ?? ''),
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
+                                if (isLatest)
+                                  Container(
+                                    margin: const EdgeInsets.only(left: 8),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8, vertical: 4),
+                                    decoration: BoxDecoration(
+                                      color: Colors.blue.shade50,
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: const Text(
+                                      'Previous Stage',
+                                      style: TextStyle(
+                                        color: Colors.blue,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            if (history['timestamp'] != null)
+                              Row(
+                                children: [
+                                  Text(
+                                    '${DateFormat('EEEE, MMMM dd, yyyy h:mm a').format(history['timestamp'].toDate())} '
+                                    '(${(history['moved_at']).toDate().difference(history['timestamp'].toDate()).inDays} days ago)',
+                                    style:
+                                        TextStyle(color: Colors.grey.shade600),
+                                  ),
+                                ],
                               ),
-                          ],
-                        ),
-                        const SizedBox(height: 8),
-                        if (history['timestamp'] != null)
-                          Row(
-                            children: [
-                              Text(
-                                '${DateFormat('EEEE, MMMM dd, yyyy h:mm a').format(history['timestamp'].toDate())} '
-                                '(${(history['moved_at']).toDate().difference(history['timestamp'].toDate()).inDays} days ago)',
-                                style: TextStyle(color: Colors.grey.shade600),
+                            if (history['stageImageUrl'] != null) ...[
+                              const SizedBox(height: 12),
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(8.0),
+                                child: Image.network(
+                                  history['stageImageUrl'],
+                                  height: 200,
+                                  width: 200,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ],
-                          ),
-                        if (history['stageImageUrl'] != null) ...[
-                          const SizedBox(height: 12),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(8.0),
-                            child: Image.network(
-                              history['stageImageUrl'],
-                              height: 200,
-                              width: 200,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ],
+                          ],
+                        ),
+                        const SizedBox(height: 6),
+                        MaintenanceTipBox(
+                            tip: getMaintenanceTip(history['stage'] ?? '')),
                       ],
                     ),
                   ),

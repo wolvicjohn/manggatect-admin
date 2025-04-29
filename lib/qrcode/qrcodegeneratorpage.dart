@@ -1,68 +1,40 @@
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:qr_flutter/qr_flutter.dart';
-import 'package:pdf/widgets.dart' as pw;
 import 'dart:typed_data';
 import 'dart:html' as html;
+import 'package:pdf/widgets.dart' as pw;
+import 'package:qr_flutter/qr_flutter.dart';
+import 'package:flutter/material.dart';
 
-class QRCodeGeneratorPage extends StatelessWidget {
-  final String docID;
-  final DateTime timestamp;
-
-  const QRCodeGeneratorPage({Key? key, required this.docID, required this.timestamp}) : super(key: key);
-
-  Future<Uint8List> _generatePdf() async {
-    final pdf = pw.Document();
-
-    // Create the QR code image as a widget
-    final qrCodeImage = QrPainter(
-      data: docID,
-      version: QrVersions.auto,
-      gapless: true,
-    );
-
-    // Generate QR code as a ByteData image
-    final ByteData? imageData = await qrCodeImage.toImageData(200);
-    final Uint8List pngBytes = imageData!.buffer.asUint8List();
-
-    // Add title and QR code image to the PDF
-    pdf.addPage(pw.Page(
-      build: (pw.Context context) {
-        return pw.Center(
-          child: pw.Column(
-            mainAxisAlignment: pw.MainAxisAlignment.center,
-            children: [
-              pw.Text(
-                'MANGGATECH',
-                style: pw.TextStyle(
-                  fontSize: 24,
-                  fontWeight: pw.FontWeight.bold,
-                ),
-              ),pw.Text(
-                '$docID',
-                style: pw.TextStyle(
-                  fontSize: 18,
-                  fontWeight: pw.FontWeight.bold,
-                ),
-              ),
-              pw.SizedBox(height: 20),
-              pw.Image(
-                pw.MemoryImage(pngBytes),
-                width: 200,
-                height: 200,
-              ),
-            ],
-          ),
-        );
-      },
-    ));
-
-    return pdf.save();
-  }
-
-  void _downloadPdf(BuildContext context) async {
+class PdfDownloader {
+  static Future<void> downloadQrCodeAsPdf(BuildContext context, String docID) async {
     try {
-      final pdfData = await _generatePdf();
+      final pdf = pw.Document();
+
+      final qrCodeImage = QrPainter(
+        data: docID,
+        version: QrVersions.auto,
+        gapless: true,
+      );
+
+      final ByteData? imageData = await qrCodeImage.toImageData(200);
+      final Uint8List pngBytes = imageData!.buffer.asUint8List();
+
+      pdf.addPage(pw.Page(
+        build: (pw.Context context) {
+          return pw.Center(
+            child: pw.Column(
+              mainAxisAlignment: pw.MainAxisAlignment.center,
+              children: [
+                pw.Text('MANGGATECH', style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
+                pw.Text(docID, style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
+                pw.SizedBox(height: 20),
+                pw.Image(pw.MemoryImage(pngBytes), width: 200, height: 200),
+              ],
+            ),
+          );
+        },
+      ));
+
+      final pdfData = await pdf.save();
       final blob = html.Blob([pdfData], 'application/pdf');
       final url = html.Url.createObjectUrlFromBlob(blob);
 
@@ -72,73 +44,9 @@ class QRCodeGeneratorPage extends StatelessWidget {
 
       html.Url.revokeObjectUrl(url);
     } catch (e) {
-      // Handle errors
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error generating PDF: $e')),
       );
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("QR Code"),
-      ),
-      body: Center(
-        child: Container(
-          padding: const EdgeInsets.all(20.0),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 3,
-                blurRadius: 7,
-                offset: const Offset(0, 3),
-              ),
-            ],
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text(
-                'MANGGATECH',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-               Text(docID,style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),),
-                 Text(DateFormat('MMM dd, yyyy HH:mm').format(timestamp)),
-              QrImageView(
-                data: docID,
-                version: 5,
-                size: 320,
-                gapless: false,
-                errorStateBuilder: (context, error) {
-                  return const Center(
-                    child: Text(
-                      'Uh oh! Something went wrong...',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.red),
-                    ),
-                  );
-                },
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () => _downloadPdf(context),
-                child: const Text("Download QR Code as PDF"),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
   }
 }

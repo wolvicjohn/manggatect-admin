@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../../../services/loading_widget.dart';
+import '../searchfield/search_field.dart';
 import 'widgets/tree_data_header.dart';
 import 'widgets/tree_data_row.dart';
 
@@ -20,10 +21,24 @@ class TreeDataTableState extends State<TreeDataTable> {
   bool _hasMore = true;
   final List<DocumentSnapshot> _mangoTreeList = [];
 
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
+
   @override
   void initState() {
     super.initState();
+    _searchController.addListener(() {
+      setState(() {
+        _searchQuery = _searchController.text.toLowerCase();
+      });
+    });
     _loadMoreData();
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 
   Future<void> _loadMoreData() async {
@@ -77,6 +92,8 @@ class TreeDataTableState extends State<TreeDataTable> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            TreeSearchField(controller: _searchController),
+            const SizedBox(height: 16),
             Table(
               defaultVerticalAlignment: TableCellVerticalAlignment.middle,
               columnWidths: const {
@@ -94,20 +111,37 @@ class TreeDataTableState extends State<TreeDataTable> {
               ),
               children: [
                 buildTableHeader(),
-                ..._mangoTreeList.asMap().entries.map((entry) {
-                  final index = entry.key + 1;
-                  final document = entry.value;
-                  Map<String, dynamic> data =
-                      document.data() as Map<String, dynamic>;
-                  data['docID'] = document.id;
-                  return buildTableRow(
-                      context, data, index, widget.onSelectTree, () {
-                    setState(() {
-                      _mangoTreeList
-                          .removeWhere((item) => item.id == data['docID']);
-                    });
-                  });
-                }),
+                ..._mangoTreeList
+                    .where((doc) {
+                      final data = doc.data() as Map<String, dynamic>;
+                      data['docID'] = doc.id;
+                      final uploader =
+                          (data['uploader'] ?? '').toString().toLowerCase();
+                      final stage =
+                          (data['stage'] ?? '').toString().toLowerCase();
+                      final docID =
+                          (data['docID'] ?? '').toString().toLowerCase();
+                      return uploader.contains(_searchQuery) ||
+                          docID.contains(_searchQuery) ||
+                          stage.contains(_searchQuery);
+                    })
+                    .toList()
+                    .asMap()
+                    .entries
+                    .map((entry) {
+                      final index = entry.key + 1;
+                      final document = entry.value;
+                      Map<String, dynamic> data =
+                          document.data() as Map<String, dynamic>;
+                      data['docID'] = document.id;
+                      return buildTableRow(
+                          context, data, index, widget.onSelectTree, () {
+                        setState(() {
+                          _mangoTreeList
+                              .removeWhere((item) => item.id == data['docID']);
+                        });
+                      });
+                    }),
               ],
             ),
             const SizedBox(height: 20),

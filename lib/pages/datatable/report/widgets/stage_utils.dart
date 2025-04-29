@@ -25,3 +25,18 @@ String getStageIcon(String stage) {
       return '🌱';
   }
 }
+
+String getMaintenanceTip(String stage) {
+  switch (stage.toLowerCase()) {
+    case 'stage-1':
+      return 'Water regularly and ensure adequate sunlight.';
+    case 'stage-2':
+      return 'Check for early signs of pests and continue watering.';
+    case 'stage-3':
+      return 'Apply fertilizer and monitor flower development.';
+    case 'stage-4':
+      return 'Ensure fruit protection and prepare for harvest.';
+    default:
+      return 'General care: water, sunlight, and check for issues.';
+  }
+}
