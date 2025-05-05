@@ -57,7 +57,7 @@ class StageFilterDropdown extends StatelessWidget {
           _legendRow('assets/images/stage1_icon.png', 'Stage 2'),
           _legendRow('assets/images/stage2_icon.png', 'Stage 3'),
           _legendRow('assets/images/stage3_icon.png', 'Stage 4'),
-          _legendRow('assets/images/tree.png', 'No Flower'),
+          _legendRow('assets/images/no_flower.png', 'No Flower'),
           const SizedBox(height: 15),
         ],
       ),
@@ -66,8 +66,11 @@ class StageFilterDropdown extends StatelessWidget {
 
   Widget _legendRow(String iconPath, String label) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Image.asset(iconPath, height: 40, width: 40),
+        const SizedBox(width: 10),
         Text(label),
       ],
     );

@@ -10,7 +10,7 @@ class MapUtils {
       case 'stage-4':
         return 'assets/images/stage3_icon.png';
       default:
-        return 'assets/images/tree.png';
+        return 'assets/images/no_flower.png';
     }
   }
 }

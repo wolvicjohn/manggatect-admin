@@ -59,6 +59,7 @@ dependencies:
   intl: ^0.17.0
   sidebarx: ^0.17.1
   loading_indicator: ^3.1.1
+  syncfusion_flutter_charts: ^21.2.4
 
 dev_dependencies:
   flutter_test:
@@ -91,6 +92,7 @@ flutter:
     - assets/images/selected_icon.png
     - assets/images/tree.png
     - assets/images/not_classified.png
+    - assets/images/no_flower.png
     - assets/images/stage1.jpg
     - assets/images/stage2.jpg
     - assets/images/stage3.jpg

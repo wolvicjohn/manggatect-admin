@@ -28,90 +28,72 @@ class StageBox extends StatelessWidget {
     final bool isNotClassified = stage == 'Not classified';
 
     return Expanded(
-      child: Card(
-        margin: const EdgeInsets.all(8.0),
-        color: isNotClassified
-            ? Colors.white
-            : const Color.fromARGB(0, 44, 155, 63),
-        child: Container(
-          decoration: BoxDecoration(
-            border: isNotClassified
-                ? const Border(
-                    top: BorderSide(
-                      color: Color.fromARGB(255, 175, 32, 32),
-                      width: 15,
-                    ),
-                  )
-                : const Border(
+      child: Column(
+        children: [
+          if (!isNotClassified)
+            Card(
+              margin: const EdgeInsets.all(8.0),
+              color: Colors.white,
+              child: Container(
+                decoration: BoxDecoration(
+                  border: const Border(
                     top: BorderSide(
                       color: Color.fromARGB(255, 20, 116, 82),
                       width: 15,
                     ),
                   ),
-            borderRadius: BorderRadius.circular(5),
-          ),
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              if (!isNotClassified)
-                Positioned.fill(
-                  child: Image.asset(
-                    getImageForStage(stage),
-                    fit: BoxFit.fill,
-                  ),
+                  borderRadius: BorderRadius.circular(5),
                 ),
-              if (!isNotClassified)
-                Positioned.fill(
-                  child: Container(
-                    color: Colors.black.withOpacity(0.4),
-                  ),
-                ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                child: Stack(
+                  alignment: Alignment.center,
                   children: [
-                    Text(
-                      '${mango_tree.length}',
-                      style: TextStyle(
-                        fontSize: 50,
-                        fontWeight: FontWeight.bold,
-                        color: isNotClassified ? Colors.black : Colors.white,
-                        shadows: isNotClassified
-                            ? []
-                            : [
-                                Shadow(
-                                  color: Colors.black.withOpacity(0.6),
-                                  offset: const Offset(2, 2),
-                                  blurRadius: 4,
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Align(
+                            alignment: Alignment.center,
+                            child: ClipOval(
+                              child: Image.asset(
+                                getImageForStage(stage),
+                                width: 150,
+                                height: 150,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                '${mango_tree.length}',
+                                style: const TextStyle(
+                                  fontSize: 50,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color.fromARGB(255, 20, 116, 82),
                                 ),
-                              ],
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      stage,
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: isNotClassified ? Colors.black : Colors.white,
-                        shadows: isNotClassified
-                            ? []
-                            : [
-                                Shadow(
-                                  color: Colors.black.withOpacity(0.6),
-                                  offset: const Offset(2, 2),
-                                  blurRadius: 4,
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                stage,
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  color: Color.fromARGB(255, 20, 116, 82),
                                 ),
-                              ],
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
                   ],
                 ),
               ),
-            ],
-          ),
-        ),
+            ),
+        ],
       ),
     );
   }
