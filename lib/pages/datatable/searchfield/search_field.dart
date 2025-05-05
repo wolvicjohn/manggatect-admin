@@ -39,8 +39,8 @@ class TreeSearchField extends StatelessWidget {
               fillColor: Colors.grey.shade100,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5.0),
-                borderSide: BorderSide(
-                  color: Colors.green.shade700,
+                borderSide: const BorderSide(
+                  color: Colors.black,
                   width: 2.0,
                 ),
               ),
@@ -53,8 +53,8 @@ class TreeSearchField extends StatelessWidget {
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5.0),
-                borderSide: BorderSide(
-                  color: Colors.green.shade300,
+                borderSide: const BorderSide(
+                  color: Colors.grey,
                   width: 2.0,
                 ),
               ),

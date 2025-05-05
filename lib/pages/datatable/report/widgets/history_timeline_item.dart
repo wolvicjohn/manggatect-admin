@@ -143,9 +143,9 @@ class HistoryTimelineItem extends StatelessWidget {
                             ],
                           ],
                         ),
-                        const SizedBox(height: 6),
-                        MaintenanceTipBox(
-                            tip: getMaintenanceTip(history['stage'] ?? '')),
+                        // const SizedBox(height: 6),
+                        // MaintenanceTipBox(
+                        //     tip: getMaintenanceTip(history['stage'] ?? '')),
                       ],
                     ),
                   ),
